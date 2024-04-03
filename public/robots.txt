@@ -1,0 +1,9 @@
+# robots.txt para Eventor
+User-agent: *
+Disallow: 
+Disallow: /../admin-area/
+Disallow: /../app/config/
+Disallow: /../app/controllers/
+Disallow: /../app/helpers/
+Disallow: /../app/lib/
+Disallow: /../app/models/

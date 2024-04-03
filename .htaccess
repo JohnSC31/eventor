@@ -1,0 +1,15 @@
+# CAMBIAR LA "eventor" POR EL NOMBRE DE LA CARPETA DONDE SE ENCUENTRA EL PROYECTO O EL DOMINIO
+<IfModule mod_rewrite.c>
+    Header set Access-Control-Allow-Origin 'http://localhost/eventor'
+    RewriteEngine on
+    RewriteRule ^$ /eventor/public/ [L]
+    RewriteCond %{REQUEST_FILENAME} !-s
+    RewriteCond %{HTTP:X-Requested-With} !=XMLHttpRequest
+    RewriteRule (.*) /eventor/public/$1 [L]
+</IfModule>
+
+# php -- BEGIN cPanel-generated handler, do not edit
+# This domain inherits the “PHP” package.
+# php -- END cPanel-generated handler, do not edit
+
+
