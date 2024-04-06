@@ -1,8 +1,8 @@
-<div class="sells_container" style="display:none;">
-    <h1>Ventas</h1>
+<div class="users_container" style="display:none;">
+    <h1>Usuarios Eventor</h1>
 
-    <div class="table-sells-container datatable-container">
-        <table id="sells-table" class="table table-striped table-bordered" style="width:100%">
+    <div class="table-users-container datatable-container">
+        <table id="users-table" class="table table-striped table-bordered" style="width:100%">
             <thead>
                 <tr>
                     <th>Venta</th>

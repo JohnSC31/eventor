@@ -279,60 +279,16 @@ function adminNavigation(option){
   $('div#dashboard_container div.'+ $(option).attr("data-admin-nav") + '_container').css('display', 'block');
 
   // ACCIONES PARA LAS SECCIONES
-  if($(option).attr("data-admin-nav") === 'sells'){
+  if($(option).attr("data-admin-nav") === 'users'){
 
-    if ( ! $.fn.DataTable.isDataTable('#sells-table') ) {
-      initDataTable('sells', 'loadDataTableSells');
+    if ( ! $.fn.DataTable.isDataTable('#users-table') ) {
+      initDataTable('users', 'loadDataTableSells');
     }else{
-      refreshDataTables('sells'); // recarga la tabla
+      refreshDataTables('users'); // recarga la tabla
     }
     
   }
 
-  if($(option).attr("data-admin-nav") === 'inventory'){
-    
-    if ( ! $.fn.DataTable.isDataTable('#inventory-table') ) {
-      initDataTable('inventory', 'loadDataTableInventory');
-    }else{
-      refreshDataTables('inventory'); // recarga la tabla
-    }
-
-    loadSelectOptions('catProduct'); // carga select de categoria
-  }
-
-  if($(option).attr("data-admin-nav") === 'human_resources'){
-
-    if ( ! $.fn.DataTable.isDataTable('#rrhh-table') ) {
-      initDataTable('rrhh', 'loadDataTableRrhh');
-    }else{
-      refreshDataTables('rrhh'); // recarga la tabla
-    }
-
-    loadSelectOptions('country'); // carga select de paises
-    loadSelectOptions('rol'); // carga select de roles
-    loadSelectOptions('department'); // carga select de departamentos
-    loadSelectOptions('currency'); // carga select de monedas
-  }
-
-  if($(option).attr("data-admin-nav") === 'client_service'){
-    
-    if ( ! $.fn.DataTable.isDataTable('#service-table') ) {
-      initDataTable('service', 'loadDataTableService');
-    }else{
-      refreshDataTables('service'); // recarga la tabla
-    }
-    
-    loadSelectOptions('questionType'); // carga select de paises
-  }
-
-  if($(option).attr("data-admin-nav") === 'settings'){
-    loadConfigList("roll"); // carga los roles
-    loadConfigList("currency"); // carga las monedas
-    loadConfigList("country"); // cargar paises
-    loadSelectOptions('currency_country'); // carga select de paises
-    loadConfigList("categorie"); // cargar categorias
-    
-  }
 }
 
 
