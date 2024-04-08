@@ -28,3 +28,37 @@
 </head>
 <body id="<?php echo $data['ID'];?>" data-url="<?php echo URL_PATH; ?>">
  
+<header class="web_header">
+    <div class="fixed_bar">
+        <div class="container">
+            <a href="<?php echo URL_PATH; ?>home">
+                <div class="logo">
+                    <img src="<?php echo URL_PATH; ?>public/img/blackLogo.png" alt="">
+                </div>
+            </a>
+            <nav class="navigation">
+                <ul>
+                    <?php if(!isset($_SESSION['CLIENT']['SESSION']) && true){ ?>
+                        <!-- BOTONES CUANDO NO HAY SESION -->
+                        <li><a href="<?php echo URL_PATH; ?>signup" class="btn btn_red"><i class="fa-solid fa-user-plus"></i> <span class="hide_medium"> Registro </span></a></li>
+                        <li><a href="<?php echo URL_PATH; ?>login" class="btn btn_green"><i class="fa-solid fa-right-to-bracket"></i> <span class="hide_medium"> Iniciar Sesión </span></a></li>
+                    <?php } else { ?>
+                        <!-- SESION INICIADA -->
+                        <li><a href="<?php echo URL_PATH; ?>profile" class="btn btn_green"><i class="fa-solid fa-user"></i> <span class="hide_medium"> Perfil </span></a></li>
+                        <li><a href="<?php echo URL_PATH; ?>request" class="btn btn_red"><i class="fa-solid fa-calendar-days"></i></i> <span class="hide_medium"> Solicitar </span></a></li>
+
+                    <?php } ?>
+                </ul>
+            </nav>
+        </div>
+        
+    </div>
+    <div class="bar_space"></div>
+
+</header>
+
+<div class="notification_container" id="notification_container"></div>
+
+<div class="modal_container" id="modal_container"></div>
+
+<main id="main-container">

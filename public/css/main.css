@@ -100,12 +100,11 @@ textarea {
   
 :root{
     /* colores principales */
-    --black: #080708;
-    --blue: #3772FF;
-    --red: #DF2935;
-    --yellow: #FDCA40;
-    --green: #9FBB73;
-    --grey: #E6E8E6;
+    --black: #1F1C1C;
+    --red: #F15152;
+    --green: #1E555C;
+    --grey: #EFF1ED;
+    /* COLORES APOYO */
     --white: #ffffff;
 
     /* radius objects */
@@ -116,7 +115,7 @@ html{
   /* APLICA UN NATURAL LAYOUT A TODOS LOS ELEMENTOS, PERO PERMITIENDO A LOS COMPONENTES CAMBIAR */
     box-sizing: border-box;
     font-size: 62.5%; /*Reset para REMS - 62.5% = 10px de 16px*/
-    font-family: 'inter', sans-serif;
+    font-family: 'Rubik', sans-serif;
     background: #fff;
 }
   
@@ -134,7 +133,9 @@ img{
 }
 
   /* ////////////////////////// -----------------------------GLOBALES ---------------------- //////////////////////////////*/
-
+main#main-container{
+    min-height: 70vh;
+}
   /* CONTAINERS */
 .container{
     width: 98%;
@@ -243,36 +244,36 @@ p,a{
     border-color: transparent;
 }
 
-/* YELLOW BUTTOM */
-.btn_yellow{
+/* RED BUTTOM */
+.btn_red{
     color: var(--white);
-    background-color: var(--yellow);
+    background-color: var(--red);
 }
-.btn_yellow:hover{
-    color: var(--yellow);
+.btn_red:hover{
+    color: var(--red);
     background-color: var(--white);
-    border-color: var(--yellow);
+    border-color: var(--red);
 }
 
-/* BLUE BUTTOM*/
-.btn_blue{
+/* GREEN BUTTOM*/
+.btn_green{
     color: var(--white);
-    background-color: var(--blue);
+    background-color: var(--green);
 }
-.btn_blue:hover{
-    color: var(--blue);
+.btn_green:hover{
+    color: var(--green);
     background-color: var(--white);
-    border-color: var(--blue);
+    border-color: var(--green);
 }
 
 /* WHITE BUTTOM */
 .btn_white{
-    color: var(--blue);
+    color: var(--green);
     background-color: var(--white);
 }
 .btn_white:hover{
     color: var(--white);
-    background-color: var(--blue);
+    background-color: var(--green);
     border-color: var(--white);
 }
 
@@ -374,6 +375,7 @@ div.myModal div.modal_header a.close_modal{
     font-weight: bold;
     cursor: pointer;
 }
+
 /*////////////////////// -------------------------- NOTIFICACION --------------------------------------------- ///////////////////////*/
 .notification{
     position: fixed;
@@ -406,7 +408,7 @@ div.myModal div.modal_header a.close_modal{
   }
   .n_success,
   .n_success p{
-    background-color: var(--blue);
+    background-color: var(--green);
     color: #fff;
   }
 
@@ -444,11 +446,11 @@ header.web_header .fixed_bar .container{
 }
 
 header.web_header .logo{
-    width: 20rem;
+    width: 15rem;
 }
 @media only screen and (max-width: 420px) {
     header.web_header .logo{
-        width: 15rem;
+        width: 10rem;
     }
 }
 header.web_header .navigation ul{
@@ -465,7 +467,7 @@ header.web_header .bar_space{
 
 /*////////////////////// -------------------------- FOOTER --------------------------------------------- ///////////////////////*/
 footer{
-    background-color: var(--black);
+    background-color: var(--red);
     padding: 3rem 0 1rem 0;
 }
 footer div.footer_content{
@@ -474,7 +476,7 @@ footer div.footer_content{
     justify-content: space-between;
 }
 footer div.footer_logo{
-    width: 40rem;
+    width: 20rem;
 }
 /* esconde en pantallas medianas */
 @media only screen and (max-width: 768px) {
@@ -490,7 +492,6 @@ footer nav.social_media_nav a.social_media{
     display: block;
     text-align: center;
     color: var(--black);
-    background-color: var(--white);
     width: 4rem;
     height: 4rem;
     padding: 0 .5rem;
@@ -498,6 +499,10 @@ footer nav.social_media_nav a.social_media{
     margin: 0 .5rem;
     font-weight: bold;
     font-size: 3rem;
+}
+
+footer nav.social_media_nav a.social_media:hover{
+    color: var(--grey);
 }
 
 footer div.rights{
@@ -508,6 +513,81 @@ footer div.rights{
 
 /*////////////////////// -------------------------- HOME --------------------------------------------- ///////////////////////*/
 
+/* INICIO */
+section.home-title{
+    background-color: var(--green);
+    color: var(--grey);
+   
+}
+section.home-title div.container{
+    border-bottom: 1px solid var(--grey);
+    display: flex;
+    padding: 7rem 0;
+}
+section.home-title div.container div.title{
+    flex: 0 0 40%;
+}
+
+/* SECCION DE EVENTOS */
+section.home-events{
+    background-color: var(--green);
+    color: var(--grey);
+}
+section.home-events div.container{
+    padding: 2rem 0;
+}
+
+section.home-events div.event-list{
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem 0;
+}
+
+section.home-events ul.event-icon-container{
+    flex: 0 0 20rem;
+    /* background-color: red; */
+    display: flex;
+    flex-wrap: wrap;
+    /* justify-content: space-between; */
+}
+section.home-events ul.event-icon-container li{
+    flex: 0 0 calc(50% - 3rem);
+    background-color: var(--grey);
+    margin: 0 1rem 1rem 0;
+    padding: .5rem 0;
+    font-size: 4rem;
+    color: var(--red);
+    border-radius: var(--radius);
+    text-align: center;
+    cursor: pointer;
+}
+section.home-events ul.event-icon-container li:hover{
+    background-color: var(--red);
+    color: var(--grey);
+}
+/* detalle de evento */
+section.home-events div.event-detail-container{
+    flex: 0 0 75%;
+}
+section.home-events div.event-detail{
+    text-align: center;
+    padding: 1rem 5rem;
+}
+
+/* SECCION DE SERVICIOS */
+
+/*  -----------RESPONSIVE DESIGN----------------*/
+@media only screen and (max-width: 768px) {
+    section.home-events div.event-list{
+      flex-direction: column;
+    }
+    section.home-events ul.event-icon-container{
+        flex: 0 0 100%
+    }
+    section.home-events div.event-detail-container{
+        flex: 0 0 100%;
+    }
+}
 
 /*////////////////////// -------------------------- SIGNUP --------------------------------------------- ///////////////////////*/
 section.signup{
