@@ -1,0 +1,7 @@
+DROP PROCEDURE IF EXISTS sp_get_clientes;
+DELIMITER $$
+CREATE PROCEDURE sp_get_clientes()
+BEGIN
+	SELECT nombre FROM cliente;
+END$$
+DELIMITER ;
