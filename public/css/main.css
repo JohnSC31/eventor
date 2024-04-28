@@ -109,6 +109,7 @@ textarea {
 
     /* radius objects */
     --radius: 2rem;
+    --formRadius: .7rem;
 }
   
 html{
@@ -301,12 +302,13 @@ form .field label{
 form .field input,
 form .field select,
 form .field textarea{
-    padding: .5rem;
+    padding: 1rem;
     font-size: 1.5rem;
-    border-radius: var(--radius);
+    border-radius: var(--formRadius);
     background-color: transparent;
     width: 100%;
-    border: none;
+    border: 1px solid var(--grey);
+    text-align: center;
 }
 
 form .field input[type=checkbox]{
@@ -337,6 +339,10 @@ form .submit{
     align-items: center;
     justify-content: center;
     padding: 2rem 0 1rem 0;
+}
+
+form .submit > input:last-child{
+    margin-left: 1rem;
 }
 
 /* ///////////////////------------------------CSS MODAL------------------------///////////// */
@@ -509,6 +515,11 @@ footer div.rights{
     color: var(--white);
     text-align: center;
     padding-top: 2rem;
+    font-size: 1.8rem!important;
+}
+
+footer div.rights p{
+    font-size: 1.8rem!important;
 }
 
 /*////////////////////// -------------------------- HOME --------------------------------------------- ///////////////////////*/
@@ -612,9 +623,6 @@ section.home-services div.event-detail{
 }
 
 /* -------- SECCION DE NUESTRO EQUIPO --------------------- */
-section.our-team{
-
-}
 section.our-team h2{
     color: var(--green);
 }
@@ -687,32 +695,35 @@ section.our-team div.team-container div.translucent-layer{
         height: 20rem;
     }
 }
-/*////////////////////// -------------------------- SIGNUP --------------------------------------------- ///////////////////////*/
-section.signup{
-   padding: 3rem 0;
-   background-color: var(--blue);
-   height: 90vh;
-   display: flex;
-   flex-direction: column;
-   align-items: center;
-}
-section.signup h1{
-    color: var(--white);
+
+/*////////////////////// -------------------------- LOGIN / INICIO SESION --------------------------------------------- ///////////////////////*/
+body#login main,
+body#signup main{
+    background-color: var(--green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-div.signup_form {
+body#login div.login-container,
+body#signup div.signup-container{
+   color: var(--white);
+   text-align: center;
+}
+
+body#signup div.signup-container{
+    padding: 7rem 0;
+ }
+
+body#login div.form-container,
+body#signup div.form-container{
     background-color: var(--white);
     border-radius: var(--radius);
     padding: 2rem;
-    width: 30%;
-}
-div.signup_form form .field label{
-    color: var(--blue);
-}
-div.signup_form form .field input{
-   border: 2px solid var(--blue)
+    margin-top: 2rem;
 }
 
+/*////////////////////// -------------------------- SIGNUP/ REGISTRO --------------------------------------------- ///////////////////////*/
 /*  -----------RESPONSIVE SIGNUP FORM----------------*/
 @media only screen and (max-width: 1120px) {
     div.signup_form{
@@ -733,53 +744,4 @@ div.signup_form form .field input{
     div.signup_form{
         width: 95%;
     }
-}
-
-/*////////////////////// -------------------------- LOGIN --------------------------------------------- ///////////////////////*/
-div.modal_login{
-    width: 30%;
-    padding: 3rem;
-    background-color: var(--blue)!important;
-}
-  /* color para el modal login que es azul */
-  div.modal_login div.modal_header a.close_modal{ 
-    color: var(--white)!important;
-  }
-@media only screen and (max-width: 1120px) {
-    div.modal_login{
-      width: 40%;
-    }
-}
-@media only screen and (max-width: 768px) {
-    div.modal_login{
-        width: 50%;
-    }
-}
-@media only screen and (max-width: 568px) {
-    div.modal_login{
-        width: 80%;
-    }
-}
-@media only screen and (max-width: 420px) {
-    div.modal_login{
-        width: 95%;
-    }
-}
-div.modal_login h2{
-    text-align: center;
-    color: var(--white);
-}
-div.modal_login form .field label{
-    color: var(--white);
-}
-div.modal_login form .field input{
-   border: 2px solid var(--white);
-   color: var(--white);
-}
-div.modal_login p.register{
-    color: var(--white);
-}
-div.modal_login p.register a{
-    color: var(--yellow);
-    font-weight: bold;
 }

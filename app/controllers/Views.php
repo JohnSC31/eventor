@@ -43,9 +43,16 @@
             $this->loadView('pages/home', $data); // se carga la vista necesaria
         }
 
+        // CARGA DE INICIO DE SESION
+        public function login(){
+            $data = $this->getPageData('login','Inicio de Sesión');
+            $this->loadView('pages/login', $data); // se carga la vista necesaria
+        }
+
+
         // CARGA DE REGISTRO
         public function signup(){
-            $data = $this->getPageData('signup','Registro dE usuario');
+            $data = $this->getPageData('signup','Registro de usuario');
             $this->loadView('pages/signup', $data); // se carga la vista necesaria
         }
 
