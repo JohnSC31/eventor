@@ -4,7 +4,7 @@
 
 
     <div class="form-container">
-        <form id="login_form" method="post" enctype="multipart/form-data">
+        <form id="login-form" method="post" enctype="multipart/form-data">
             <div class="field">
                 <input type="email" name="correo electronico" id="email" placeholder="Correo">
             </div>
@@ -12,7 +12,7 @@
                 <input type="password" name="contraseña" id="pass" placeholder="Contraseña">
             </div>
             <div class="submit col_2">
-                <input type="submit" class="btn btn_black" value="Olvidé contraseña">
+                <a href="<?php echo URL_PATH; ?>recovery" class="btn btn_black">Recuperar contraseña</a>
                 <input type="submit" class="btn btn_red" value="Ingresar">
             </div>
         </form>

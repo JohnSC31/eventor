@@ -558,7 +558,7 @@ section.home-services div.container{
 }
 
 section.home-events div.event-list,
-section.home-services div.event-list{
+section.home-services div.service-list{
     display: flex;
     justify-content: space-between;
     padding: 2rem 0;
@@ -569,14 +569,15 @@ section.home-events ul.event-icon-container{
     display: flex;
     flex-wrap: wrap;
 }
-section.home-services ul.event-icon-container{
+
+section.home-services ul.service-icon-container{
     flex: 0 0 10rem;
     display: flex;
     flex-wrap: wrap;
 }
 
 section.home-events ul.event-icon-container li,
-section.home-services ul.event-icon-container li{
+section.home-services ul.service-icon-container li{
     flex: 0 0 calc(50% - 3rem);
     background-color: var(--grey);
     margin: 0 1rem 1rem 0;
@@ -588,28 +589,38 @@ section.home-services ul.event-icon-container li{
     cursor: pointer;
 }
 
-section.home-services ul.event-icon-container li{
+section.home-services ul.service-icon-container li{
     flex: 0 0 calc(100% - 3rem);
     background-color: var(--green);
     color: var(--white);
 }
-section.home-events ul.event-icon-container li:hover{
+section.home-events ul.event-icon-container li:hover,
+section.home-events ul.event-icon-container li.active{
     background-color: var(--red);
     color: var(--grey);
 }
-section.home-services ul.event-icon-container li:hover{
+
+section.home-services ul.service-icon-container li:hover,
+section.home-services ul.service-icon-container li.active{
     background-color: var(--red);
     color: var(--green);
 }
+
 /* detalle de evento */
 section.home-events div.event-detail-container,
-section.home-services div.event-detail-container{
+section.home-services div.service-detail-container{
     flex: 0 0 75%;
 }
-section.home-events div.event-detail
-section.home-services div.event-detail{
+section.home-events div.event-detail-container div.event-detail,
+section.home-services div.service-detail{
     text-align: center;
     padding: 1rem 5rem;
+    display: none;
+}
+
+section.home-events div.event-detail-container div.event-detail:first-of-type,
+section.home-services div.service-detail:first-of-type{
+    display: block;
 }
 
 /* SECCION DE SERVICIOS */
@@ -727,6 +738,28 @@ body#signup div.form-container{
     padding: 2rem;
     margin-top: 2rem;
 }
+/*////////////////////// -------------------------- RECOVERY / RECUPERARCION CONTRASENA --------------------------------------------- ///////////////////////*/
+body#recovery main{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+body#recovery div.recovery-container{
+    text-align: center;
+    color: var(--green);
+}
+
+body#recovery div.recovery-container div.form-container{
+   background-color: var(--green);
+   border-radius: var(--radius);
+   padding: 1rem;
+}
+
+body#recovery div.form-container form input[type]:not([type=submit]){
+    color: var(--white);
+ }
+
+
 
 /*////////////////////// -------------------------- PROFILE / PERFIL --------------------------------------------- ///////////////////////*/
 body#profile h1{

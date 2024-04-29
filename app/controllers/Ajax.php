@@ -4,7 +4,8 @@
 	    die('Invalid Request');
     }
 
-    require_once 'Db.php';
+    require_once '../config.php';
+    require_once '../lib/Db.php';
 
 
     class Ajax {
@@ -43,6 +44,16 @@
         // Metodo de prueba
         private function foo($data){
             $this->ajaxRequestResult(true, $data['message']);
+        }
+
+        // SIGNUP 
+        private function clientSignup($client){
+            $this->ajaxRequestResult(true, $client['clientName']);
+        }
+
+        // LOGIN 
+        private function clientLogin($client){
+            $this->ajaxRequestResult(true, $client['email']);
         }
 
 

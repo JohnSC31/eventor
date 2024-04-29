@@ -21,7 +21,7 @@
                         </select>
                     </div>
                     <div class="field">
-                        <select name="cantones" id="select-cantons" required>
+                        <select name="cantones" id="select-canton" required>
                             <!-- se cargan los cantones de la base de datos -->
                             <option value="0" selected >Cantón</option>
                         </select>
@@ -44,7 +44,7 @@
                 </div>
             </div><!-- .form-input-container -->
             <div class="submit col_2">
-            <a href="<?php echo URL_PATH; ?>login" class="btn btn_black">Iniciar Sesión</a>
+                <a href="<?php echo URL_PATH; ?>login" class="btn btn_black">Iniciar Sesión</a>
                 <input type="submit" class="btn btn_red" value="Registrarme">
             </div>
         </form>

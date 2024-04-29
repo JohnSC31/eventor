@@ -49,6 +49,12 @@
             $this->loadView('pages/login', $data); // se carga la vista necesaria
         }
 
+        // CARGA DE RECUPERAR CONTRASEÑA
+        public function recovery(){
+            $data = $this->getPageData('recovery','Recuperar contraseña');
+            $this->loadView('pages/recovery', $data); // se carga la vista necesaria
+        }
+
 
         // CARGA DE REGISTRO
         public function signup(){
