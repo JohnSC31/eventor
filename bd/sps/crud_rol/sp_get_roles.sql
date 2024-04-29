@@ -1,0 +1,7 @@
+DROP PROCEDURE IF EXISTS sp_get_roles;
+DELIMITER $$
+CREATE PROCEDURE sp_get_roles()
+BEGIN
+	SELECT id, rol FROM rol ORDER BY id;
+END$$
+DELIMITER ;

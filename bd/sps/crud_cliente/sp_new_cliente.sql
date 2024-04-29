@@ -1,6 +1,6 @@
 DROP PROCEDURE IF EXISTS sp_new_cliente;
 DELIMITER $$
-CREATE PROCEDURE sp_new_cliente(pCanton VARCHAR(20), pBusinessName VARCHAR(30), pDetail VARCHAR(255), pName VARCHAR(30), 
+CREATE PROCEDURE sp_new_cliente(pCantonID TINYINT, pBusinessName VARCHAR(30), pDetail VARCHAR(255), pName VARCHAR(30), 
                                 pPhone VARCHAR(8), pEmail VARCHAR(40), pPassword VARCHAR(30))
 BEGIN
 	DECLARE LARGE_DETAIL INT DEFAULT(53000);
@@ -12,7 +12,6 @@ BEGIN
     DECLARE SHORT_PASSWORD INT DEFAULT(53006);
     DECLARE LARGE_PASSWORD INT DEFAULT(53007);
     DECLARE INVALID_PASSWORD INT DEFAULT(53008);
-    DECLARE cantonID TINYINT DEFAULT 0;
     DECLARE empresaID INT DEFAULT 0;
 
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
@@ -48,8 +47,6 @@ BEGIN
         
         RESIGNAL SET MESSAGE_TEXT = @message;
 	END;
-
-    SELECT id INTO cantonID FROM canton WHERE nombre = pCanton;
 
     IF LENGTH(pDetail) > 255 THEN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = LARGE_DETAIL;
@@ -93,7 +90,7 @@ BEGIN
 
 	START TRANSACTION;
         IF (empresaID IS NULL) THEN 
-            INSERT INTO empresa (id_canton, nombre, detalle) VALUES (cantonID, pBusinessName, pDetail);
+            INSERT INTO empresa (id_canton, nombre, detalle) VALUES (pCantonID, pBusinessName, pDetail);
             SELECT LAST_INSERT_ID() INTO empresaID;
         END IF;
 

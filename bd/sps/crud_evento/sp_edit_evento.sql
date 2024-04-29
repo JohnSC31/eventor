@@ -1,8 +1,10 @@
-DROP PROCEDURE IF EXISTS sp_edit_cliente;
+DROP PROCEDURE IF EXISTS sp_edit_evento;
 DELIMITER $$
-CREATE PROCEDURE sp_edit_cliente(pClienteID INT, pCantonID TINYINT, pBusinessName VARCHAR(30), pDetail VARCHAR(255), pName VARCHAR(30), 
+CREATE PROCEDURE sp_edit_evento(pActualEmail VARCHAR(40), pCanton VARCHAR(20), pBusinessName VARCHAR(30), pDetail VARCHAR(255), pName VARCHAR(30), 
                                  pPhone VARCHAR(8), pEmail VARCHAR(40), pPassword VARCHAR(30))
 BEGIN
+    DECLARE INVALID_CLIENT INT DEFAULT(53000);
+    DECLARE NON_EXISTANT_CLIENT INT DEFAULT(53001);
 	DECLARE LARGE_DETAIL INT DEFAULT(53002);
     DECLARE LARGE_BUSINESS_NAME INT DEFAULT(53003);
     DECLARE LARGE_NAME INT DEFAULT(53004);
@@ -12,7 +14,9 @@ BEGIN
     DECLARE SHORT_PASSWORD INT DEFAULT(53008);
     DECLARE LARGE_PASSWORD INT DEFAULT(53009);
     DECLARE INVALID_PASSWORD INT DEFAULT(53010);
+    DECLARE cantonID TINYINT DEFAULT 0;
     DECLARE empresaID INT DEFAULT 0;
+    DECLARE clienteID INT DEFAULT 0;
 
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
@@ -23,20 +27,24 @@ BEGIN
         ELSE
             CASE
                 WHEN @err_no = 53000 THEN
-                    SET @message = CONCAT('Error: El detalle es muy largo');
+                    SET @message = CONCAT('Error: El cliente no es válido');
                 WHEN @err_no = 53001 THEN
-                    SET @message = CONCAT("Error: El nombre de la empresa es muy largo");
+                    SET @message = CONCAT('Error: El cliente no existe');
                 WHEN @err_no = 53002 THEN
-                    SET @message = CONCAT('Error: El nombre es muy largo');
+                    SET @message = CONCAT('Error: El detalle es muy largo');
                 WHEN @err_no = 53003 THEN
-                    SET @message = CONCAT('Error: El número de teléfono no es válido');
+                    SET @message = CONCAT("Error: El nombre de la empresa es muy largo");
                 WHEN @err_no = 53004 THEN
-                    SET @message = CONCAT('Error: El correo no es válido');
+                    SET @message = CONCAT('Error: El nombre es muy largo');
                 WHEN @err_no = 53005 THEN
-                    SET @message = CONCAT('Error: El correo es muy largo');
+                    SET @message = CONCAT('Error: El número de teléfono no es válido');
                 WHEN @err_no = 53006 THEN
-                    SET @message = CONCAT('Error: La contraseña es muy corta');
+                    SET @message = CONCAT('Error: El correo no es válido');
                 WHEN @err_no = 53007 THEN
+                    SET @message = CONCAT('Error: El correo es muy largo');
+                WHEN @err_no = 53008 THEN
+                    SET @message = CONCAT('Error: La contraseña es muy corta');
+                WHEN @err_no = 53009 THEN
                     SET @message = CONCAT('Error: La contraseña es muy larga');
                 WHEN @err_no = 53010 THEN
                     SET @message = CONCAT('Error: La contraseña tiene que tener al menos una miníscula, una mayúscula y un número');
@@ -48,7 +56,19 @@ BEGIN
         RESIGNAL SET MESSAGE_TEXT = @message;
 	END;
 
+    SELECT id INTO cantonID FROM canton WHERE nombre = pCanton;
+
     SELECT id INTO empresaID FROM empresa WHERE nombre = pBusinessName;
+
+    SELECT id INTO clienteID FROM cliente WHERE correo = pActualEmail;
+
+    IF (clienteID IS NULL) THEN
+		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = INVALID_CLIENT;
+    END IF;
+
+    IF (clienteID=0) THEN
+		SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = NON_EXISTANT_CLIENT;
+    END IF;
 
     IF LENGTH(pDetail) > 255 THEN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = LARGE_DETAIL;
@@ -90,11 +110,11 @@ BEGIN
 
 	START TRANSACTION;
 		IF (empresaID IS NULL) THEN 
-            INSERT INTO empresa (id_canton, nombre, detalle) VALUES (pCantonID, pBusinessName, pDetail);
+            INSERT INTO empresa (id_canton, nombre, detalle) VALUES (cantonID, pBusinessName, pDetail);
             SELECT LAST_INSERT_ID() INTO empresaID;
         END IF;
 
-        UPDATE cliente SET id_empresa = empresaID, nombre = pName, telefono = pPhone, correo = pEmail, clave = SHA2(pPassword, 256) WHERE id = pClienteID;
+        UPDATE cliente SET id_empresa = empresaID, nombre = pName, telefono = pPhone, correo = pEmail, clave = SHA2(pPassword, 256) WHERE id = clienteID;
     COMMIT;
 END$$
 DELIMITER ;
