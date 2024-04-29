@@ -56,6 +56,24 @@
             $this->loadView('pages/signup', $data); // se carga la vista necesaria
         }
 
+        // CARGA DE PERFIL
+        public function profile(){
+            $data = $this->getPageData('profile','Perfil de usuario');
+            $this->loadView('pages/profile', $data); // se carga la vista necesaria
+        }
+
+        // CARGA DE DETALLE DE EVENTO
+        public function event(){
+            $data = $this->getPageData('event','Detalle de evento');
+            $this->loadView('pages/event', $data); // se carga la vista necesaria
+        }
+
+        // CARGA DE SOLICITAR EVENTO
+        public function request(){
+            $data = $this->getPageData('request','Solicitar evento');
+            $this->loadView('pages/request', $data); // se carga la vista necesaria
+        }
+
 
     }
 

@@ -106,6 +106,7 @@ textarea {
     --grey: #EFF1ED;
     /* COLORES APOYO */
     --white: #ffffff;
+    --darkGreen: #133439;
 
     /* radius objects */
     --radius: 2rem;
@@ -243,6 +244,10 @@ p,a{
     border: 2px solid;
     transition: all .2s ease;
     border-color: transparent;
+    /* sombra */
+    box-shadow: 10px 10px 14px -6px rgba(0,0,0,0.51);
+-webkit-box-shadow: 10px 10px 14px -6px rgba(0,0,0,0.51);
+-moz-box-shadow: 10px 10px 14px -6px rgba(0,0,0,0.51);
 }
 
 /* RED BUTTOM */
@@ -723,25 +728,185 @@ body#signup div.form-container{
     margin-top: 2rem;
 }
 
-/*////////////////////// -------------------------- SIGNUP/ REGISTRO --------------------------------------------- ///////////////////////*/
-/*  -----------RESPONSIVE SIGNUP FORM----------------*/
-@media only screen and (max-width: 1120px) {
-    div.signup_form{
-      width: 40%;
-    }
+/*////////////////////// -------------------------- PROFILE / PERFIL --------------------------------------------- ///////////////////////*/
+body#profile h1{
+    color: var(--green);
 }
-@media only screen and (max-width: 768px) {
-    div.signup_form{
-        width: 50%;
-    }
+
+body#profile div.client-profile{
+    margin: 5rem 0;
+    background-color: var(--green);
+    border-radius: var(--radius);
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    color: var(--white);
 }
-@media only screen and (max-width: 568px) {
-    div.signup_form{
-        width: 80%;
-    }
+
+body#profile div.client-profile div.client-pic{
+    font-size: 10rem;
+    padding: 0 5rem;
 }
-@media only screen and (max-width: 420px) {
-    div.signup_form{
-        width: 95%;
-    }
+
+body#profile div.client-profile div.client-info p{
+    padding: .5rem 0;
 }
+
+body#profile div.client-events-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    color: var(--green);
+}
+
+body#profile nav.client-events-nav ul{
+    display: flex;
+    background-color: var(--green);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+body#profile nav.client-events-nav li{
+    flex: 0 0 33.3%;
+    padding: 1rem 0;
+    color: var(--white);
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.8rem;
+
+}
+
+body#profile nav.client-events-nav li:hover{
+    background-color: var(--darkGreen);
+    cursor: pointer;
+}
+
+body#profile div.client-events-list{
+    padding: 2rem 0;
+}
+
+body#profile div.client-events-list div.event-item{
+    background-color: var(--grey);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    border: 2px solid transparent
+}
+
+body#profile div.client-events-list div.event-item:hover{
+    transition: all .5s ease;
+    border-color: var(--black);
+    cursor: pointer;
+}
+body#profile div.client-events-list div.event-item-content{
+    display: flex;
+}
+
+body#profile div.client-events-list div.event-item-content div.event-icon-container{
+    background-color: var(--white);
+    padding: 1rem;
+    border-radius: var(--radius);
+    font-size: 7rem;
+    color: var(--red);
+    margin-right: 1rem;
+}
+
+body#profile div.event-item div.event-item-content div.event-summary{
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+body#profile div.event-item div.event-item-content div.event-item-header{
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+body#profile div.event-item div.event-item-content p.status{
+    color: var(--green);
+}
+
+/*////////////////////// -------------------------- REQUEST / SOLICITUD --------------------------------------------- ///////////////////////*/
+body#request h1{
+    color: var(--green);
+}
+body#request div.request-form-container{
+    padding: 3rem 0;
+}
+
+body#request form input[type]:not([type=submit]),
+body#request form select,
+body#request form textarea{
+    background-color: var(--grey);
+}
+
+body#request form div.form-service-container label{
+    font-size: 1.8rem;
+}
+
+body#request form div.form-service-container i{
+    color: var(--red);
+    margin-right: 1rem;
+}
+
+/*////////////////////// -------------------------- EVENT / EVENTO --------------------------------------------- ///////////////////////*/
+body#event h1{
+    color: var(--green);
+}
+
+body#event div.event-detail-container{
+    background-color: var(--grey);
+    padding: 3rem;
+    border-radius: var(--radius);
+    margin-top: 2rem;
+}
+
+body#event div.event-detail-container div.event-sumary-container{
+    display: flex;
+}
+
+body#event div.event-detail-container div.event-icon{
+    background-color: var(--white);
+    border-radius: var(--radius);
+    padding: 1rem 3rem;
+    color: var(--red);
+    font-size: 5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+body#event div.event-detail-container div.event-summary{
+    flex-grow: 1;
+    padding-left: 1rem;
+}
+
+body#event div.event-detail-container div.event-summary-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+body#event div.event-detail-container div.event-summary-header p.status{
+    color: var(--green);
+    font-weight: bold;
+}
+
+body#event div.event-detail-container div.event-details-container{
+    display: flex;
+    padding-top: 2rem;
+}
+body#event div.event-detail-container div.event-details-container > div{
+    flex: 0 0 33.3%;
+    padding: 0 1rem;
+    text-align: center;
+}
+
+body#event div.event-detail-container div.event-details-container p.subtitule{
+    flex: 0 0 33.3%;
+    padding: 0 1rem;
+    text-align: center;
+}
+

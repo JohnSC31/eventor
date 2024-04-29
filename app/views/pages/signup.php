@@ -4,7 +4,7 @@
 
 
     <div class="form-container">
-        <form id="login_form" method="post" enctype="multipart/form-data">
+        <form id="signup-form" method="post" enctype="multipart/form-data">
             <div class="col_2 form-input-container">
 
                 <div class="col">
