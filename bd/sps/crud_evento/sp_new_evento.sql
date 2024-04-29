@@ -10,7 +10,6 @@ BEGIN
     DECLARE INVALID_DURATION INT DEFAULT(53003);
     DECLARE INVALID_CAPACITY INT DEFAULT(53004);
     DECLARE precioTotal DECIMAL(10,2) DEFAULT 0.0;
-    DECLARE eventoID INT DEFAULT 0;
 
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
@@ -46,8 +45,8 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = INVALID_DATETIME;
     END IF;
 
-    IF LENGTH(pDetail) > 255 THEN
-        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = LARGE_DETAIL;
+    IF LENGTH(pDetails) > 255 THEN
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = LARGE_DETAILS;
     END IF;
 
     IF (pDuration < 0 OR pDuration > 255) THEN
@@ -58,19 +57,16 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = INVALID_CAPACITY;
     END IF;
 
-
     SELECT m.precio+te.precio INTO precioTotal FROM modalidad AS m
     JOIN tipo_evento AS te ON te.id = pTypeID
-    WHERE m.id = pModalidadID
+    WHERE m.id = pModalidadID;
 
 	SET autocommit = 0;
 
 	START TRANSACTION;
         INSERT INTO evento (id_cliente, id_modalidad, id_canton, id_tipo_evento, id_estado, nombre, fecha_hora, detalles, duracion, cupos, direccion, precio_total) 
         VALUES (pClienteID, pModalidadID, pCantonID, pTypeID, 1, pName, pDateTime, pDetails, pDuration, pCapacity, pLocation, precioTotal);
-        SELECT LAST_INSERT_ID() INTO eventoID;
-
-        INSERT INTO servicio (id_evento, id_servicio) VALUES (eventoID, )
+        SELECT LAST_INSERT_ID();
     COMMIT;
 END$$
 DELIMITER ;

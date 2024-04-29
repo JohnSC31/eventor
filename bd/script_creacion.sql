@@ -36,25 +36,17 @@ CREATE TABLE canton(
     UNIQUE (nombre)
 );
 
-CREATE TABLE empresa(
-	id INT AUTO_INCREMENT,
-    id_canton TINYINT NOT NULL,
-    nombre VARCHAR(30) NOT NULL,
-    detalle VARCHAR(255) NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (id_canton) REFERENCES canton(id),
-    UNIQUE (nombre)
-);
-
 CREATE TABLE cliente(
 	id INT AUTO_INCREMENT,
-    id_empresa INT NOT NULL,
+    id_canton TINYINT NOT NULL,
+    nombreEmpresa VARCHAR(30) NOT NULL,
+    detalleEmpresa VARCHAR(255) NOT NULL,
     nombre VARCHAR(30) NOT NULL,
     telefono VARCHAR(8) NOT NULL,
     correo VARCHAR(40) NOT NULL,
     clave VARCHAR(30) NOT NULL,
     PRIMARY KEY (id),
-    FOREIGN KEY (id_empresa) REFERENCES empresa(id),
+    FOREIGN KEY (id_canton) REFERENCES canton(id),
     UNIQUE (correo)
 );
 

@@ -12,7 +12,6 @@ BEGIN
     DECLARE SHORT_PASSWORD INT DEFAULT(53008);
     DECLARE LARGE_PASSWORD INT DEFAULT(53009);
     DECLARE INVALID_PASSWORD INT DEFAULT(53010);
-    DECLARE empresaID INT DEFAULT 0;
 
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
@@ -47,8 +46,6 @@ BEGIN
         
         RESIGNAL SET MESSAGE_TEXT = @message;
 	END;
-
-    SELECT id INTO empresaID FROM empresa WHERE nombre = pBusinessName;
 
     IF LENGTH(pDetail) > 255 THEN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = LARGE_DETAIL;
@@ -89,12 +86,8 @@ BEGIN
 	SET autocommit = 0;
 
 	START TRANSACTION;
-		IF (empresaID IS NULL) THEN 
-            INSERT INTO empresa (id_canton, nombre, detalle) VALUES (pCantonID, pBusinessName, pDetail);
-            SELECT LAST_INSERT_ID() INTO empresaID;
-        END IF;
-
-        UPDATE cliente SET id_empresa = empresaID, nombre = pName, telefono = pPhone, correo = pEmail, clave = SHA2(pPassword, 256) WHERE id = pClienteID;
+		UPDATE cliente SET id_canton = pCantonID, nombreEmpresa = pBusinessName, detalleEmpresa = pDetail, nombre = pName, 
+        telefono = pPhone, correo = pEmail, clave = SHA2(pPassword, 256) WHERE id = pClienteID;
     COMMIT;
 END$$
 DELIMITER ;

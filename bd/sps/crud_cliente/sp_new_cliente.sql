@@ -12,7 +12,6 @@ BEGIN
     DECLARE SHORT_PASSWORD INT DEFAULT(53006);
     DECLARE LARGE_PASSWORD INT DEFAULT(53007);
     DECLARE INVALID_PASSWORD INT DEFAULT(53008);
-    DECLARE empresaID INT DEFAULT 0;
 
 	DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
@@ -84,17 +83,11 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = INVALID_PASSWORD;
     END IF;
 
-    SELECT id INTO empresaID FROM empresa WHERE nombre = pBusinessName;
-
 	SET autocommit = 0;
 
 	START TRANSACTION;
-        IF (empresaID IS NULL) THEN 
-            INSERT INTO empresa (id_canton, nombre, detalle) VALUES (pCantonID, pBusinessName, pDetail);
-            SELECT LAST_INSERT_ID() INTO empresaID;
-        END IF;
-
-        INSERT INTO cliente (id_empresa, nombre, telefono, correo, clave) VALUES (empresaID, pName, pPhone, pEmail, SHA2(pPassword, 256));
+        INSERT INTO cliente (id_canton, nombreEmpresa, detalleEmpresa, nombre, telefono, correo, clave) 
+        VALUES (pCantonID, pBusinessName, pDetail, pName, pPhone, pEmail, SHA2(pPassword, 256));
     COMMIT;
 END$$
 DELIMITER ;
