@@ -1,11 +1,11 @@
-DROP PROCEDURE IF EXISTS sp_new_servicio_evento;
+DROP PROCEDURE IF EXISTS sp_set_estado_evento;
 DELIMITER $$
-CREATE PROCEDURE sp_new_servicio_evento(pEventoID INT, pServicioID TINYINT, OUT errorMessage VARCHAR(255))
+CREATE PROCEDURE sp_set_estado_evento(pEventoID INT, pEstadoID TINYINT, OUT errorMessage VARCHAR(255))
 BEGIN
 	DECLARE NON_EXISTENT_EVENT INT DEFAULT(53000);
-    DECLARE NON_EXISTENT_SERVICE INT DEFAULT(53001);
+	DECLARE NON_EXISTENT_STATE INT DEFAULT(53001);
     DECLARE eventExists TINYINT DEFAULT 0;
-    DECLARE serviceExists TINYINT DEFAULT 0;
+	DECLARE stateExists TINYINT DEFAULT 0;
     
     DECLARE EXIT HANDLER FOR SQLEXCEPTION
 	BEGIN
@@ -17,8 +17,8 @@ BEGIN
             CASE
                 WHEN @err_no = 53000 THEN
                     SET errorMessage = CONCAT('Error: El evento no existe');
-                WHEN @err_no = 53001 THEN
-                    SET errorMessage = CONCAT('Error: El servicio no existe');
+				WHEN @err_no = 53001 THEN
+                    SET errorMessage = CONCAT('Error: El estado no existe');
             END CASE;
         END IF;
         
@@ -30,17 +30,15 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = NON_EXISTENT_EVENT;
     END IF;
 
-    SELECT COUNT(id) INTO serviceExists FROM servicio WHERE id = pServicioID;
-    IF (serviceExists = 0) THEN
-        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = NON_EXISTENT_SERVICE;
+	SELECT COUNT(id) INTO stateExists FROM estado_evento WHERE id = pEstadoID;
+    IF (stateExists = 0) THEN
+        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = NON_EXISTENT_STATE;
     END IF;
 
 	SET autocommit = 0;
 
 	START TRANSACTION;
-        INSERT INTO servicios_x_evento (id_evento, id_servicio) VALUES (pEventoID, pServicioID);
-
-        UPDATE evento SET precio_total = precio_total + (SELECT precio FROM servicio WHERE id = pServicioID);
+		UPDATE evento SET id_estado = pEstadoID WHERE id = pEventoID;
     COMMIT;
 END$$
 DELIMITER ;

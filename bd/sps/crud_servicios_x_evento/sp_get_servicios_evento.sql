@@ -1,6 +1,6 @@
-DROP PROCEDURE IF EXISTS sp_delete_evento;
+DROP PROCEDURE IF EXISTS sp_get_servicios_evento;
 DELIMITER $$
-CREATE PROCEDURE sp_delete_evento(pEventoID INT, OUT errorMessage VARCHAR(255))
+CREATE PROCEDURE sp_get_servicios_evento(pEventoID INT, OUT errorMessage VARCHAR(255))
 BEGIN
 	DECLARE NON_EXISTENT_EVENT INT DEFAULT(53000);
     DECLARE eventExists TINYINT DEFAULT 0;
@@ -26,11 +26,8 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = NON_EXISTENT_EVENT;
     END IF;
 	
-	SET autocommit = 0;
-
-	START TRANSACTION;
-		DELETE FROM servicios_x_evento WHERE id_evento = pEventoID;
-        DELETE FROM evento WHERE id = pEventoID;
-    COMMIT;
+	SELECT s.id, s.servicio, s.precio, s.icono, s.descripcion FROM servicio AS s
+	JOIN servicios_x_evento AS sxe ON sxe.id_servicio = s.id
+	WHERE sxe.id_evento = pEventoID;
 END$$
 DELIMITER ;

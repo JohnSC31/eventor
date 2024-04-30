@@ -41,7 +41,6 @@ CREATE TABLE cliente(
     id_canton TINYINT NOT NULL,
     nombreEmpresa VARCHAR(30) NOT NULL,
     detalleEmpresa VARCHAR(255) NOT NULL,
-    nombre VARCHAR(30) NOT NULL,
     telefono VARCHAR(8) NOT NULL,
     correo VARCHAR(40) NOT NULL,
     clave VARCHAR(30) NOT NULL,
@@ -70,6 +69,7 @@ CREATE TABLE tipo_evento(
     tipo_evento VARCHAR(25) NOT NULL,
     icono VARCHAR(50) DEFAULT NULL,
     precio DECIMAL(7,2) NOT NULL,
+    descripcion VARCHAR(255),
     PRIMARY KEY (id),
     UNIQUE (tipo_evento)
 );
@@ -79,6 +79,7 @@ CREATE TABLE servicio(
     servicio VARCHAR(15) NOT NULL,
     icono VARCHAR(50) DEFAULT NULL,
     precio DECIMAL(7,2) NOT NULL,
+    descripcion VARCHAR(255),
     PRIMARY KEY (id),
     UNIQUE (servicio)
 );
