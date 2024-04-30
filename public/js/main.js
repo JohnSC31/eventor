@@ -1,4 +1,6 @@
 // VARIABLES GLOBALES
+const URL_PATH = $('body').attr('data-url').replace(/[\\]/gi,'/');
+const AJAX_URL = URL_PATH + 'app/controllers/Ajax.php';
 
 (function () {
     "use strict";
@@ -6,11 +8,15 @@
     document.addEventListener('DOMContentLoaded', function (){
       // Despues de cargar todo el DOM se ejecuta el codigo
 
-      // HOME funcionalidad
-      // cambiar de tipos de eventos
-      $("body").on("click", "[change-event]", changeEvent);
-      // camviar servicios
-      $("body").on("click", "[change-service]", changeService);
+      // HOME
+      if($("body").attr('id') === 'home'){
+        loadHomeEventsList();
+        // cambiar de tipos de eventos
+        $("body").on("click", "[change-event]", changeEvent);
+        // camviar servicios
+        $("body").on("click", "[change-service]", changeService);
+      }
+
 
       //SIGNUP FORM
       $("body").on("submit", "form#signup-form", clientSignupForm);
@@ -146,6 +152,15 @@ function validEmail(input_value){
 
 
 // ///////////////// **********************  HOME  ********************* /////////////////////
+
+function loadHomeEventsList(){
+
+  const eventsFormData = new FormData();
+  eventsFormData.append('ajaxMethod', "loadHomeEventsList");
+
+  ajaxHTMLRequest(eventsFormData, "div#event-list-container");
+}
+
 function changeEvent(e){
   e.preventDefault();
   const showEventId = $(this).attr('change-event');
@@ -218,7 +233,7 @@ async function clientSignupForm(e){
 
   if(result.Success){
     setTimeout(()=>{
-      // window.location.href = URL_PATH + 'home';
+      window.location.href = URL_PATH + 'home';
     }, 1500)
   }
 
@@ -241,7 +256,7 @@ async function clientLoginForm(e){
   loginFormData.append('ajaxMethod', "clientLogin");  
 
   result = await ajaxRequest(loginFormData);
-  showNotification(result.Message, result.Success, false);
+  showNotification(result.Message, result.Success, true);
 
   if(result.Success){
     setTimeout(()=>{

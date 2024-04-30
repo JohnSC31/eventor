@@ -14,43 +14,9 @@
 <section class="home-events">
     <div class="container">
         <h2>Eventos</h2>
-        <div class="event-list">
-            <ul class="event-icon-container">
-                <li change-event="1" class="active"><i class="fa-solid fa-utensils"></i></li>
-                <li change-event="2" class=""><i class="fa-solid fa-people-group"></i></li>
-                <li change-event="3" class=""><i class="fa-solid fa-person-running"></i></li>
-                <li change-event="4" class=""><i class="fa-solid fa-chalkboard-user"></i></li>
-            </ul>
-            <div class="event-detail-container">
-                <div class="event-detail" id="type-event-1">
-                    <h3>Cenas</h3>
-                    <p>Estrecha relaciones con tus clientes o mejora el ambiente de tu empresa con una cena de calidad 
-                        sin preocuparte por los detalles.
-                    </p>
-                </div>
-                
-                <div class="event-detail" id="type-event-2">
-                    <h3>Reuniones</h3>
-                    <p>Estrecha relaciones con tus clientes o mejora el ambiente de tu empresa con una cena de calidad 
-                        sin preocuparte por los detalles.
-                    </p>
-                </div> 
-
-                <div class="event-detail" id="type-event-3">
-                    <h3>Actividades deportivas</h3>
-                    <p>Estrecha relaciones con tus clientes o mejora el ambiente de tu empresa con una cena de calidad 
-                        sin preocuparte por los detalles.
-                    </p>
-                </div> 
-
-                <div class="event-detail" id="type-event-4">
-                    <h3>Capacitaciones</h3>
-                    <p>Estrecha relaciones con tus clientes o mejora el ambiente de tu empresa con una cena de calidad 
-                        sin preocuparte por los detalles.
-                    </p>
-                </div> 
-            </div>
-        </div>
+        <div class="event-list" id="event-list-container">
+            <!-- Se cargan los eventos del backend -->
+        </div><!-- #event-list-container -->
     </div>
     
 </section>

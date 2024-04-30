@@ -69,7 +69,8 @@
         //obtenemos un registro de la base de datos
         public function result(){
             $this->execute();
-            return get_object_vars($this->stmt->fetch(PDO::FETCH_OBJ));
+            $result = $this->stmt->fetch(PDO::FETCH_OBJ);
+            return $result ? get_object_vars($result) : $result;
         }
 
         //obtenemos cantidad de filas de una consulta
