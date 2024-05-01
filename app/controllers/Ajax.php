@@ -219,31 +219,6 @@
 
         // ------------------- METODOS DE CARGA DE HTML ----------------------------
 
-        // CARGAR LA LISTA DE PROVINCIAS
-        private function loadProvincias($data){
-            $this->db->query("CALL sp_get_provincias()");
-            $provincias = $this->db->results();
-
-            // HTML
-        }
-
-        // CARGAR LISTA DE CANTONES DE UNA PROVINCIA
-        private function loadCantonesProvincia($data){
-            $this->db->query("CALL sp_get_cantones_provincia(?, @variableMsgError)");
-            $this->db->bind(1, $data['idProvincia']);
-            
-            $cantones = $this->db->results();
-            
-            if(!$cantones){
-                $this->db->query("SELECT @variableMsgError");
-                $varMsgError = $this->db->result();
-                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
-            }
-            else{
-                // HTML
-            }
-        }
-
         // CARGAR LA LISTA DE EVENTOS
         private function loadHomeEventsList($data){
             $this->db->query("CALL sp_get_tipos_evento()");
