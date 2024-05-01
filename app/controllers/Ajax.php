@@ -250,18 +250,42 @@
         // CARGAR LISTA DE EVENTOS DE UN CLIENTE POR ESTADO
         private function loadClientEventsByState($data){
             $this->db->query("CALL sp_get_eventos_cliente_estado(?, ?, @variableMsgError)");
-            $this->db->bind(1, $data['idCliente']);
-            $this->db->bind(2, $data['idEstado']);
+            $this->db->bind(1, $data['idClient']);
+            $this->db->bind(2, $data['idStatus']);
             
-            $eventos = $this->db->results();
+            $events = $this->db->results();
             
-            if(!$eventos){
-                $this->db->query("SELECT @variableMsgError");
-                $varMsgError = $this->db->result();
-                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
-            }
-            else{
-                // HTML
+            if(!$events){
+                // no hay eventos
+                ?>
+                <div class="no-events">
+                    <p>No hay eventos</p>
+                </div>
+                <?php
+            }else{
+                // se cargan los eventos
+                foreach($events as $key => $event){
+                    $event = get_object_vars($event);
+                    ?>
+                    <div class="event-item">
+                        <div class="event-item-content">
+                            <div class="event-icon-container">
+                                <i class="<?php echo $event['icono']; ?>"></i>
+                            </div>
+                            <div class="event-summary">
+                                <div class="event-item-header">
+                                    <p><?php echo $event['tipoEvento']; ?></p>
+                                    <p class="status"><?php echo $event['estadoEvento']; ?></p>
+                                </div>
+                                
+                                <p><i class="fa-solid fa-calendar-days"></i> <?php echo $event['fechayHora']; ?></p>
+                                <p> <i class="fa-solid fa-location-dot"></i> <?php echo $event['provincia'] + "," + $event['canton'] + ", " + $event['direccion']; ?></p>
+                            </div>
+                        </div>
+
+                    </div><!-- .event-item -->
+                    <?php
+                }
             }
         }
 

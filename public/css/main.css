@@ -810,6 +810,7 @@ body#profile nav.client-events-nav li{
 
 }
 
+body#profile nav.client-events-nav li.active,
 body#profile nav.client-events-nav li:hover{
     background-color: var(--darkGreen);
     cursor: pointer;
@@ -859,6 +860,17 @@ body#profile div.event-item div.event-item-content div.event-item-header{
 
 body#profile div.event-item div.event-item-content p.status{
     color: var(--green);
+}
+
+/* No hay eventos */
+body#profile div.client-events-list div.no-events{
+    background-color: var(--grey);
+    border-radius: var(--radius);
+    padding: 3rem 0;
+    border: 1px solid var(--grey);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 /*////////////////////// -------------------------- REQUEST / SOLICITUD --------------------------------------------- ///////////////////////*/

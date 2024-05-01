@@ -32,6 +32,14 @@ const AJAX_URL = URL_PATH + 'app/controllers/Ajax.php';
       
       //LOGIN FORM
       $("body").on("submit", "form#login-form", clientLoginForm);
+
+      // PERFIL
+      if($("body").attr('id') === 'profile'){
+        // Carga los otros eventos
+        loadClientEventsByState(2); //carga eventos activos
+        $("body").on("click", "[events-nav]", clientEventsNavigation);
+      }
+      
         
     }); // end DOMContentLoaded
   
@@ -332,6 +340,29 @@ async function loadCantonsProvince(e){
   }
 
 
+}
+
+// ///////////////// **********************  PROFILE  ********************* /////////////////////
+
+function clientEventsNavigation(e){
+  e.preventDefault();
+  
+  $('nav.client-events-nav li').removeClass('active');
+
+  $(this).addClass('active');
+
+  loadClientEventsByState($(this).attr('status'));
+}
+
+// carga los eventos de este cliente con el estado dado
+function loadClientEventsByState(status){
+
+  const loadEventsFormData = new FormData();
+  loadEventsFormData.append("idStatus", status);
+  loadEventsFormData.append("idClient", $("div#client-events-list").attr('idClient'));
+  loadEventsFormData.append('ajaxMethod', "loadClientEventsByState");
+  
+  ajaxHTMLRequest(loadEventsFormData, "div#client-events-list");
 }
 
 ///////////// ************************ AJAX BACKEND CONN ************************ ///////////////

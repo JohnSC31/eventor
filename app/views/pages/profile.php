@@ -20,33 +20,13 @@
 
         <nav class="client-events-nav">
             <ul>
-                <li>Solicitados</li>
-                <li>Activos</li>
-                <li>Finalizados</li>
+                <li events-nav="requested" status="1">Solicitados</li>
+                <li events-nav="active" class="active" status="2">Activos</li>
+                <li events-nav="ended" status="3">Finalizados</li>
             </ul>
         </nav>
 
-        <div class="client-events-list">
-
-            <div class="event-item">
-
-                <div class="event-item-content">
-                    <div class="event-icon-container">
-                        <i class="fa-solid fa-people-group"></i>
-                    </div>
-                    <div class="event-summary">
-                        <div class="event-item-header">
-                            <p>Tipo de evento</p>
-                            <p class="status">Activo</p>
-                        </div>
-                        
-                        <p><i class="fa-solid fa-calendar-days"></i> Fecha y hora</p>
-                        <p> <i class="fa-solid fa-location-dot"></i> Ubicacion</p>
-                    </div>
-                </div>
-
-            </div><!-- .event-item -->
-
+        <div class="client-events-list" id="client-events-list" idClient="<?php echo $_SESSION['CLIENT']['CID']; ?>">
 
         </div>
         
