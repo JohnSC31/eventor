@@ -8,6 +8,9 @@ const AJAX_URL = URL_PATH + 'app/controllers/Ajax.php';
     document.addEventListener('DOMContentLoaded', function (){
       // Despues de cargar todo el DOM se ejecuta el codigo
 
+      // boton de cerrar sesion
+      $("body").on("click", "[log-out]", clientLogout);
+
       // HOME
       if($("body").attr('id') === 'home'){
         loadHomeEventsList();
@@ -260,12 +263,28 @@ async function clientLoginForm(e){
 
   if(result.Success){
     setTimeout(()=>{
-      // window.location.href = URL_PATH + 'home';
+      window.location.href = URL_PATH + 'home';
     }, 1500)
   }
 
 }
 
+async function clientLogout(e){
+  e.preventDefault();
+
+   // form data
+   const loginFormData = new FormData();
+   loginFormData.append('ajaxMethod', "clientLogout");  
+ 
+   result = await ajaxRequest(loginFormData);
+   showNotification(result.Message, result.Success, true);
+ 
+   if(result.Success){
+     setTimeout(()=>{
+       window.location.href = URL_PATH + 'home';
+     }, 1500)
+   }
+}
 
 
 ///////////// ************************ AJAX BACKEND CONN ************************ ///////////////

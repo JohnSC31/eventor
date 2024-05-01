@@ -44,8 +44,9 @@
                         <li><a href="<?php echo URL_PATH; ?>login" class="btn btn_green"><i class="fa-solid fa-right-to-bracket"></i> <span class="hide_medium"> Iniciar Sesión </span></a></li>
                     <?php } else { ?>
                         <!-- SESION INICIADA -->
-                        <li><a href="<?php echo URL_PATH; ?>profile" class="btn btn_green"><i class="fa-solid fa-user"></i> <span class="hide_medium"> Perfil </span></a></li>
                         <li><a href="<?php echo URL_PATH; ?>request" class="btn btn_red"><i class="fa-solid fa-calendar-days"></i></i> <span class="hide_medium"> Solicitar </span></a></li>
+                        <li><a href="<?php echo URL_PATH; ?>profile" class="btn btn_green"><i class="fa-solid fa-user"></i> <span class="hide_medium"> Perfil </span></a></li>
+                        <li><a href="javascript:void(0);" class="btn btn_black" log-out="true"><i class="fa-solid fa-right-from-bracket"></i></a></li>
 
                     <?php } ?>
                 </ul>

@@ -93,7 +93,17 @@
             } 
         }
 
-        //
+        // LOGOUT DEL CLIENTE
+        private function clientLogout(){
+            unset($_SESSION['CLIENT']); 
+
+            if(!isset($_SESSION['CLIENT'])){
+              
+                $this->ajaxRequestResult(true, "Se ha cerrado sesion");
+            }else{ 
+                $this->ajaxRequestResult(false, "Error al cerrar sesion");
+            }
+        }
 
 
         // ------------------- METODOS DE CARGA DE HTML ----------------------------

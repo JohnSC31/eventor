@@ -34,6 +34,21 @@
             return $data;
         }
 
+        // VALIDAR LA SESION DEL USUARIO PARA EL ACCESO A LA PAGINA
+        // params: bool, string
+        private function validUserSession($userSession, $destiny){
+
+            if($userSession){
+                // valida que el usuario tenga sesion para entrar
+                if(!isset($_SESSION['CLIENT']['SESSION'])) header('Location:'.URL_PATH.$destiny);
+            }else{
+                // valida que el usuario no tenga sesion para entrar
+                if(isset($_SESSION['CLIENT']['SESSION'])) header('Location:'.URL_PATH.$destiny);
+            }
+
+            
+        }
+
 
         // METODOS PARA CARGAR LAS VISTAS
 
@@ -45,37 +60,42 @@
 
         // CARGA DE INICIO DE SESION
         public function login(){
+            $this->validUserSession(false, 'home');
             $data = $this->getPageData('login','Inicio de Sesión');
             $this->loadView('pages/login', $data); // se carga la vista necesaria
         }
 
         // CARGA DE RECUPERAR CONTRASEÑA
         public function recovery(){
+            $this->validUserSession(false, 'home');
             $data = $this->getPageData('recovery','Recuperar contraseña');
             $this->loadView('pages/recovery', $data); // se carga la vista necesaria
         }
 
-
         // CARGA DE REGISTRO
         public function signup(){
+            $this->validUserSession(false, 'home');
             $data = $this->getPageData('signup','Registro de usuario');
             $this->loadView('pages/signup', $data); // se carga la vista necesaria
         }
 
         // CARGA DE PERFIL
         public function profile(){
+            $this->validUserSession(true, 'login');
             $data = $this->getPageData('profile','Perfil de usuario');
             $this->loadView('pages/profile', $data); // se carga la vista necesaria
         }
 
         // CARGA DE DETALLE DE EVENTO
         public function event(){
+            $this->validUserSession(true, 'login');
             $data = $this->getPageData('event','Detalle de evento');
             $this->loadView('pages/event', $data); // se carga la vista necesaria
         }
 
         // CARGA DE SOLICITAR EVENTO
         public function request(){
+            $this->validUserSession(true, 'login');
             $data = $this->getPageData('request','Solicitar evento');
             $this->loadView('pages/request', $data); // se carga la vista necesaria
         }
