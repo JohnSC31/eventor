@@ -110,48 +110,59 @@
 
         // CARGAR LA LISTA DE EVENTOS
         private function loadHomeEventsList($data){
-
             $this->db->query("CALL sp_get_tipos_evento()");
             $eventList = $this->db->results();
 
-            // print_r($eventList);
-
             ?>
             <ul class="event-icon-container">
-                <li change-event="1" class="active"><i class="fa-solid fa-utensils"></i></li>
-                <li change-event="2" class=""><i class="fa-solid fa-people-group"></i></li>
-                <li change-event="3" class=""><i class="fa-solid fa-person-running"></i></li>
-                <li change-event="4" class=""><i class="fa-solid fa-chalkboard-user"></i></li>
+                <?php foreach($eventList as $key => $event){ 
+                    $event = get_object_vars($event); ?>
+                    <li change-event="<?php echo $event['id']; ?>" class="<?php echo get_object_vars($eventList[0]) == $event ? "active" : "";?>"><i class="<?php echo $event['icono']; ?>"></i></li>
+                <?php } ?>
+
             </ul>
             <div class="event-detail-container">
-                <div class="event-detail" id="type-event-1">
-                    <h3>Cenas</h3>
-                    <p>Estrecha relaciones con tus clientes o mejora el ambiente de tu empresa con una cena de calidad 
-                        sin preocuparte por los detalles.
-                    </p>
-                </div>
-                
-                <div class="event-detail" id="type-event-2">
-                    <h3>Reuniones</h3>
-                    <p>Estrecha relaciones con tus clientes o mejora el ambiente de tu empresa con una cena de calidad 
-                        sin preocuparte por los detalles.
-                    </p>
-                </div> 
+                <?php foreach($eventList as $key => $event){
+                    $event = get_object_vars($event); ?>
 
-                <div class="event-detail" id="type-event-3">
-                    <h3>Actividades deportivas</h3>
-                    <p>Estrecha relaciones con tus clientes o mejora el ambiente de tu empresa con una cena de calidad 
-                        sin preocuparte por los detalles.
-                    </p>
-                </div> 
+                    <div class="event-detail" id="type-event-<?php echo $event['id']; ?>">
+                        <h3><?php echo $event['tipo_evento']; ?></h3>
+                        <p><?php echo $event['descripcion']; ?></p>
+                    </div>
+                <?php } ?>
 
-                <div class="event-detail" id="type-event-4">
-                    <h3>Capacitaciones</h3>
-                    <p>Estrecha relaciones con tus clientes o mejora el ambiente de tu empresa con una cena de calidad 
-                        sin preocuparte por los detalles.
-                    </p>
-                </div> 
             </div>
+            <?php
+
+        }
+
+        // CARGAR LA LISTA DE SERVICIOS
+        private function loadHomeServiceList($data){
+            $this->db->query("CALL sp_get_servicios()");
+            $serviceList = $this->db->results();
+            
+            // var_dump($serviceList);
+            ?>
+
+            <div class="service-detail-container">
+                <?php foreach($serviceList as $key => $service){
+                    $service = get_object_vars($service); ?>
+
+                    <div class="service-detail" id="service-<?php echo $service['id']; ?>">
+                        <h3><?php echo $service['servicio']; ?></h3>
+                        <p><?php echo $service['descripcion']; ?></p>
+                    </div>
+                <?php } ?>
+
+            </div>
+
+            <ul class="service-icon-container">
+                <?php foreach($serviceList as $key => $service){ 
+                    $service = get_object_vars($service); ?>
+                    <li change-service="<?php echo $service['id']; ?>" class="<?php echo get_object_vars($serviceList[0]) == $service ? "active" : "";?>"><i class="<?php echo $service['icono']; ?>"></i></li>
+                <?php } ?>
+
+            </ul>
             <?php
 
         }
