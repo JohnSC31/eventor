@@ -91,7 +91,7 @@
                     'SESSION' => TRUE,
                     'CID' => $clientData['id'],
                     'EMAIL' => $clientData['correo'],
-                    'NAME' => $clientData['empresa'],
+                    'COMPANY' => $clientData['empresa'],
                     'DETAIL' => $clientData['detalle'],
                     'PROVINCE' => $clientData['provincia'],
                     'CANTON' => $clientData['canton'],
@@ -294,10 +294,8 @@
         private function loadHomeServiceList($data){
             $this->db->query("CALL sp_get_servicios()");
             $serviceList = $this->db->results();
-            
-            // var_dump($serviceList);
-            ?>
 
+            ?>
             <div class="service-detail-container">
                 <?php foreach($serviceList as $key => $service){
                     $service = get_object_vars($service); ?>
@@ -319,6 +317,45 @@
             </ul>
             <?php
 
+        }
+
+        // CARGA DE LOS SELECT DINAMICOS
+        private function loadSelectOptions($data){
+
+            if($data['idSelect'] == "select-province"){
+                // se cargan las provincias
+                $this->db->query("CALL sp_get_provincias()");
+                $provinces = $this->db->results();
+
+                if(count($provinces) > 0){ ?>
+                    <option value="" selected >Provincias</option>
+                    <?php foreach($provinces as $province) { ?>
+                        <option value="<?php echo $province->id ?>"> <?php echo $province->nombre; ?> </option>
+                    <?php }
+                }else{ ?>
+                    <option value="">No hay provincias</option>
+                <?php }
+
+            }
+
+            if($data['idSelect'] == "select-canton"){
+
+                // se cargan los cantones de una provincia
+                $this->db->query("CALL sp_get_cantones_provincia(?, @variableMsgError)");
+
+                $this->db->bind(1, $data['idProvince']);
+                $cantons = $this->db->results();
+
+                if(count($cantons) > 0){ ?>
+                    <option value="" selected >Cantones</option>
+                    <?php foreach($cantons as $canton) { ?>
+                        <option value="<?php echo $canton->id ?>"> <?php echo $canton->nombre; ?> </option>
+                    <?php }
+                }else{ ?>
+                    <option value="">Cantón</option>
+                <?php }
+
+            }
         }
 
 

@@ -23,7 +23,12 @@ const AJAX_URL = URL_PATH + 'app/controllers/Ajax.php';
 
 
       //SIGNUP FORM
-      $("body").on("submit", "form#signup-form", clientSignupForm);
+      if($('body').attr('id') === 'signup'){
+        $("body").on("submit", "form#signup-form", clientSignupForm);
+
+        loadSelectOptions('select-province');
+        $("select#select-province").on("change", loadCantonsProvince);
+      }
       
       //LOGIN FORM
       $("body").on("submit", "form#login-form", clientLoginForm);
@@ -95,6 +100,8 @@ function showNotification(message, success, timer = true){
   }, 100)
 }
 
+///////////// ************************ VALIDACIONES FORMULARIOS ************************ ///////////////
+
 // FUNCIONES PARA LA VALIDACION DE FORMULARIO
 function validInput(input_value, max_length = false, msj = 'Campo Obligatorio'){
   
@@ -110,7 +117,7 @@ function validInput(input_value, max_length = false, msj = 'Campo Obligatorio'){
   return true;
   
 }
-
+// VALIDACIONES PARA UNA CONTRSENA
 function validPassword(input_value){
 
   if(input_value.length == 0){
@@ -139,7 +146,7 @@ function validPassword(input_value){
   }
   return true
 }
-
+// VALIDACIONES PARA UN CORREO
 function validEmail(input_value){
   const validEmailPattern = /^\w+([.-_+]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
   if(input_value.length == 0){
@@ -154,6 +161,15 @@ function validEmail(input_value){
   return true;
 }
 
+///////////// ************************ CARGA SE SELECTS DINAMICOS ************************ ///////////////
+async function loadSelectOptions(idSelect){
+
+  const selectFormData = new FormData();
+  selectFormData.append("idSelect", idSelect);
+  selectFormData.append('ajaxMethod', "loadSelectOptions");
+
+  ajaxHTMLRequest(selectFormData, "select#" + idSelect);
+}
 
 // ///////////////// **********************  HOME  ********************* /////////////////////
 
@@ -215,28 +231,32 @@ async function clientSignupForm(e){
   const input_company_detail = $('input#company-detail');
   const select_canton = $('select#select-canton');
   
-  const input_client_name = $('input#client-name');
   const input_phone = $('input#phone');
   const input_email = $('input#email');
   const input_password = $('input#password');
+  const input_confirmPassword = $('input#confirm-password');
 
   // validan los datos
   if(!validInput(input_company_name.val(), false, "Ingrese el nombre de empresa")) return false;
   if(!validInput(input_company_detail.val(), false, "Ingrese el detalle de empresa")) return false;
   if(!validInput(select_canton.val(), false, "Seleccione un canton")) return false;
 
-  if(!validInput(input_client_name.val(), false, "Ingrese un nombre")) return false;
   if(!validInput(input_phone.val(), false, "Ingrese un telefono")) return false;
   if(!validEmail(input_email.val())) return false;
   if(!validPassword(input_password.val())) return false;
+
+  // se validan las contrasena
+  if(input_password.val() !== input_confirmPassword.val()){
+    showNotification("Las contraseñas no coinciden", false);
+    return false;
+  }
 
   const signupFormData = new FormData();
   signupFormData.append('companyName', input_company_name.val());
   signupFormData.append('companDetail', input_company_detail.val());
   signupFormData.append('idCanton', select_canton.val());
 
-  signupFormData.append('clientName', input_client_name.val());
-  signupFormData.append('phone', input_phone.val());
+  signupFormData.append('phone', input_phone.val().replace(/[^\d]/g, ''));
   signupFormData.append('email', input_email.val());
   signupFormData.append('pass', input_password.val());
 
@@ -297,6 +317,22 @@ async function clientLogout(e){
    }
 }
 
+async function loadCantonsProvince(e){
+  e.preventDefault();
+
+  if($(this).val() == ""){
+    $( "select#select-canton").html('<option value="">Cantón</option>');
+  }else{
+    const selectFormData = new FormData();
+    selectFormData.append("idSelect", 'select-canton');
+    selectFormData.append("idProvince", $(this).val());
+    selectFormData.append('ajaxMethod', "loadSelectOptions");
+  
+    ajaxHTMLRequest(selectFormData, "select#select-canton");
+  }
+
+
+}
 
 ///////////// ************************ AJAX BACKEND CONN ************************ ///////////////
 // FUNCION QUE REALIZA LA CONECCION CON EL BACKEND

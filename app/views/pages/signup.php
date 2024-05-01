@@ -23,15 +23,12 @@
                     <div class="field">
                         <select name="cantones" id="select-canton" required>
                             <!-- se cargan los cantones de la base de datos -->
-                            <option value="0" selected >Cantón</option>
+                            <option value="" selected >Cantón</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="col">
-                    <div class="field">
-                        <input type="text" name="nombre cliente" id="client-name" placeholder="Nombre del cliente" required>
-                    </div>
                     <div class="field">
                         <input type="text" id="phone" name="phone" data-mask="0000-0000" placeholder="Número de teléfono" required />
                     </div>
@@ -40,6 +37,9 @@
                     </div>
                     <div class="field">
                         <input type="password" name="contraseña" id="password" placeholder="Contraseña" required>
+                    </div>
+                    <div class="field">
+                        <input type="password" name="confirmarContraseña" id="confirm-password" placeholder="Confirmar contraseña" required>
                     </div>
                 </div>
             </div><!-- .form-input-container -->

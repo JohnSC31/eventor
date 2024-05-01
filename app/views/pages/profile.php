@@ -5,10 +5,10 @@
             <i class="fa-solid fa-user"></i> 
         </div>
         <div class="client-info">
-            <p>Nombre de cliente (Empresa)</p>
-            <p>Correo electrónico</p>
-            <p><i class="fa-solid fa-phone"></i> Telefono</p>
-            <p><i class="fa-solid fa-location-dot"></i> Provincia, Canton</p>
+            <p><?php echo $_SESSION['CLIENT']['COMPANY']; ?></p>
+            <p><?php echo $_SESSION['CLIENT']['EMAIL']; ?></p>
+            <p><i class="fa-solid fa-phone"></i> <?php echo $_SESSION['CLIENT']['PHONE']; ?></p>
+            <p><i class="fa-solid fa-location-dot"></i> <?php echo $_SESSION['CLIENT']['PROVINCE']; ?>, <?php echo $_SESSION['CLIENT']['CANTON']; ?></p>
         </div>
     </div>
 
