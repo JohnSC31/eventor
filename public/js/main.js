@@ -14,9 +14,10 @@ const AJAX_URL = URL_PATH + 'app/controllers/Ajax.php';
       // HOME
       if($("body").attr('id') === 'home'){
         loadHomeEventsList();
+        loadHomeServiceList();
         // cambiar de tipos de eventos
         $("body").on("click", "[change-event]", changeEvent);
-        // camviar servicios
+        // cambiar servicios
         $("body").on("click", "[change-service]", changeService);
       }
 
@@ -156,12 +157,22 @@ function validEmail(input_value){
 
 // ///////////////// **********************  HOME  ********************* /////////////////////
 
+// funcion para cargar la lista de eventos en la pagina principal
 function loadHomeEventsList(){
 
   const eventsFormData = new FormData();
   eventsFormData.append('ajaxMethod', "loadHomeEventsList");
 
   ajaxHTMLRequest(eventsFormData, "div#event-list-container");
+}
+
+// funcion para cargar la lista de servicios en la pagina principal
+function loadHomeServiceList(){
+
+  const eventsFormData = new FormData();
+  eventsFormData.append('ajaxMethod', "loadHomeServiceList");
+
+  ajaxHTMLRequest(eventsFormData, "div#service-list-container");
 }
 
 function changeEvent(e){

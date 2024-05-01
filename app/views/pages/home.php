@@ -24,44 +24,9 @@
 <section class="home-services">
     <div class="container">
         <h2>Servicios</h2>
-        <div class="service-list">
+        <div class="service-list" id="service-list-container">
             
-            <div class="service-detail-container">
-                <div class="service-detail" id="service-1">
-                    <h3>Alimentacion</h3>
-                    <p>Estrecha relaciones con tus clientes o mejora el ambiente de tu empresa con una cena de calidad 
-                        sin preocuparte por los detalles.
-                    </p>
-                </div> 
-                
-                <div class="service-detail" id="service-2">
-                    <h3>Decoracion</h3>
-                    <p>Estrecha relaciones con tus clientes o mejora el ambiente de tu empresa con una cena de calidad 
-                        sin preocuparte por los detalles.
-                    </p>
-                </div> 
-
-                <div class="service-detail" id="service-3">
-                    <h3>Entretenimiento</h3>
-                    <p>Estrecha relaciones con tus clientes o mejora el ambiente de tu empresa con una cena de calidad 
-                        sin preocuparte por los detalles.
-                    </p>
-                </div> 
-
-                <div class="service-detail" id="service-4">
-                    <h3>Musica</h3>
-                    <p>Estrecha relaciones con tus clientes o mejora el ambiente de tu empresa con una cena de calidad 
-                        sin preocuparte por los detalles.
-                    </p>
-                </div> 
-            </div><!-- .event-detail-container -->
-
-            <ul class="service-icon-container">
-                <li class="active" change-service="1"><i class="fa-solid fa-burger"></i></li>
-                <li class="" change-service="2"><i class="fa-solid fa-umbrella-beach"></i></li>
-                <li class="" change-service="3"><i class="fa-solid fa-gamepad"></i></li>
-                <li class="" change-service="4"><i class="fa-solid fa-music"></i></li>
-            </ul>
+            <!-- se cargan la lista de servicios -->
         </div>
     </div>
 </section>
