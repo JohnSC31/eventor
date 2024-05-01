@@ -46,11 +46,28 @@
             $this->ajaxRequestResult(true, $data['message']);
         }
 
+        // ------------------- METODOS DE USUARIO ----------------------------
+
         // SIGNUP 
         private function clientSignup($client){
 
+            $this->db->query("CALL sp_new_cliente(?, ?, ?, ?, ?, ?, @variableMsgError)");
+            $this->db->bind(1, $client['idCanton']);
+            $this->db->bind(2, $client['companyName']);
+            $this->db->bind(3, $client['companDetail']);
+            $this->db->bind(4, $client['phone']);
+            $this->db->bind(5, $client['email']);
+            $this->db->bind(6, $client['pass']);
 
-            $this->ajaxRequestResult(true, $client['clientName']);
+            $this->db->query("SELECT @variableMsgError");
+            $varMsgError = $this->db->result();
+            
+            if(!is_null($varMsgError)){
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }else{
+                // INICIAR LA SESION DEL CLIENTE
+                $this->clientLogin($client);
+            }
         }
 
         // LOGIN 
@@ -105,8 +122,127 @@
             }
         }
 
+        // LOGIN 
+        private function clientEdit($client){
+
+            $this->db->query("CALL sp_edit_cliente(?, ?, ?, ?, ?, ?, ?, @variableMsgError)");
+            $this->db->bind(1, $client['idCliente']);
+            $this->db->bind(1, $client['idCanton']);
+            $this->db->bind(2, $client['companyName']);
+            $this->db->bind(3, $client['companDetail']);
+            $this->db->bind(4, $client['phone']);
+            $this->db->bind(5, $client['email']);
+            $this->db->bind(6, $client['pass']);
+
+            $this->db->query("SELECT @variableMsgError");
+            $varMsgError = $this->db->result();
+            
+            if(!is_null($varMsgError)){
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }else{
+                $this->ajaxRequestResult(true, "Cambios guardados correctamente");
+            }
+        }
+
+        // ------------------- METODOS DE EVENTO ----------------------------
+
+        // CREACION DE UN EVENTO 
+        private function eventCreation($event){
+
+            $this->db->query("CALL sp_new_evento(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @variableMsgError)");
+            $this->db->bind(2, $event['idCliente']);
+            $this->db->bind(3, $event['idModalidad']);
+            $this->db->bind(4, $event['idCanton']);
+            $this->db->bind(5, $event['idTipoEvento']);
+            $this->db->bind(6, $event['eventName']);
+            $this->db->bind(7, $event['dateTime']);
+            $this->db->bind(8, $event['details']);
+            $this->db->bind(9, $event['duration']);
+            $this->db->bind(10, $event['capacity']);
+            $this->db->bind(11, $event['location']);
+
+            $eventID = $this->db->results();
+            
+            if(!$eventID){
+                $this->db->query("SELECT @variableMsgError");
+                $varMsgError = $this->db->result();
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }else{
+                // CREAR SERVICIOS TO-DO ***
+                $this->addService($eventID);
+                $this->ajaxRequestResult(true, "Cambios guardados correctamente");
+            }
+        }
+
+        private function eventEdit($event){
+
+            $this->db->query("CALL sp_new_evento(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @variableMsgError)");
+            $this->db->bind(1, $event['idEvento']);
+            $this->db->bind(2, $event['idCliente']);
+            $this->db->bind(3, $event['idModalidad']);
+            $this->db->bind(4, $event['idCanton']);
+            $this->db->bind(5, $event['idTipoEvento']);
+            $this->db->bind(6, $event['eventName']);
+            $this->db->bind(7, $event['dateTime']);
+            $this->db->bind(8, $event['details']);
+            $this->db->bind(9, $event['duration']);
+            $this->db->bind(10, $event['capacity']);
+            $this->db->bind(11, $event['location']);
+
+            $this->db->query("SELECT @variableMsgError");
+            $varMsgError = $this->db->result();
+            
+            if(!is_null($varMsgError)){
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }else{
+                // CREAR SERVICIOS TO-DO ***
+                $id = $this->db->result();
+                $this->addService($event);
+                $this->ajaxRequestResult(true, "Cambios guardados correctamente");
+            }
+        }
+
+        // AGREGAR SERVICIO A UN EVENTO TO-DO ***
+        private function addService($event){
+
+            $this->db->query("CALL sp_new_servicio_evento(?, ?, @variableMsgError)");
+            $this->db->bind(1, $event['idEvento']);
+            $this->db->bind(2, $event['idServicio']);
+
+            $this->db->query("SELECT @variableMsgError");
+            $varMsgError = $this->db->result();
+            
+            if(!is_null($varMsgError)){
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }
+        }
 
         // ------------------- METODOS DE CARGA DE HTML ----------------------------
+
+        // CARGAR LA LISTA DE PROVINCIAS
+        private function loadProvincias($data){
+            $this->db->query("CALL sp_get_provincias()");
+            $provincias = $this->db->results();
+
+            // HTML
+        }
+
+        // CARGAR LISTA DE CANTONES DE UNA PROVINCIA
+        private function loadCantonesProvincia($data){
+            $this->db->query("CALL sp_get_cantones_provincia(?, @variableMsgError)");
+            $this->db->bind(1, $data['idProvincia']);
+            
+            $cantones = $this->db->results();
+            
+            if(!$cantones){
+                $this->db->query("SELECT @variableMsgError");
+                $varMsgError = $this->db->result();
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }
+            else{
+                // HTML
+            }
+        }
 
         // CARGAR LA LISTA DE EVENTOS
         private function loadHomeEventsList($data){
@@ -154,6 +290,24 @@
             </div>
             <?php
 
+        }
+
+        // CARGAR LISTA DE EVENTOS DE UN CLIENTE POR ESTADO
+        private function loadClientEventsByState($data){
+            $this->db->query("CALL sp_get_eventos_cliente_estado(?, ?, @variableMsgError)");
+            $this->db->bind(1, $data['idCliente']);
+            $this->db->bind(2, $data['idEstado']);
+            
+            $eventos = $this->db->results();
+            
+            if(!$eventos){
+                $this->db->query("SELECT @variableMsgError");
+                $varMsgError = $this->db->result();
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }
+            else{
+                // HTML
+            }
         }
 
 
