@@ -1,6 +1,6 @@
 DROP PROCEDURE IF EXISTS sp_new_servicio;
 DELIMITER $$
-CREATE PROCEDURE sp_new_servicio(pServicio VARCHAR(25), pIcono VARCHAR(50), pPrecio DECIMAL(7,2), pDescripcion VARCHAR(255), OUT errorMessage VARCHAR(255))
+CREATE PROCEDURE sp_new_servicio(pServicio VARCHAR(15), pIcono VARCHAR(50), pPrecio DECIMAL(7,2), pDescripcion VARCHAR(255), OUT errorMessage VARCHAR(255))
 BEGIN
 	DECLARE DUPLICATE_SERVICE_NAME INT DEFAULT(53000);
     DECLARE serviceNameExists TINYINT DEFAULT 0;
@@ -14,7 +14,7 @@ BEGIN
         ELSE
             CASE
                 WHEN @err_no = 53000 THEN
-                    SET errorMessage = CONCAT('Error: El servicio ya existe');
+                    SET errorMessage = CONCAT('Error: Ya existe un servicio con ese nombre');
             END CASE;
         END IF;
         

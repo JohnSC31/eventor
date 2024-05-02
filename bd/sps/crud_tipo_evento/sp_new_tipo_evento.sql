@@ -14,7 +14,7 @@ BEGIN
         ELSE
             CASE
                 WHEN @err_no = 53000 THEN
-                    SET errorMessage = CONCAT('Error: El tipo de evento ya existe');
+                    SET errorMessage = CONCAT('Error: Ya existe un tipo de evento con ese nombre');
             END CASE;
         END IF;
         
