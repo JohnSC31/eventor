@@ -59,10 +59,12 @@
             $this->db->bind(5, $client['email']);
             $this->db->bind(6, $client['pass']);
 
+            $this->db->execute();
+
             $this->db->query("SELECT @variableMsgError");
             $varMsgError = $this->db->result();
             
-            if(!is_null($varMsgError)){
+            if(!is_null($varMsgError['@variableMsgError'])){
                 $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
             }else{
                 // INICIAR LA SESION DEL CLIENTE
@@ -83,7 +85,7 @@
 
                 $this->db->query("SELECT @variableMsgError");
                 $varMsgError = $this->db->result();
-                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError'], "inicia sesion");
 
             }else{
                 // se inicia sesion con los datos
@@ -137,7 +139,7 @@
             $this->db->query("SELECT @variableMsgError");
             $varMsgError = $this->db->result();
             
-            if(!is_null($varMsgError)){
+            if(!is_null($varMsgError['@variableMsgError'])){
                 $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
             }else{
                 $this->ajaxRequestResult(true, "Cambios guardados correctamente");
@@ -161,7 +163,7 @@
             $this->db->bind(10, $event['capacity']);
             $this->db->bind(11, $event['location']);
 
-            $eventID = $this->db->results();
+            $eventID = $this->db->result();
             
             if(!$eventID){
                 $this->db->query("SELECT @variableMsgError");
@@ -169,6 +171,7 @@
                 $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
             }else{
                 // CREAR SERVICIOS TO-DO ***
+                // foreach services
                 $this->addService($eventID);
                 $this->ajaxRequestResult(true, "Cambios guardados correctamente");
             }
@@ -212,9 +215,7 @@
             $this->db->query("SELECT @variableMsgError");
             $varMsgError = $this->db->result();
             
-            if(!is_null($varMsgError)){
-                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
-            }
+            return !is_null($varMsgError['@variableMsgError']) ? false : true;
         }
 
         // ------------------- METODOS DE CARGA DE HTML ----------------------------
@@ -274,12 +275,13 @@
                             </div>
                             <div class="event-summary">
                                 <div class="event-item-header">
-                                    <p><?php echo $event['tipoEvento']; ?></p>
-                                    <p class="status"><?php echo $event['estadoEvento']; ?></p>
+                                    <p><?php echo $event['tipo de evento']; ?></p>
+                                    <p class="status"><?php echo $event['estado del evento']; ?></p>
                                 </div>
                                 
-                                <p><i class="fa-solid fa-calendar-days"></i> <?php echo $event['fechayHora']; ?></p>
+                                <p><i class="fa-solid fa-calendar-days"></i> <?php echo $event['fecha y hora']; ?></p>
                                 <p> <i class="fa-solid fa-location-dot"></i> <?php echo $event['provincia'] + "," + $event['canton'] + ", " + $event['direccion']; ?></p>
+                                <p> Precio: <?php echo $event['precio total']; ?></p>
                             </div>
                         </div>
 
