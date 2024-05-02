@@ -38,7 +38,7 @@ BEGIN
 	SET autocommit = 0;
 
 	START TRANSACTION;
-        UPDATE tipo_evento SET tipo_evento = pTipoEvento, icono = pIcono, precio = pPrecio, descripcion = pDescripcion;
+        UPDATE tipo_evento SET tipo_evento = pTipoEvento, icono = pIcono, precio = pPrecio, descripcion = pDescripcion WHERE id = pTipoEventoID;
     COMMIT;
 END$$
 DELIMITER ;

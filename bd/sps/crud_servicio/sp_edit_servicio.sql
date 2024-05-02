@@ -38,7 +38,7 @@ BEGIN
 	SET autocommit = 0;
 
 	START TRANSACTION;
-        UPDATE servicio SET servicio = pServicio, icono = pIcono, precio = pPrecio, descripcion = pDescripcion;
+        UPDATE servicio SET servicio = pServicio, icono = pIcono, precio = pPrecio, descripcion = pDescripcion WHERE id = pServicioID;
     COMMIT;
 END$$
 DELIMITER ;
