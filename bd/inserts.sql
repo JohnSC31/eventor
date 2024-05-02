@@ -106,21 +106,19 @@ VALUES
 ('Virtual', 1), 
 ('Presencial', 1);
 
-INSERT INTO servicio(servicio, precio)
-VALUES 
-('Alimentación', 1), 
-('Entretenimiento', 1),
-('Decoración', 1),
-('Música', 1),
-('Fotografía', 1);
+INSERT INTO servicio (id, servicio, icono, precio, descripcion) VALUES
+(1, 'Alimentación', 'fa-solid fa-burger', '1.00', 'Deleita tus eventos con la comida de la mejor calidad que brinda Eventor. Una amplia variedad de comidas a escoger elaboradas por profesionales y los mejores ingredientes.'),
+(2, 'Entretenimiento', 'fa-solid fa-gamepad', '1.00', 'Una gran variedad de entretenimiento para tus eventos empresariales con Eventor. Transforma cualquier evento y crea buenos recuerdos.'),
+(3, 'Decoración', 'fa-solid fa-umbrella-beach', '1.00', 'Toda la decoración necesaria para tu evento empresarial con Eventor.'),
+(4, 'Música', 'fa-solid fa-music', '1.00', 'Gran variedad de música en vivo, desde un DJ hasta una banda. Toda la decoración auditiva para cualquier ocasión y evento empresarial con Eventor.'),
+(5, 'Fotografía', 'fa-solid fa-camera', '1.00', 'Documenta tu evento empresarial y captura los mejores momentos con nuestro servicio de fotografía o video. Los mejores recuerdos de tus eventos empresariales los capturas con Eventor.');
 
-INSERT INTO tipo_evento(tipo_evento, precio)
-VALUES 
-('Cenas', 1), 
-('Fiestas', 1),
-('Aniversarios', 1),
-('Capacitaciones', 1),
-('Congresos', 1),
-('Convenciones', 1),
-('Actividades deportivas', 1),
-('Actividades familiares', 1);
+INSERT INTO tipo_evento (id, tipo_evento, icono, precio, descripcion) VALUES
+(1, 'Cenas', 'fa-solid fa-utensils', '1.00', 'Organiza tus cenas empresariales más rápido que nunca y sin preocuparte por los detalles. Estrecha relaciones con clientes o celebra con las mejores cenas con Eventor.'),
+(2, 'Fiestas', 'fa-solid fa-gift', '1.00', 'Las mejores fiestas empresariales con Eventor. Organiza tus fiestas fácilmente y celebra a lo grande los triunfos de tu empresa.'),
+(3, 'Aniversarios', 'fa-solid fa-cake-candles', '1.00', 'Celebra el aniversario de  tu empresa de la mejor maneja. Organización de los mejores aniversarios con Eventor.'),
+(4, 'Capacitaciones', 'fa-solid fa-chalkboard-user', '1.00', 'Capacitaciones con los mejores en la materia. Organización de capacitaciones para tu empresa con Eventor.'),
+(5, 'Congresos', 'fa-solid fa-person-chalkboard', '1.00', 'Organiza todo tipo de congresos con Eventor. Brinda a tu empresa los conocimeintos y habilidades necesarias para el trinfo.'),
+(6, 'Convenciones', 'fa-solid fa-people-group', '1.00', 'Eventor ofrece la organización de las mejores convenciones empresariales. Crea la mejor convención para tu empresa con Eventor.'),
+(7, 'Actividades deportivas', 'fa-solid fa-futbol', '1.00', 'Torneos de fútbol, baseball, basquetball y muchos otros deportes. Organiza los mejores eventos deportivos empresariales con Eventor.'),
+(8, 'Actividades familiares', 'fa-solid fa-house-chimney-window', '1.00', 'Picnics, juegos recreativos y muchas actividades más en familia. Refuerza los lazos de tu empresa con las mejores actividades familiares organizadas por Eventor');
