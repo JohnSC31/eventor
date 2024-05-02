@@ -40,6 +40,21 @@ const AJAX_URL = URL_PATH + 'app/controllers/Ajax.php';
         $("body").on("click", "[events-nav]", clientEventsNavigation);
       }
       
+      // SOLICITUD
+      if($('body').attr('id') === 'request'){
+        // carga de selects
+        loadSelectOptions("select-modality");
+        loadSelectOptions("select-event-type");
+
+        loadSelectOptions('select-province');
+        $("select#select-province").on("change", loadCantonsProvince);
+
+        // carga los servicios
+        loadCheckBoxServicesForm();
+
+        // Validacion del formulario
+        $("body").on("submit", "form#request-event-form", eventRequestForm);
+      }
         
     }); // end DOMContentLoaded
   
@@ -365,6 +380,77 @@ function loadClientEventsByState(status){
   ajaxHTMLRequest(loadEventsFormData, "div#client-events-list");
 }
 
+// ///////////////// **********************  REQUEST  ********************* /////////////////////
+function loadCheckBoxServicesForm(){
+
+  const loadServicesFormData = new FormData();
+  loadServicesFormData.append('ajaxMethod', "loadCheckBoxServicesForm");
+  
+  ajaxHTMLRequest(loadServicesFormData, "div#request-form-services");
+}
+
+async function eventRequestForm(e){
+  e.preventDefault();
+
+  // optienen los campos del formulario
+  const select_modality = $('select#select-modality');
+  const select_event_type = $('select#select-event-type');
+  const input_event_name = $('input#event-name');
+  const textarea_event_detail = $('textarea#event-detail');
+
+  const select_canton = $('select#select-canton');
+  const input_direction = $('input#direction');
+  const input_dateTime = $('input#date-time');
+  const input_duration = $('input#duration');
+  const input_quotas = $('input#quotas');
+  
+  // validaciones
+  if(!validInput(select_modality.val(), false, "Seleccione una modalidad")) return false;
+  if(!validInput(select_event_type.val(), false, "Seleccione un tipo de evento")) return false;
+  if(!validInput(input_event_name.val(), false, "Ingrese el nombre del evento")) return false;
+  if(!validInput(textarea_event_detail.val(), false, "Ingrese el detalle del evento")) return false;
+  if(!validInput(select_canton.val(), false, "Seleccione un cantón")) return false;
+  if(!validInput(input_direction.val(), false, "Ingrese la direccion del evento")) return false;
+  if(!validInput(input_dateTime.val(), false, "Ingrese una fecha y hora")) return false;
+  if(!validInput(input_duration.val(), false, "Ingrese una duración")) return false;
+  if(!validInput(input_quotas.val(), false, "Ingrese un cupo")) return false;
+
+  // se agregan los servicios requeridos
+  var serviceList = [];
+
+  // se agregan los servicios
+  $( "div#request-form-services input" ).each(function() {
+    if(this.checked) {
+      serviceList.push($(this).attr('id-service'));
+    }
+  });
+  
+  //  Ingreso de los datos en el formdata
+  const requestEventFormData = new FormData();
+  requestEventFormData.append('idModality', select_modality.val());
+  requestEventFormData.append('idEventType', select_event_type.val());
+  requestEventFormData.append('name', input_event_name.val());
+  requestEventFormData.append('detail', textarea_event_detail.val());
+  requestEventFormData.append('idCanton', select_canton.val());
+  requestEventFormData.append('direction', input_direction.val());
+  requestEventFormData.append('dateTime', input_dateTime.val());
+  requestEventFormData.append('duration', input_duration.val());
+  requestEventFormData.append('quotas', input_quotas.val());
+
+  requestEventFormData.append('idServices', JSON.stringify(serviceList));
+
+  requestEventFormData.append('ajaxMethod', "eventCreation");
+
+  result = await ajaxRequest(requestEventFormData);
+  showNotification(result.Message, result.Success, true);
+
+  if(result.Success){
+    setTimeout(()=>{
+      window.location.href = URL_PATH + 'profile';
+    }, 1500)
+  }
+  
+}
 ///////////// ************************ AJAX BACKEND CONN ************************ ///////////////
 // FUNCION QUE REALIZA LA CONECCION CON EL BACKEND
 // Debe haber un campo en el form data indicando el metodo a utilizar en el ajax controller llamado 'ajaxMethod'

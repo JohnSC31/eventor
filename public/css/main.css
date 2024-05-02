@@ -824,7 +824,8 @@ body#profile div.client-events-list div.event-item{
     background-color: var(--grey);
     border-radius: var(--radius);
     padding: 1.5rem;
-    border: 2px solid transparent
+    border: 2px solid transparent;
+    margin-top: 2rem;
 }
 
 body#profile div.client-events-list div.event-item:hover{
@@ -843,6 +844,11 @@ body#profile div.client-events-list div.event-item-content div.event-icon-contai
     font-size: 7rem;
     color: var(--red);
     margin-right: 1rem;
+
+    width: 15rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 body#profile div.event-item div.event-item-content div.event-summary{
@@ -887,15 +893,21 @@ body#request form textarea{
     background-color: var(--grey);
 }
 
-body#request form div.form-service-container label{
+body#request form div.request-form-services{
+    display: flex;
+    flex-wrap: wrap;
+}
+body#request form div.request-form-services .field{
+    flex: 0 0 50%;
+}
+body#request form div.request-form-services label{
     font-size: 1.8rem;
 }
 
-body#request form div.form-service-container i{
+body#request form div.request-form-services i{
     color: var(--red);
     margin-right: 1rem;
 }
-
 /*////////////////////// -------------------------- EVENT / EVENTO --------------------------------------------- ///////////////////////*/
 body#event h1{
     color: var(--green);

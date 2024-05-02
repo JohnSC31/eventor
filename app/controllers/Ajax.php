@@ -153,35 +153,35 @@
         // CREACION DE UN EVENTO 
         private function eventCreation($event){
 
-            $this->db->query("CALL sp_new_evento(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @variableMsgError)");
-            $this->db->bind(1, $event['idCliente']);
-            $this->db->bind(2, $event['idModalidad']);
+            $this->db->query("CALL sp_new_evento(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @variableMsgError)");
+            $this->db->bind(1, $_SESSION['CLIENT']['CID']);
+            $this->db->bind(2, $event['idModality']);
             $this->db->bind(3, $event['idCanton']);
-            $this->db->bind(4, $event['idTipoEvento']);
-            $this->db->bind(5, $event['eventName']);
+            $this->db->bind(4, $event['idEventType']);
+            $this->db->bind(5, $event['name']);
             $this->db->bind(6, $event['dateTime']);
-            $this->db->bind(7, $event['details']);
+            $this->db->bind(7, $event['detail']);
             $this->db->bind(8, $event['duration']);
-            $this->db->bind(9, $event['capacity']);
-            $this->db->bind(10, $event['location']);
-            $this->db->bind(11, $event['services']);
+            $this->db->bind(9, $event['quotas']);
+            $this->db->bind(10, $event['direction']);
 
-            $eventID = $this->db->result();
+            $eventInserted = $this->db->result();
             
-            if(!$eventID){
+            if(!$eventInserted){
                 $this->db->query("SELECT @variableMsgError");
                 $varMsgError = $this->db->result();
                 $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
             }else{
                 // AGREGAR SERVICIOS
-                foreach($event['services'] as $key => $service){
-                    $service = get_object_vars($service);
-                    if($this->addService($eventID, $service)){
+                $idServices = json_decode($event['idServices'], true);
+                foreach($idServices as $idService){
+
+                    if(!$this->addService($eventInserted, $idService)){
                         $this->ajaxRequestResult(false, "Se ha producido un error al agregar los servicios");
-                    }else{
-                        $this->ajaxRequestResult(true, "Evento creado correctamente");
+                        return; // se acaba la ejecucion
                     }
                 }
+                $this->ajaxRequestResult(true, "Evento creado correctamente");
             }
         }
 
@@ -223,16 +223,18 @@
         }
 
         // AGREGAR SERVICIO A UN EVENTO
-        private function addService($eventID, $service){
+        private function addService($event, $idService){
 
             $this->db->query("CALL sp_new_servicio_evento(?, ?, @variableMsgError)");
-            $this->db->bind(1, $eventID['id']);
-            $this->db->bind(2, $service['id']);
+            $this->db->bind(1, $event['id_evento']);
+            $this->db->bind(2, $idService);
+
+            $this->db->execute();
 
             $this->db->query("SELECT @variableMsgError");
             $varMsgError = $this->db->result();
             
-            return !is_null($varMsgError['@variableMsgError']) ? false : true;
+            return is_null($varMsgError['@variableMsgError']) ? true : false;
         }
 
         // OBTENER DATOS DE UN EVENTO
@@ -312,9 +314,9 @@
                                     <p><?php echo $event['tipo de evento']; ?></p>
                                     <p class="status"><?php echo $event['estado del evento']; ?></p>
                                 </div>
-                                
+                                <p><?php echo $event['nombre del evento']; ?></p>
                                 <p><i class="fa-solid fa-calendar-days"></i> <?php echo $event['fecha y hora']; ?></p>
-                                <p> <i class="fa-solid fa-location-dot"></i> <?php echo $event['provincia'] + "," + $event['canton'] + ", " + $event['direccion']; ?></p>
+                                <p> <i class="fa-solid fa-location-dot"></i> <?php echo $event['provincia'] . "," . $event['canton'] . ", " . $event['direccion']; ?></p>
                                 <p> Precio: <?php echo $event['precio total']; ?></p>
                             </div>
                         </div>
@@ -391,8 +393,54 @@
                 <?php }
 
             }
+
+            if($data['idSelect'] == 'select-modality'){
+
+                // se cargan las modalidales
+                $this->db->query("CALL sp_get_modalidades()");
+                $modalities = $this->db->results();
+ 
+                if(count($modalities) > 0){ ?>
+                    <option value="" selected >Modalidades</option>
+                    <?php foreach($modalities as $modality) { ?>
+                        <option value="<?php echo $modality->id ?>"> <?php echo $modality->modalidad . "(₡ " . $modality->precio . ")"; ?> </option>
+                    <?php }
+                }else{ ?>
+                    <option value="" selected >Modalidades</option>
+                <?php }
+            }
+
+            if($data['idSelect'] == 'select-event-type'){
+
+                // se cargan las modalidales
+                $this->db->query("CALL sp_get_tipos_evento()");
+                $eventTypes = $this->db->results();
+ 
+                if(count($eventTypes) > 0){ ?>
+                    <option value="" selected >Tipos de eventos</option>
+                    <?php foreach($eventTypes as $eventType) { ?>
+                        <option value="<?php echo $eventType->id ?>"> <?php echo $eventType->tipo_evento . "(₡ " . $eventType->precio . ")"; ?> </option>
+                    <?php }
+                }else{ ?>
+                    <option value="" selected >Tipos de eventos</option>
+                <?php }
+            }
         }
 
+        // CARGA DE SERVICIOS FORMULARIO SOLICITAR EVENTO
+        private function loadCheckBoxServicesForm(){
+
+            $this->db->query("CALL sp_get_servicios()");
+            $serviceList = $this->db->results();
+            foreach($serviceList as $key => $service){
+                ?>
+                <div class="field">
+                    <input type="checkbox" id-service="<?php echo $service->id; ?>" name="<?php echo $service->servicio; ?>" />
+                    <label for="<?php echo $service->servicio; ?>"><i class="<?php echo $service->icono; ?>"></i> <?php echo $service->servicio; ?></label>
+                </div>
+                <?php
+            }
+        }
 
     }
 
