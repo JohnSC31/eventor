@@ -26,7 +26,7 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = NON_EXISTENT_EVENT;
     END IF;
 
-	SELECT ev.id, c.nombreEmpresa AS empresa, ev.nombre AS 'nombre del evento', m.modalidad, te.tipo_evento AS 'tipo de evento',
+	SELECT ev.id, c.nombreEmpresa AS empresa, ev.nombre AS 'nombre del evento', m.modalidad, te.tipo_evento AS 'tipo de evento', te.icono as 'icono'
 	ee.estado AS 'estado del evento', ev.fecha_hora AS 'fecha y hora', ev.detalles, ev.duracion, ev.cupos, 
 	p.nombre AS provincia, cant.nombre AS canton, ev.direccion, ev.precio_total AS 'precio total'
 	FROM evento AS ev
