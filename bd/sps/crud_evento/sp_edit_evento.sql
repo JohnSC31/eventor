@@ -112,6 +112,8 @@ BEGIN
 		UPDATE evento SET id_cliente = pClienteID, id_modalidad = pModalidadID, id_canton = pCantonID, id_tipo_evento = pTypeID, id_estado = pEstadoID,
         nombre = pName, fecha_hora = pDateTime, detalles = pDetails, duracion = pDuration, cupos = pCapacity, direccion = pLocation, precio_total = precioTotal
         WHERE id = pEventoID;
+
+        DELETE FROM servicios_x_evento WHERE id_evento = pEventoID;
     COMMIT;
 END$$
 DELIMITER ;

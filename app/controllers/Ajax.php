@@ -179,7 +179,7 @@
                     if($this->addService($eventID, $service)){
                         $this->ajaxRequestResult(false, "Se ha producido un error al agregar los servicios");
                     }else{
-                        $this->ajaxRequestResult(true, "Evento creado correctamente");
+                        $this->ajaxRequestResult(true, "Cambios guardados correctamente");
                     }
                 }
             }

@@ -172,6 +172,297 @@
         }
 
 
+        // ------------------- METODOS DE ADMIN ----------------------------
+
+        // SIGNUP 
+        private function adminSignup($admin){
+
+            $this->db->query("CALL sp_new_admin(?, ?, ?, ?, ?, ?, @variableMsgError)");
+            $this->db->bind(1, $admin['idRol']);
+            $this->db->bind(2, $admin['name']);
+            $this->db->bind(3, $admin['email']);
+            $this->db->bind(4, $admin['pass']);
+
+            $this->db->execute();
+
+            $this->db->query("SELECT @variableMsgError");
+            $varMsgError = $this->db->result();
+            
+            if(!is_null($varMsgError['@variableMsgError'])){
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }else{
+                // INICIAR LA SESION DEL ADMIN
+                $this->adminLogin($client);
+            }
+        }
+
+        // LOGIN 
+        private function adminLogin($admin){
+            $this->db->query("CALL sp_login_admin(?, ?, @variableMsgError)");
+            $this->db->bind(1, $admin['email']);
+            $this->db->bind(2, $admin['pass']);
+
+            $adminData = $this->db->result();
+            
+            if(!$adminData){
+                $this->db->query("SELECT @variableMsgError");
+                $varMsgError = $this->db->result();
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }else{
+                // se inicia sesion con los datos
+                $adminSession = array(
+                    'SESSION' => TRUE,
+                    'AID' => $adminData['id'],
+                    'NAME' => $adminData['nombre'],
+                    'EMAIL' => $adminData['correo'],
+                    'ROL' => $adminData['rol']
+                );
+    
+                $_SESSION['ADMIN'] = $adminSession;
+    
+                if(isset($_SESSION['ADMIN'])){
+                    // retorna sin errores
+                    $this->ajaxRequestResult(true, "Se ha iniciado sesion correctamente");
+                }else{
+                    $this->ajaxRequestResult(false, "Error al iniciar sesion");
+                }
+            } 
+        }
+
+        // LOGOUT DEL ADMIN
+        private function adminLogout(){
+            unset($_SESSION['ADMIN']); 
+
+            if(!isset($_SESSION['ADMIN'])){
+              
+                $this->ajaxRequestResult(true, "Se ha cerrado sesion");
+            }else{ 
+                $this->ajaxRequestResult(false, "Error al cerrar sesion");
+            }
+        }
+
+        // EDITAR ADMIN 
+        private function adminEdit($admin){
+
+            $this->db->query("CALL sp_edit_admin(?, ?, ?, ?, ?, @variableMsgError)");
+            $this->db->bind(1, $admin['idAdmin']);
+            $this->db->bind(2, $admin['idRol']);
+            $this->db->bind(3, $admin['name']);
+            $this->db->bind(4, $admin['email']);
+            $this->db->bind(5, $client['pass']);
+
+            $this->db->execute();
+
+            $this->db->query("SELECT @variableMsgError");
+            $varMsgError = $this->db->result();
+            
+            if(!is_null($varMsgError['@variableMsgError'])){
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }else{
+                $this->ajaxRequestResult(true, "Cambios guardados correctamente");
+            }
+        }
+
+        // ------------------- METODOS DE EVENTO ----------------------------
+
+        private function changeEventState($event){
+            $this->db->query("CALL sp_set_estado_evento(?, ?, @variableMsgError)");
+            $this->db->bind(1, $event['idEvento']);
+            $this->db->bind(2, $event['idEstado']);
+
+            $this->db->execute();
+
+            $this->db->query("SELECT @variableMsgError");
+            $varMsgError = $this->db->result();
+            
+            if(!is_null($varMsgError['@variableMsgError'])){
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }else{
+                $this->ajaxRequestResult(true, "Se ha cambiado el estado del evento");
+            }
+        }
+
+        // ------------------- METODOS DE TIPO DE EVENTO ----------------------------
+
+        // CREAR TIPO DE EVENTO
+        private function createEventType($eventType){
+            $this->db->query("CALL sp_new_tipo_evento(?, ?, ?, ?, @variableMsgError)");
+            $this->db->bind(1, $eventType['eventType']);
+            $this->db->bind(2, $eventType['icon']);
+            $this->db->bind(3, $eventType['price']);
+            $this->db->bind(4, $eventType['description']);
+
+            $this->db->execute();
+
+            $this->db->query("SELECT @variableMsgError");
+            $varMsgError = $this->db->result();
+            
+            if(!is_null($varMsgError['@variableMsgError'])){
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }else{
+                $this->ajaxRequestResult(true, "Se ha creado el tipo de evento correctamente");
+            }
+        }
+
+        // EDITAR TIPO DE EVENTO
+        private function editEventType($eventType){
+            $this->db->query("CALL sp_edit_tipo_evento(?, ?, ?, ?, ?, @variableMsgError)");
+            $this->db->bind(1, $eventType['idTipoEvento']);
+            $this->db->bind(2, $eventType['eventType']);
+            $this->db->bind(3, $eventType['icon']);
+            $this->db->bind(4, $eventType['price']);
+            $this->db->bind(5, $eventType['description']);
+
+            $this->db->execute();
+
+            $this->db->query("SELECT @variableMsgError");
+            $varMsgError = $this->db->result();
+            
+            if(!is_null($varMsgError['@variableMsgError'])){
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }else{
+                $this->ajaxRequestResult(true, "Cambios guardados correctamente");
+            }
+        }
+
+        // ELIMINAR TIPO DE EVENTO
+        private function deleteEventType($eventType){
+            $this->db->query("CALL sp_delete_tipo_evento(?, @variableMsgError)");
+            $this->db->bind(1, $eventType['idTipoEvento']);
+
+            $this->db->execute();
+
+            $this->db->query("SELECT @variableMsgError");
+            $varMsgError = $this->db->result();
+            
+            if(!is_null($varMsgError['@variableMsgError'])){
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }else{
+                $this->ajaxRequestResult(true, "Se ha eliminado el tipo de evento correctamente");
+            }
+        }
+
+        // ------------------- METODOS DE SERVICIO ----------------------------
+
+        // CREAR SERVICIO
+        private function createService($service){
+            $this->db->query("CALL sp_new_servicio(?, ?, ?, ?, @variableMsgError)");
+            $this->db->bind(1, $service['service']);
+            $this->db->bind(2, $service['icon']);
+            $this->db->bind(3, $service['price']);
+            $this->db->bind(4, $service['description']);
+
+            $this->db->execute();
+
+            $this->db->query("SELECT @variableMsgError");
+            $varMsgError = $this->db->result();
+            
+            if(!is_null($varMsgError['@variableMsgError'])){
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }else{
+                $this->ajaxRequestResult(true, "Se ha creado el servicio correctamente");
+            }
+        }
+
+        // EDITAR SERVICIO
+        private function editService($service){
+            $this->db->query("CALL sp_edit_servicio(?, ?, ?, ?, ?, @variableMsgError)");
+            $this->db->bind(1, $service['idService']);
+            $this->db->bind(2, $service['service']);
+            $this->db->bind(3, $service['icon']);
+            $this->db->bind(4, $service['price']);
+            $this->db->bind(5, $service['description']);
+
+            $this->db->execute();
+
+            $this->db->query("SELECT @variableMsgError");
+            $varMsgError = $this->db->result();
+            
+            if(!is_null($varMsgError['@variableMsgError'])){
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }else{
+                $this->ajaxRequestResult(true, "Cambios guardados correctamente");
+            }
+        }
+
+        // ELIMINAR SERVICIO
+        private function deleteService($service){
+            $this->db->query("CALL sp_delete_servicio(?, @variableMsgError)");
+            $this->db->bind(1, $service['idTipoEvento']);
+
+            $this->db->execute();
+
+            $this->db->query("SELECT @variableMsgError");
+            $varMsgError = $this->db->result();
+            
+            if(!is_null($varMsgError['@variableMsgError'])){
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }else{
+                $this->ajaxRequestResult(true, "Se ha eliminado el servicio correctamente");
+            }
+        }
+
+        // ------------------- METODOS DE CARGA DE HTML ----------------------------
+
+        // CARGAR LISTA DE EVENTOS POR ESTADO
+        private function loadEventsByState($data){
+            $this->db->query("CALL sp_get_eventos_estado(?, @variableMsgError)");
+            $this->db->bind(1, $data['idStatus']);
+            
+            $events = $this->db->results();
+            
+            if(!$events){
+                // no hay eventos
+                ?>
+                <div class="no-events">
+                    <p>No hay eventos</p>
+                </div>
+                <?php
+            }else{
+                // se cargan los eventos
+                foreach($events as $key => $event){
+                    $event = get_object_vars($event);
+                    ?>
+                    <div class="event-item">
+                        <div class="event-item-content">
+                            <div class="event-icon-container">
+                                <i class="<?php echo $event['icono']; ?>"></i>
+                            </div>
+                            <div class="event-summary">
+                                <div class="event-item-header">
+                                    <p><?php echo $event['tipo de evento']; ?></p>
+                                    <p class="status"><?php echo $event['estado del evento']; ?></p>
+                                </div>
+                                
+                                <p><i class="fa-solid fa-calendar-days"></i> <?php echo $event['fecha y hora']; ?></p>
+                                <p> <i class="fa-solid fa-location-dot"></i> <?php echo $event['provincia'] + "," + $event['canton'] + ", " + $event['direccion']; ?></p>
+                                <p> Precio: <?php echo $event['precio total']; ?></p>
+                            </div>
+                        </div>
+
+                    </div><!-- .event-item -->
+                    <?php
+                }
+            }
+        }
+
+        // CARGAR LA LISTA DE SERVICIOS
+        private function loadServiceList($data){
+            $this->db->query("CALL sp_get_servicios()");
+            $serviceList = $this->db->results();
+
+            //HTML
+        }
+
+        // CARGAR LA LISTA DE EVENTOS
+        private function loadEventsTypeList($data){
+            $this->db->query("CALL sp_get_tipos_evento()");
+            $eventList = $this->db->results();
+
+            //HTML
+        }
+
+
     }
 
 
