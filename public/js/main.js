@@ -55,6 +55,11 @@ const AJAX_URL = URL_PATH + 'app/controllers/Ajax.php';
         // Validacion del formulario
         $("body").on("submit", "form#request-event-form", eventRequestForm);
       }
+
+      // DETALLE DE EVENTO
+      if($('body').attr('id') === 'event'){
+        loadDetailEvent();
+      }
         
     }); // end DOMContentLoaded
   
@@ -451,6 +456,18 @@ async function eventRequestForm(e){
   }
   
 }
+
+
+// ///////////////// **********************  EVENT  ********************* /////////////////////
+function loadDetailEvent(){
+  const loadDetailEventFormData = new FormData();
+
+  loadDetailEventFormData.append('id', $('div#event-detail-container').attr('id-event'));
+  loadDetailEventFormData.append('ajaxMethod', "loadDetailEvent");
+  
+  ajaxHTMLRequest(loadDetailEventFormData, "div#event-detail-container");
+}
+
 ///////////// ************************ AJAX BACKEND CONN ************************ ///////////////
 // FUNCION QUE REALIZA LA CONECCION CON EL BACKEND
 // Debe haber un campo en el form data indicando el metodo a utilizar en el ajax controller llamado 'ajaxMethod'

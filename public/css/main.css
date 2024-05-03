@@ -919,6 +919,9 @@ body#event div.event-detail-container{
     border-radius: var(--radius);
     margin-top: 2rem;
 }
+body#event div.event-detail-container p.error{
+    text-align: center;
+}
 
 body#event div.event-detail-container div.event-sumary-container{
     display: flex;
@@ -960,6 +963,10 @@ body#event div.event-detail-container div.event-details-container > div{
     padding: 0 1rem;
     text-align: center;
 }
+body#event div.event-detail-container div.event-details-container div.left-details{
+    text-align: left;
+}
+
 
 body#event div.event-detail-container div.event-details-container p.subtitule{
     flex: 0 0 33.3%;

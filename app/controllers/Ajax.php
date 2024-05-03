@@ -238,7 +238,7 @@
         }
 
         // OBTENER DATOS DE UN EVENTO
-        private function loadInfoEvent($event){
+        private function loadDetailEvent($event){
 
             $this->db->query("CALL sp_get_info_evento(?, @variableMsgError)");
             $this->db->bind(1, $event['id']);
@@ -248,10 +248,69 @@
             if(!$eventData){
                 $this->db->query("SELECT @variableMsgError");
                 $varMsgError = $this->db->result();
-                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+                ?>
+                <p class="error"> Error al cargar el evento </p>
+                <?php
             }else{
+                // HTML
+                $eventServices = $this->getEventServices($event['id']);
+                ?>
+                <div class="event-sumary-container">
+                    <div class="event-icon">
+                        <i class="<?php echo $eventData['icono']?>"></i>
+                    </div>
+                    <div class="event-summary">
+                        <div class="event-summary-header">
+                            <p><?php echo $eventData['tipo de evento']; ?></p>
+                            <p class="status"><?php echo $eventData['estado del evento']; ?></p>
+                        </div>
+                        <p><i class="fa-solid fa-calendar-days"></i> <?php echo $eventData['fecha y hora']; ?></p>
+                        <p><i class="fa-solid fa-location-dot"></i> <?php echo $eventData['provincia'] . ", " . $eventData['canton'] .", ".$eventData['direccion'] ; ?></p>
+                    </div>
+                </div>
+                <div class="event-details-container">
+                    <div class="left-details">
+                        <p>Modalidad: <?php echo $eventData['modalidad']; ?></p>
+                        <p>Cupos: <?php echo $eventData['cupos']; ?></p>
+                        <p>Duracion: <?php echo $eventData['duracion']; ?></p>
+                        <p>Precio: ₡<?php echo $eventData['precio total']; ?></p>
+                    </div>
+                    <div class="">
+                        <p><b>Detalle</b></p>
+                        <p><?php echo $eventData['detalles']; ?></p>
+                    </div>
+                    <div>
+                        <p><b>Servicios</b></p>
+                        <?php
+                        if($eventServices && count($eventServices) > 0){
+                            foreach($eventServices as $key => $eventService){
+                                $eventService = get_object_vars($eventService);
+                                ?>
+                                <p><i class="<?php echo $eventService['icono']?>"></i> <?php echo $eventService['servicio']?></p>
+                                <?php
+                            }
+                        }else{
+                            ?>
+                            <p>No hay servicios</p>
+                            <?php
+                        }
+                        
+                        ?> 
+                    </div>
+                </div>
+
+                <?php
                 
             }
+        }
+
+        // OBTENER LA LISTA DE SERVICIOS DE UN EVENTO
+        // retorna un arreglo con toda la informacion de los servicios
+        private function getEventServices($idEvent){
+            $this->db->query("CALL sp_get_servicios_evento(?, @variableMsgError)");
+            $this->db->bind(1, $idEvent);
+
+            return $this->db->results();
         }
 
         // ------------------- METODOS DE CARGA DE HTML ----------------------------
@@ -304,24 +363,26 @@
                 foreach($events as $key => $event){
                     $event = get_object_vars($event);
                     ?>
-                    <div class="event-item">
-                        <div class="event-item-content">
-                            <div class="event-icon-container">
-                                <i class="<?php echo $event['icono']; ?>"></i>
-                            </div>
-                            <div class="event-summary">
-                                <div class="event-item-header">
-                                    <p><?php echo $event['tipo de evento']; ?></p>
-                                    <p class="status"><?php echo $event['estado del evento']; ?></p>
+                    <a href="<?php echo URL_PATH . "event/". $event['id']; ?>">
+                        <div class="event-item">
+                            <div class="event-item-content">
+                                <div class="event-icon-container">
+                                    <i class="<?php echo $event['icono']; ?>"></i>
                                 </div>
-                                <p><?php echo $event['nombre del evento']; ?></p>
-                                <p><i class="fa-solid fa-calendar-days"></i> <?php echo $event['fecha y hora']; ?></p>
-                                <p> <i class="fa-solid fa-location-dot"></i> <?php echo $event['provincia'] . "," . $event['canton'] . ", " . $event['direccion']; ?></p>
-                                <p> Precio: <?php echo $event['precio total']; ?></p>
+                                <div class="event-summary">
+                                    <div class="event-item-header">
+                                        <p><?php echo $event['tipo de evento']; ?></p>
+                                        <p class="status"><?php echo $event['estado del evento']; ?></p>
+                                    </div>
+                                    <p><?php echo $event['nombre del evento']; ?></p>
+                                    <p><i class="fa-solid fa-calendar-days"></i> <?php echo $event['fecha y hora']; ?></p>
+                                    <p> <i class="fa-solid fa-location-dot"></i> <?php echo $event['provincia'] . "," . $event['canton'] . ", " . $event['direccion']; ?></p>
+                                    <p> Precio: ₡<?php echo $event['precio total']; ?></p>
+                                </div>
                             </div>
-                        </div>
 
-                    </div><!-- .event-item -->
+                        </div><!-- .event-item -->
+                    </a>
                     <?php
                 }
             }
@@ -441,6 +502,7 @@
                 <?php
             }
         }
+
 
     }
 

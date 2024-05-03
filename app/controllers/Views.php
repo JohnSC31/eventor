@@ -87,9 +87,10 @@
         }
 
         // CARGA DE DETALLE DE EVENTO
-        public function event(){
+        public function event($idEvent){
             $this->validUserSession(true, 'login');
             $data = $this->getPageData('event','Detalle de evento');
+            $data['idEvent'] = $idEvent; 
             $this->loadView('pages/event', $data); // se carga la vista necesaria
         }
 
