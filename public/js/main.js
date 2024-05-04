@@ -8,6 +8,12 @@ const AJAX_URL = URL_PATH + 'app/controllers/Ajax.php';
     document.addEventListener('DOMContentLoaded', function (){
       // Despues de cargar todo el DOM se ejecuta el codigo
 
+      // Abrir un modal
+      $("body").on("click", "[data-modal]", openModal);
+
+      // Cerrar un modal
+      $("body").on("click", "[close-modal]", closeModal);
+
       // boton de cerrar sesion
       $("body").on("click", "[log-out]", clientLogout);
 
@@ -38,6 +44,9 @@ const AJAX_URL = URL_PATH + 'app/controllers/Ajax.php';
         // Carga los otros eventos
         loadClientEventsByState(2); //carga eventos activos
         $("body").on("click", "[events-nav]", clientEventsNavigation);
+
+        // editar usuario
+        $("body").on("submit", "form#edit-client-form", editClientForm);
       }
       
       // SOLICITUD
@@ -59,6 +68,13 @@ const AJAX_URL = URL_PATH + 'app/controllers/Ajax.php';
       // DETALLE DE EVENTO
       if($('body').attr('id') === 'event'){
         loadDetailEvent();
+
+        // formulario
+        $("body").on("submit", "form#edit-event-form", editEventForm);
+
+        
+        $("body").on("click", "[delete-event]", deleteEvent);
+        
       }
         
     }); // end DOMContentLoaded
@@ -89,12 +105,13 @@ function openModal(e){
     $('div#modal_container').html(data);
     $('div#modal_container').css('display', 'block'); // estaba en flex
     $('body').css('overflow', 'hidden');
+
   });
 }
 
 // FUNCION PARA CERRAR UN MODAL
 function closeModal(e){
-  e.preventDefault();
+  if(e) e.preventDefault();
   $('div.modal_container').css('display', 'none');
   $('div#modal_container').html('');
   $('body').css('overflow', 'auto');
@@ -322,7 +339,7 @@ async function clientLoginForm(e){
 
   if(result.Success){
     setTimeout(()=>{
-      window.location.href = URL_PATH + 'home';
+      window.location.href = URL_PATH + 'profile';
     }, 1500)
   }
 
@@ -385,6 +402,54 @@ function loadClientEventsByState(status){
   ajaxHTMLRequest(loadEventsFormData, "div#client-events-list");
 }
 
+async function editClientForm(e){
+  e.preventDefault();
+
+  // optienen los campos del formulario
+  const input_company_name = $('input#company-name');
+  const input_company_detail = $('input#company-detail');
+  const select_canton = $('select#select-canton');
+  
+  const input_phone = $('input#phone');
+  const input_email = $('input#email');
+  // const input_password = $('input#password');
+  // const input_confirmPassword = $('input#confirm-password');
+
+  // validan los datos
+  if(!validInput(input_company_name.val(), false, "Ingrese el nombre de empresa")) return false;
+  if(!validInput(input_company_detail.val(), false, "Ingrese el detalle de empresa")) return false;
+  if(!validInput(select_canton.val(), false, "Seleccione un canton")) return false;
+
+  if(!validInput(input_phone.val(), false, "Ingrese un telefono")) return false;
+  if(!validEmail(input_email.val())) return false;
+  // if(!validPassword(input_password.val())) return false;
+
+  // // se validan las contrasena
+  // if(input_password.val() !== input_confirmPassword.val()){
+  //   showNotification("Las contraseñas no coinciden", false);
+  //   return false;
+  // }
+
+  const signupFormData = new FormData();
+  signupFormData.append('companyName', input_company_name.val());
+  signupFormData.append('companDetail', input_company_detail.val());
+  signupFormData.append('idCanton', select_canton.val());
+
+  signupFormData.append('phone', input_phone.val().replace(/[^\d]/g, ''));
+  signupFormData.append('email', input_email.val());
+  // signupFormData.append('pass', input_password.val());
+
+  signupFormData.append('ajaxMethod', "clientEdit");  
+
+  result = await ajaxRequest(signupFormData);
+  showNotification(result.Message, result.Success, false);
+
+  if(result.Success){
+    setTimeout(()=>{
+      closeModal();
+    }, 1500)
+  }
+}
 // ///////////////// **********************  REQUEST  ********************* /////////////////////
 function loadCheckBoxServicesForm(){
 
@@ -468,13 +533,94 @@ function loadDetailEvent(){
   ajaxHTMLRequest(loadDetailEventFormData, "div#event-detail-container");
 }
 
+async function editEventForm(e){
+  e.preventDefault();
+
+  // optienen los campos del formulario
+  const select_modality = $('select#select-modality');
+  const select_event_type = $('select#select-event-type');
+  const input_event_name = $('input#event-name');
+  const textarea_event_detail = $('textarea#event-detail');
+
+  const select_canton = $('select#select-canton');
+  const input_direction = $('input#direction');
+  const input_dateTime = $('input#date-time');
+  const input_duration = $('input#duration');
+  const input_quotas = $('input#quotas');
+  
+  // validaciones
+  if(!validInput(select_modality.val(), false, "Seleccione una modalidad")) return false;
+  if(!validInput(select_event_type.val(), false, "Seleccione un tipo de evento")) return false;
+  if(!validInput(input_event_name.val(), false, "Ingrese el nombre del evento")) return false;
+  if(!validInput(textarea_event_detail.val(), false, "Ingrese el detalle del evento")) return false;
+  if(!validInput(select_canton.val(), false, "Seleccione un cantón")) return false;
+  if(!validInput(input_direction.val(), false, "Ingrese la direccion del evento")) return false;
+  if(!validInput(input_dateTime.val(), false, "Ingrese una fecha y hora")) return false;
+  if(!validInput(input_duration.val(), false, "Ingrese una duración")) return false;
+  if(!validInput(input_quotas.val(), false, "Ingrese un cupo")) return false;
+
+  // se agregan los servicios requeridos
+  var serviceList = [];
+
+  // se agregan los servicios
+  $( "div#request-form-services input" ).each(function() {
+    if(this.checked) {
+      serviceList.push($(this).attr('id-service'));
+    }
+  });
+  
+  //  Ingreso de los datos en el formdata
+  const editEventFormData = new FormData();
+  editEventFormData.append('idEvent', $(this).attr('id-event'));
+  editEventFormData.append('idModality', select_modality.val());
+  editEventFormData.append('idEventType', select_event_type.val());
+  editEventFormData.append('name', input_event_name.val());
+  editEventFormData.append('detail', textarea_event_detail.val());
+  editEventFormData.append('idCanton', select_canton.val());
+  editEventFormData.append('direction', input_direction.val());
+  editEventFormData.append('dateTime', input_dateTime.val());
+  editEventFormData.append('duration', input_duration.val());
+  editEventFormData.append('quotas', input_quotas.val());
+
+  editEventFormData.append('idServices', JSON.stringify(serviceList));
+
+  editEventFormData.append('ajaxMethod', "eventEdit");
+
+  result = await ajaxRequest(editEventFormData);
+  showNotification(result.Message, result.Success, true);
+
+  if(result.Success){
+    setTimeout(()=>{
+      closeModal();
+      loadDetailEvent(); // se recarga el evento
+    }, 1500)
+  }
+}
+
+async function deleteEvent(e){
+  e.preventDefault();
+
+  const deleteEventFormData = new FormData();
+  deleteEventFormData.append('idEvent', $(this).attr('delete-event'));
+  deleteEventFormData.append('ajaxMethod', "deleteEvent");
+
+  result = await ajaxRequest(deleteEventFormData);
+  showNotification(result.Message, result.Success, true);
+
+  if(result.Success){
+    setTimeout(()=>{
+      window.location.href = URL_PATH + 'profile';
+    }, 1500)
+  }
+}
+
 ///////////// ************************ AJAX BACKEND CONN ************************ ///////////////
 // FUNCION QUE REALIZA LA CONECCION CON EL BACKEND
 // Debe haber un campo en el form data indicando el metodo a utilizar en el ajax controller llamado 'ajaxMethod'
 async function ajaxRequest(formData){
   return new Promise(resolve => {
     $.ajax({
-      url:'app/controllers/Ajax.php',
+      url: AJAX_URL,
       type:'POST',
       processData: false,
       contentType: false,

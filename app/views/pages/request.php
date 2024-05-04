@@ -49,7 +49,7 @@
                     </div>
                     <div class="col_2">
                         <div class="field">
-                            <input type="text" id="duration" name="duration" data-mask="000" placeholder="Duración" required />
+                            <input type="text" id="duration" name="duration" data-mask="000" placeholder="Horas de duración" required />
                         </div>
                         <div class="field">
                             <input type="text" id="quotas" name="quotas" data-mask="00000" placeholder="Cupo máximo" required />

@@ -46,6 +46,11 @@
             $this->ajaxRequestResult(true, $data['message']);
         }
 
+        // METODO PARA ABRIR UN MODAL
+        private function loadModal($data){
+            require_once '../views/modals/modal-'. $data['modal'] . '.php';
+        }
+
         // ------------------- METODOS DE USUARIO ----------------------------
 
         // SIGNUP 
@@ -96,6 +101,8 @@
                     'COMPANY' => $clientData['empresa'],
                     'DETAIL' => $clientData['detalle'],
                     'PROVINCE' => $clientData['provincia'],
+                    'PROVINCEID' => $clientData['idProvincia'],
+                    'CANTONID' => $clientData['idCanton'],
                     'CANTON' => $clientData['canton'],
                     'PHONE' => $clientData['telefono']
                 );
@@ -124,7 +131,7 @@
             }
         }
 
-        // LOGIN 
+        // EDITAR CLIENTE 
         private function clientEdit($client){
 
             $this->db->query("CALL sp_edit_cliente(?, ?, ?, ?, ?, ?, ?, @variableMsgError)");
@@ -176,7 +183,7 @@
                 $idServices = json_decode($event['idServices'], true);
                 foreach($idServices as $idService){
 
-                    if(!$this->addService($eventInserted, $idService)){
+                    if(!$this->addService($eventInserted['id_evento'], $idService)){
                         $this->ajaxRequestResult(false, "Se ha producido un error al agregar los servicios");
                         return; // se acaba la ejecucion
                     }
@@ -188,19 +195,18 @@
         // EDITAR UN EVENTO
         private function eventEdit($event){
 
-            $this->db->query("CALL sp_new_evento(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @variableMsgError)");
-            $this->db->bind(1, $event['idEvento']);
-            $this->db->bind(2, $event['idCliente']);
-            $this->db->bind(3, $event['idModalidad']);
+            $this->db->query("CALL sp_edit_evento(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @variableMsgError)");
+            $this->db->bind(1, $event['idEvent']);
+            $this->db->bind(2, $_SESSION['CLIENT']['CID']);
+            $this->db->bind(3, $event['idModality']);
             $this->db->bind(4, $event['idCanton']);
-            $this->db->bind(5, $event['idTipoEvento']);
-            $this->db->bind(6, $event['eventName']);
+            $this->db->bind(5, $event['idEventType']);
+            $this->db->bind(6, $event['name']);
             $this->db->bind(7, $event['dateTime']);
-            $this->db->bind(8, $event['details']);
+            $this->db->bind(8, $event['detail']);
             $this->db->bind(9, $event['duration']);
-            $this->db->bind(10, $event['capacity']);
-            $this->db->bind(11, $event['location']);
-            $this->db->bind(12, $event['services']);
+            $this->db->bind(10, $event['quotas']);
+            $this->db->bind(11, $event['direction']);
 
             $this->db->execute();
 
@@ -211,22 +217,23 @@
                 $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
             }else{
                 // AGREGAR SERVICIOS
-                foreach($event['services'] as $key => $service){
-                    $service = get_object_vars($service);
-                    if($this->addService($eventID, $service)){
-                        $this->ajaxRequestResult(false, "Se ha producido un error al agregar los servicios");
-                    }else{
-                        $this->ajaxRequestResult(true, "Evento creado correctamente");
+                $idServices = json_decode($event['idServices'], true);
+                foreach($idServices as $key => $idService){
+
+                    if(!$this->addService($event['idEvent'], $idService)){
+                        $this->ajaxRequestResult(false, "Se ha producido un error al editar los servicios");
+                        return; // se acaba la ejecucion
                     }
                 }
+                $this->ajaxRequestResult(true, "Evento editado correctamente");
             }
         }
 
         // AGREGAR SERVICIO A UN EVENTO
-        private function addService($event, $idService){
+        private function addService($idEvent, $idService){
 
             $this->db->query("CALL sp_new_servicio_evento(?, ?, @variableMsgError)");
-            $this->db->bind(1, $event['id_evento']);
+            $this->db->bind(1, $idEvent);
             $this->db->bind(2, $idService);
 
             $this->db->execute();
@@ -255,6 +262,11 @@
                 // HTML
                 $eventServices = $this->getEventServices($event['id']);
                 ?>
+                <div class="event-detail-header">
+                    <button class="btn btn_green" data-modal="edit-event" data-modal-data='{"idEvent": <?php echo $event['id'];?>}' ><i class="fa-solid fa-pencil"></i></button>
+                    <button class="btn btn_red" delete-event="<?php echo $event['id']; ?>"><i class="fa-solid fa-trash"></i></button>
+                </div>
+
                 <div class="event-sumary-container">
                     <div class="event-icon">
                         <i class="<?php echo $eventData['icono']?>"></i>
@@ -264,6 +276,7 @@
                             <p><?php echo $eventData['tipo de evento']; ?></p>
                             <p class="status"><?php echo $eventData['estado del evento']; ?></p>
                         </div>
+                        <p><?php echo $eventData['nombre del evento']; ?></p>
                         <p><i class="fa-solid fa-calendar-days"></i> <?php echo $eventData['fecha y hora']; ?></p>
                         <p><i class="fa-solid fa-location-dot"></i> <?php echo $eventData['provincia'] . ", " . $eventData['canton'] .", ".$eventData['direccion'] ; ?></p>
                     </div>
@@ -294,7 +307,6 @@
                             <p>No hay servicios</p>
                             <?php
                         }
-                        
                         ?> 
                     </div>
                 </div>
@@ -311,6 +323,24 @@
             $this->db->bind(1, $idEvent);
 
             return $this->db->results();
+        }
+
+        // ELIMINAR UN EVENTO
+        private function deleteEvent($event){
+
+            $this->db->query("CALL sp_delete_evento(?, @variableMsgError)");
+            $this->db->bind(1, $event['idEvent']);
+
+            $this->db->execute();
+
+            $this->db->query("SELECT @variableMsgError");
+            $varMsgError = $this->db->result();
+
+            if(!is_null($varMsgError['@variableMsgError'])){
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }else{
+                $this->ajaxRequestResult(true, "Evento eliminado correctamente");
+            }
         }
 
         // ------------------- METODOS DE CARGA DE HTML ----------------------------

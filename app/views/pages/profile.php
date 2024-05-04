@@ -1,15 +1,22 @@
 <div class="container">
     <h1>Perfil</h1>
+
     <div class="client-profile">
-        <div class="client-pic">
-            <i class="fa-solid fa-user"></i> 
+        <div class="client-profile-header">
+            <button class="btn btn_white" data-modal="edit-client"><i class="fa-solid fa-pencil"></i></button>
         </div>
-        <div class="client-info">
-            <p><?php echo $_SESSION['CLIENT']['COMPANY']; ?></p>
-            <p><?php echo $_SESSION['CLIENT']['EMAIL']; ?></p>
-            <p><i class="fa-solid fa-phone"></i> <?php echo $_SESSION['CLIENT']['PHONE']; ?></p>
-            <p><i class="fa-solid fa-location-dot"></i> <?php echo $_SESSION['CLIENT']['PROVINCE']; ?>, <?php echo $_SESSION['CLIENT']['CANTON']; ?></p>
+        <div class="client-profile-content">
+            <div class="client-pic">
+                <i class="fa-solid fa-user"></i> 
+            </div>
+            <div class="client-info">
+                <p><?php echo $_SESSION['CLIENT']['COMPANY']; ?></p>
+                <p><?php echo $_SESSION['CLIENT']['EMAIL']; ?></p>
+                <p><i class="fa-solid fa-phone"></i> <?php echo $_SESSION['CLIENT']['PHONE']; ?></p>
+                <p><i class="fa-solid fa-location-dot"></i> <?php echo $_SESSION['CLIENT']['PROVINCE']; ?>, <?php echo $_SESSION['CLIENT']['CANTON']; ?></p>
+            </div>
         </div>
+
     </div>
 
     <div class="client-events-container">

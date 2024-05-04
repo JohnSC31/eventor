@@ -771,9 +771,17 @@ body#profile div.client-profile{
     background-color: var(--green);
     border-radius: var(--radius);
     padding: 1rem;
-    display: flex;
     align-items: center;
     color: var(--white);
+}
+
+body#profile div.client-profile div.client-profile-header{
+    display: flex;
+    justify-content: end;
+}
+
+body#profile div.client-profile div.client-profile-content{
+    display: flex;
 }
 
 body#profile div.client-profile div.client-pic{
@@ -879,6 +887,18 @@ body#profile div.client-events-list div.no-events{
     align-items: center;
 }
 
+/* MODAL DE EDITAR USUARIO */
+div.modal-edit-client{
+    width: 50%;
+    padding: 3rem;
+}
+
+@media only screen and (max-width: 768px) {
+    div.modal-edit-client{
+        width: 75%;
+    }
+}
+
 /*////////////////////// -------------------------- REQUEST / SOLICITUD --------------------------------------------- ///////////////////////*/
 body#request h1{
     color: var(--green);
@@ -893,18 +913,18 @@ body#request form textarea{
     background-color: var(--grey);
 }
 
-body#request form div.request-form-services{
+form div.request-form-services{
     display: flex;
     flex-wrap: wrap;
 }
-body#request form div.request-form-services .field{
+form div.request-form-services .field{
     flex: 0 0 50%;
 }
-body#request form div.request-form-services label{
+form div.request-form-services label{
     font-size: 1.8rem;
 }
 
-body#request form div.request-form-services i{
+form div.request-form-services i{
     color: var(--red);
     margin-right: 1rem;
 }
@@ -915,16 +935,27 @@ body#event h1{
 
 body#event div.event-detail-container{
     background-color: var(--grey);
-    padding: 3rem;
+    padding: 1rem;
     border-radius: var(--radius);
-    margin-top: 2rem;
+    margin: 4rem 0;
 }
 body#event div.event-detail-container p.error{
     text-align: center;
 }
 
+body#event div.event-detail-container div.event-detail-header{
+    display: flex;
+    justify-content: end;
+    padding-bottom: 1rem;
+}
+
+body#event div.event-detail-container div.event-detail-header button{
+    margin-left: 1rem;
+}
+
 body#event div.event-detail-container div.event-sumary-container{
     display: flex;
+    padding: 2rem;
 }
 
 body#event div.event-detail-container div.event-icon{
