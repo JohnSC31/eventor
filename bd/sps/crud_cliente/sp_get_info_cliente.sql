@@ -1,6 +1,6 @@
 DROP PROCEDURE IF EXISTS sp_get_info_cliente;
 DELIMITER $$
-CREATE PROCEDURE sp_get_info_cliente(pClienteID INT, OUT errorMessage VARCHAR(255))
+CREATE PROCEDURE sp_get_info_cliente(IN pClienteID INT, OUT errorMessage VARCHAR(255))
 BEGIN
 	DECLARE NON_EXISTENT_CLIENT INT DEFAULT(53000);
     DECLARE clientExists TINYINT DEFAULT 0;
@@ -26,7 +26,7 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = NON_EXISTENT_CLIENT;
     END IF;
 
-	SELECT c.id, c.nombreEmpresa AS empresa, c.detalleEmpresa AS detalle, p.nombre AS provincia, cant.nombre AS canton, c.telefono, c.correo FROM cliente AS c
+	SELECT c.id, c.nombreEmpresa AS empresa, c.detalleEmpresa AS detalle, p.id as idProvincia, p.nombre AS provincia, cant.id as idCanton, cant.nombre AS canton, c.telefono, c.correo FROM cliente AS c
 	JOIN canton AS cant ON cant.id = c.id_canton
 	JOIN provincia AS p ON p.id = cant.id_provincia
     WHERE c.id = pClienteID;

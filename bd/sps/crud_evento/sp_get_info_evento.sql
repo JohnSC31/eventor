@@ -1,6 +1,6 @@
 DROP PROCEDURE IF EXISTS sp_get_info_evento;
 DELIMITER $$
-CREATE PROCEDURE sp_get_info_evento(pEventoID INT, OUT errorMessage VARCHAR(255))
+CREATE PROCEDURE sp_get_info_evento(IN pEventoID INT, OUT errorMessage VARCHAR(255))
 BEGIN
 	DECLARE NON_EXISTENT_EVENT INT DEFAULT(53000);
     DECLARE eventExists TINYINT DEFAULT 0;
@@ -26,9 +26,9 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = NON_EXISTENT_EVENT;
     END IF;
 
-	SELECT ev.id, c.nombreEmpresa AS empresa, ev.nombre AS 'nombre del evento', m.modalidad, te.tipo_evento AS 'tipo de evento', te.icono as 'icono'
+	SELECT ev.id, c.nombreEmpresa AS empresa, ev.nombre AS 'nombre del evento', m.modalidad, te.tipo_evento AS 'tipo de evento', te.icono as 'icono',
 	ee.estado AS 'estado del evento', ev.fecha_hora AS 'fecha y hora', ev.detalles, ev.duracion, ev.cupos, 
-	p.nombre AS provincia, cant.nombre AS canton, ev.direccion, ev.precio_total AS 'precio total'
+	p.id as idProvincia, p.nombre AS provincia, cant.id as idCanton, cant.nombre AS canton, ev.direccion, ev.precio_total AS 'precio total'
 	FROM evento AS ev
 	JOIN cliente AS c ON c.id = ev.id_cliente
 	JOIN modalidad AS m ON m.id = ev.id_modalidad

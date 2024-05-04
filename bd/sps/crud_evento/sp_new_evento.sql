@@ -102,7 +102,7 @@ BEGIN
 	START TRANSACTION;
         INSERT INTO evento (id_cliente, id_modalidad, id_canton, id_tipo_evento, id_estado, nombre, fecha_hora, detalles, duracion, cupos, direccion, precio_total) 
         VALUES (pClienteID, pModalidadID, pCantonID, pTypeID, 1, pName, pDateTime, pDetails, pDuration, pCapacity, pLocation, precioTotal);
-        SELECT LAST_INSERT_ID();
+        SELECT LAST_INSERT_ID() AS id_evento;
     COMMIT;
 END$$
 DELIMITER ;
