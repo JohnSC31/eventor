@@ -155,7 +155,7 @@ function validInput(input_value, max_length = false, msj = 'Campo Obligatorio'){
     return false;
   }
   if(length > 0 && input_value.length > max_length){
-    showNotification("Excede max de caracteres", false);
+    showNotification("Excede el máximo de caracteres", false);
     return false;
   }
 
@@ -166,27 +166,27 @@ function validInput(input_value, max_length = false, msj = 'Campo Obligatorio'){
 function validPassword(input_value){
 
   if(input_value.length == 0){
-    showNotification("Ingrese una contreseña", false);
+    showNotification("Ingrese una contraseña", false);
     return false;
 
   }else if (input_value.length < 7) {
-    showNotification("Contreseña muy corta", false);
+    showNotification("La contraseña es muy corta", false);
     return false;
 
   }else if (input_value.length > 30) {
-    showNotification("Contreseña muy larga", false);
+    showNotification("La contraseña es muy larga", false);
     return false;
 
   }else if(!(/.*[a-z]/).test(input_value)){
-    showNotification("Debe haber almenos una minuscula", false);
+    showNotification("La contraseña debe tener al menos una minúscula", false);
     return false;
 
   }else if(!(/.*[A-Z]/).test(input_value)){
-    showNotification("Debe haber almenos una mayuscula", false);
+    showNotification("La contraseña debe tener al menos una mayuscula", false);
     return false;
 
   }else if(!(/.*[0-9]/).test(input_value)){
-    showNotification("Debe haber almenos un número", false);
+    showNotification("La contraseña debe tener al menos un número", false);
     return false;
   }
   return true
@@ -199,7 +199,7 @@ function validEmail(input_value){
     return false;
   }
   if (!validEmailPattern.test(input_value)){
-    showNotification("Correo inválido", false);
+    showNotification("El correo es inválido", false);
     return false;
 
   }

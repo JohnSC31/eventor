@@ -24,7 +24,7 @@
             if(method_exists($this->controller, $this->ajaxMethod)){
                 call_user_func_array([$this->controller, $this->ajaxMethod], $this->data);
             }else{
-                $this->ajaxRequestResult(false, "Metodo inexistente");
+                $this->ajaxRequestResult(false, "Método inexistente");
             }
         }
 
@@ -111,9 +111,9 @@
     
                 if(isset($_SESSION['CLIENT'])){
                     // retorna sin errores
-                    $this->ajaxRequestResult(true, "Se ha iniciado sesion correctamente");
+                    $this->ajaxRequestResult(true, "Se ha iniciado sesión correctamente");
                 }else{
-                    $this->ajaxRequestResult(false, "Error al iniciar sesion");
+                    $this->ajaxRequestResult(false, "Se ha producido un error al iniciar sesión");
                 }
 
             } 
@@ -125,9 +125,9 @@
 
             if(!isset($_SESSION['CLIENT'])){
               
-                $this->ajaxRequestResult(true, "Se ha cerrado sesion");
+                $this->ajaxRequestResult(true, "Se ha cerrado la sesión");
             }else{ 
-                $this->ajaxRequestResult(false, "Error al cerrar sesion");
+                $this->ajaxRequestResult(false, "Se ha producido un error al cerrar sesión");
             }
         }
 
@@ -225,7 +225,7 @@
                         return; // se acaba la ejecucion
                     }
                 }
-                $this->ajaxRequestResult(true, "Evento editado correctamente");
+                $this->ajaxRequestResult(true, "Cambios guardados correctamente");
             }
         }
 
