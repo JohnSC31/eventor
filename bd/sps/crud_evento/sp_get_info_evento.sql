@@ -14,7 +14,7 @@ BEGIN
         ELSE
             CASE
                 WHEN @err_no = 53000 THEN
-                    SET errorMessage = CONCAT('Error: El evento no existe');
+                    SET errorMessage = CONCAT('Error: No se puede mostrar la información solicitada ya que el evento no existe');
             END CASE;
         END IF;
         

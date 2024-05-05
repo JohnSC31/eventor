@@ -30,21 +30,21 @@ BEGIN
         ELSE
             CASE
                 WHEN @err_no = 53000 THEN
-                    SET errorMessage = CONCAT('Error: El cliente no existe');
+                    SET errorMessage = CONCAT('Error: El cliente que desea editar no existe');
                 WHEN @err_no = 53001 THEN
-                    SET errorMessage = CONCAT('Error: La modalidad no existe');
+                    SET errorMessage = CONCAT('Error: La modalidad que desea agregar no existe');
                 WHEN @err_no = 53002 THEN
-                    SET errorMessage = CONCAT('Error: El cantón no existe');
+                    SET errorMessage = CONCAT('Error: El cantón que desea agregar no existe');
                 WHEN @err_no = 53003 THEN
-                    SET errorMessage = CONCAT('Error: El tipo de evento no existe');
+                    SET errorMessage = CONCAT('Error: El tipo de evento que desea agregar no existe');
                 WHEN @err_no = 53004 THEN
-                    SET errorMessage = CONCAT('Error: El nombre es muy largo');
+                    SET errorMessage = CONCAT('Error: El nombre digitado es muy largo');
                 WHEN @err_no = 53005 THEN
-                    SET errorMessage = CONCAT('Error: El evento ya existe');
+                    SET errorMessage = CONCAT('Error: Ya existe un evento con el nombre digitado');
                 WHEN @err_no = 53006 THEN
                     SET errorMessage = CONCAT("Error: La fecha es inválida");
                 WHEN @err_no = 53007 THEN
-                    SET errorMessage = CONCAT('Error: El detalle es muy largo');
+                    SET errorMessage = CONCAT('Error: El detalle digitado es muy largo');
                 WHEN @err_no = 53008 THEN
                     SET errorMessage = CONCAT('Error: La duración se excede de los límites');
                 WHEN @err_no = 53009 THEN

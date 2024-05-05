@@ -27,23 +27,23 @@ BEGIN
         ELSE
             CASE
                 WHEN @err_no = 53000 THEN
-                    SET errorMessage = CONCAT('Error: El cliente no existe');
+                    SET errorMessage = CONCAT('Error: El cliente que desea editar no existe');
                 WHEN @err_no = 53001 THEN
-                    SET errorMessage = CONCAT('Error: El cantón no existe');
+                    SET errorMessage = CONCAT('Error: El cantón que desea agregar no existe');
                 WHEN @err_no = 53002 THEN
-                    SET errorMessage = CONCAT("Error: El nombre de la empresa es muy largo");
+                    SET errorMessage = CONCAT("Error: El nombre de la empresa digitado es muy largo");
                 WHEN @err_no = 53003 THEN
                     SET errorMessage = CONCAT('Error: La empresa ya existe');
                 WHEN @err_no = 53004 THEN
-                    SET errorMessage = CONCAT('Error: El detalle es muy largo');
+                    SET errorMessage = CONCAT('Error: El detalle digitado es muy largo');
                 WHEN @err_no = 53005 THEN
-                    SET errorMessage = CONCAT('Error: El número de teléfono no es válido');
+                    SET errorMessage = CONCAT('Error: El número de teléfono digitado no es válido');
                 WHEN @err_no = 53006 THEN
-                    SET errorMessage = CONCAT('Error: El correo no es válido');
+                    SET errorMessage = CONCAT('Error: El correo digitado no es válido ya que no sigue la estructura de un correo');
                 WHEN @err_no = 53007 THEN
-                    SET errorMessage = CONCAT('Error: El correo es muy largo');
+                    SET errorMessage = CONCAT('Error: El correo digitado es muy largo');
                 WHEN @err_no = 53008 THEN
-                    SET errorMessage = CONCAT('Error: El correo ya existe');
+                    SET errorMessage = CONCAT('Error: El correo digitado ya está en uso');
             END CASE;
         END IF;
         

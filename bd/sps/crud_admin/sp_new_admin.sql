@@ -23,21 +23,21 @@ BEGIN
         ELSE
             CASE
                 WHEN @err_no = 53000 THEN
-                    SET errorMessage = CONCAT('Error: El rol no existe');
+                    SET errorMessage = CONCAT('Error: El rol que desea agregar no existe');
                 WHEN @err_no = 53001 THEN
-                    SET errorMessage = CONCAT('Error: El nombre es muy largo');
+                    SET errorMessage = CONCAT('Error: El nombre digitado es muy largo');
                 WHEN @err_no = 53002 THEN
-                    SET errorMessage = CONCAT('Error: El correo no es válido');
+                    SET errorMessage = CONCAT('Error: El correo digitado no es válido ya que no cuenta con la estructura de un correo');
                 WHEN @err_no = 53003 THEN
-                    SET errorMessage = CONCAT('Error: El correo es muy largo');
+                    SET errorMessage = CONCAT('Error: El correo digitado es muy largo');
                 WHEN @err_no = 53004 THEN
-                    SET errorMessage = CONCAT('Error: El correo ya existe');
+                    SET errorMessage = CONCAT('Error: El correo digitado ya está vinculado a otra cuenta');
                 WHEN @err_no = 53005 THEN
-                    SET errorMessage = CONCAT('Error: La contraseña es muy corta');
+                    SET errorMessage = CONCAT('Error: La contraseña digitada es muy corta');
                 WHEN @err_no = 53006 THEN
-                    SET errorMessage = CONCAT('Error: La contraseña es muy larga');
+                    SET errorMessage = CONCAT('Error: La contraseña digitada es muy larga');
                 WHEN @err_no = 53007 THEN
-                    SET errorMessage = CONCAT('Error: La contraseña tiene que tener al menos una miníscula, una mayúscula y un número');
+                    SET errorMessage = CONCAT('Error: La contraseña digitada tiene que tener al menos una miníscula, una mayúscula y un número');
             END CASE;
         END IF;
         

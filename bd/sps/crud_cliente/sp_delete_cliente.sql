@@ -14,7 +14,7 @@ BEGIN
         ELSE
             CASE
                 WHEN @err_no = 53000 THEN
-                    SET errorMessage = CONCAT('Error: El cliente no existe');
+                    SET errorMessage = CONCAT('Error: El cliente que desea borrar no existe');
             END CASE;
         END IF;
         

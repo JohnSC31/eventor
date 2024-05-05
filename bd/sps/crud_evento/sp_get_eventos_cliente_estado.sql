@@ -16,9 +16,9 @@ BEGIN
         ELSE
             CASE
                 WHEN @err_no = 53000 THEN
-                    SET errorMessage = CONCAT('Error: El cliente no existe');
+                    SET errorMessage = CONCAT('Error: No se puede mostrar la información solicitada ya que el cliente no existe');
                 WHEN @err_no = 53001 THEN
-                    SET errorMessage = CONCAT('Error: El estado no existe');
+                    SET errorMessage = CONCAT('Error: No se puede mostrar la información solicitada ya que el estado no existe');
             END CASE;
         END IF;
         

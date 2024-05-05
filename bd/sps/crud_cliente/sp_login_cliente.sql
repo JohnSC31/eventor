@@ -16,9 +16,9 @@ BEGIN
         ELSE
             CASE
                 WHEN @err_no = 53000 THEN
-                    SET errorMessage = CONCAT('Error: No hay ninguna cuenta vinculada a ese correo');
+                    SET errorMessage = CONCAT('Error: El correo digitado no está vinculado a una cuenta');
                 WHEN @err_no = 53001 THEN
-                    SET errorMessage = CONCAT('Error: La constraseña es incorrecta');
+                    SET errorMessage = CONCAT('Error: La constraseña digitada es incorrecta');
             END CASE;
         END IF;
         

@@ -14,7 +14,7 @@ BEGIN
         ELSE
             CASE
                 WHEN @err_no = 53000 THEN
-                    SET errorMessage = CONCAT('Error: La provincia no existe');
+                    SET errorMessage = CONCAT('Error: No se pueden desplegar los cantones ya que la provincia elegida no existe');
             END CASE;
         END IF;
         
