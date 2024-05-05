@@ -83,6 +83,11 @@ div.dashboard-container main{
     overflow: scroll;
 }
 
+div.dashboard-container main h1{
+    text-align: center;
+    color: var(--darkGreen);
+}
+
 
 /* ------------------------------ HOME / EVENTS --------------------------- */
 body#home div.admin-events-container{
@@ -239,7 +244,12 @@ form#login-admin-form textarea{
 /* ------------------------------- CONFIGURACIONES ------------------------------------ */
 
 div.settings-list-container{
-    padding-top: 2rem;
+    margin-top: 5rem;
+    border-top: 2px solid var(--green);
+}
+div.settings-list-container:first-of-type{
+    margin-top: 2rem;
+    border-top: 2px solid transparent;
 }
 
 div.settings-list-container form .field input,
@@ -248,6 +258,10 @@ div.settings-list-container form textarea{
     color: var(--black);
     background-color: var(--grey);
     border: 1px solid var(--black);
+}
+
+div.settings-list-container form .submit input{
+    margin-right: 1rem;
 }
 
 div.setting-item{

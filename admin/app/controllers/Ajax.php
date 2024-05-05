@@ -72,58 +72,6 @@
 
         }
 
-        // --------------------------- SECCION DE VENTAS -------------------------------------------
-        // metodo para cargar las data table de ventas
-        private function loadDataTableSells($REQUEST){
-            // se realiza la consulta a la base de datos
-            $this->db->query("my query");
-            // NULLOS PORQUE TRAEN TODOS LOS RESULTADOS
-
-            $sells = $this->db->results(); // se obtienen de la base de datos
-            $totalRecords = count($sells);
-
-            // var_dump($employees);
-
-            $dataTableArray = array();
-
-            foreach($sells as $key => $row){
-                $row = get_object_vars($row);
-                $btnDetail = "<button type='button' class='btn btn-warning btn-sm' data-modal='order' data-modal-data='{\"idOrder\": ".$row['ordenID']."}'><i class='fa-solid fa-eye'></i></button>";
-
-                $sub_array = array();
-                $sub_array['idSell'] = $row['ordenID'];
-                $sub_array['clientName'] = $row['nombreCliente'];
-                $sub_array['status'] = $row['estado'];
-                $sub_array['date'] = date('j-n-Y', strtotime($row['fecha']));
-                $sub_array['actions'] = $btnDetail;
-                $dataTableArray[] = $sub_array;
-            }
-
-            echo $this->dataTableOutput(intval($REQUEST['draw']), $totalRecords, $totalRecords, $dataTableArray);
-
-        }
-
-        //Params: Draw, TotalFiltrados, TotalRecords, Datos
-        //Result: un array codificado en formato json
-        //Prepara los datos de la consulta hecha y los ordena para ser leidos por las dataTables
-        public function dataTableOutput($draw, $totalFiltered, $totalRecords, $data){
-            // $output = array();
-            $output = array(
-                "draw"				=>	$draw,
-                "recordsTotal"      =>  $totalFiltered,  // total number of records
-                "recordsFiltered"   =>  $totalRecords, // total number of records after searching, if there is no searching then totalFiltered = totalData
-                "data"				=>  $data
-            );
-        
-            return json_encode($output);
-        }
-
-        // METODO PARA VALIDAR LOS MENSAJES DE ERRORES DE LOS SP (TRUE SI HAY ERROR, FALSE SI NO)
-        private function isErrorInResult($result){
-            return (isset($result['Error']) && $result['Error'] != "");
-        }
-
-
         // ------------------- METODOS DE ADMIN ----------------------------
 
         // REGISTRO DE UN ADMINISTRADOR 
@@ -363,13 +311,49 @@
 
         // ------------------- METODOS DE TIPO DE EVENTO ----------------------------
 
+        // CARGAR LOS TIPOS DE EVENTOS EN COFIGURACIONES
+        private function loadSettingsEventType(){
+            $this->db->query("CALL sp_get_tipos_evento()");
+
+            $eventTypes = $this->db->results();
+
+            
+            if(!$eventTypes){
+                // no hay eventos
+                ?>
+                <div class="no-events">
+                    <p>No hay tipos de eventos</p>
+                </div>
+                <?php
+            }else{
+                // se cargan los eventos
+                foreach($eventTypes as $key => $eventType){
+                    $eventType = get_object_vars($eventType);
+                    ?>
+                    <div class="setting-item">
+                        <div class="setting-content">
+                            <p><?php echo $eventType['tipo_evento'];?></p>
+                        </div>
+                        <div class="setting-actions">
+                            <button class="btn btn_green" 
+                                edit-type-event='<?php echo json_encode($eventType); ?>'>
+                                <i class="fa-solid fa-pencil"></i>
+                            </button>
+                            <button class="btn btn_red" delete-type-event="<?php echo $eventType['id']; ?>"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <?php
+                }
+            }
+        }
+        
         // CREAR TIPO DE EVENTO
         private function createEventType($eventType){
             $this->db->query("CALL sp_new_tipo_evento(?, ?, ?, ?, @variableMsgError)");
-            $this->db->bind(1, $eventType['eventType']);
+            $this->db->bind(1, $eventType['typeEvent']);
             $this->db->bind(2, $eventType['icon']);
             $this->db->bind(3, $eventType['price']);
-            $this->db->bind(4, $eventType['description']);
+            $this->db->bind(4, $eventType['detail']);
 
             $this->db->execute();
 
@@ -386,11 +370,11 @@
         // EDITAR TIPO DE EVENTO
         private function editEventType($eventType){
             $this->db->query("CALL sp_edit_tipo_evento(?, ?, ?, ?, ?, @variableMsgError)");
-            $this->db->bind(1, $eventType['idTipoEvento']);
-            $this->db->bind(2, $eventType['eventType']);
+            $this->db->bind(1, $eventType['idEventType']);
+            $this->db->bind(2, $eventType['typeEvent']);
             $this->db->bind(3, $eventType['icon']);
             $this->db->bind(4, $eventType['price']);
-            $this->db->bind(5, $eventType['description']);
+            $this->db->bind(5, $eventType['detail']);
 
             $this->db->execute();
 
@@ -400,14 +384,14 @@
             if(!is_null($varMsgError['@variableMsgError'])){
                 $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
             }else{
-                $this->ajaxRequestResult(true, "Cambios guardados correctamente");
+                $this->ajaxRequestResult(true, "Se edito el tipo evento correctamente");
             }
         }
 
         // ELIMINAR TIPO DE EVENTO
         private function deleteEventType($eventType){
             $this->db->query("CALL sp_delete_tipo_evento(?, @variableMsgError)");
-            $this->db->bind(1, $eventType['idTipoEvento']);
+            $this->db->bind(1, $eventType['idEventType']);
 
             $this->db->execute();
 
@@ -422,14 +406,47 @@
         }
 
         // ------------------- METODOS DE SERVICIO ----------------------------
+        private function loadSettingsServices(){
+            $this->db->query("CALL sp_get_servicios()");
 
+            $services = $this->db->results();
+
+            
+            if(!$services){
+                // no hay eventos
+                ?>
+                <div class="no-events">
+                    <p>No hay servicios</p>
+                </div>
+                <?php
+            }else{
+                // se cargan los eventos
+                foreach($services as $key => $service){
+                    $service = get_object_vars($service);
+                    ?>
+                    <div class="setting-item">
+                        <div class="setting-content">
+                            <p><?php echo $service['servicio'];?></p>
+                        </div>
+                        <div class="setting-actions">
+                            <button class="btn btn_green" 
+                                edit-service='<?php echo json_encode($service); ?>'>
+                                <i class="fa-solid fa-pencil"></i>
+                            </button>
+                            <button class="btn btn_red" delete-service="<?php echo $service['id']; ?>"><i class="fa-solid fa-trash"></i></button>
+                        </div>
+                    </div>
+                    <?php
+                }
+            }
+        }
         // CREAR SERVICIO
         private function createService($service){
             $this->db->query("CALL sp_new_servicio(?, ?, ?, ?, @variableMsgError)");
             $this->db->bind(1, $service['service']);
             $this->db->bind(2, $service['icon']);
             $this->db->bind(3, $service['price']);
-            $this->db->bind(4, $service['description']);
+            $this->db->bind(4, $service['detail']);
 
             $this->db->execute();
 
@@ -450,7 +467,7 @@
             $this->db->bind(2, $service['service']);
             $this->db->bind(3, $service['icon']);
             $this->db->bind(4, $service['price']);
-            $this->db->bind(5, $service['description']);
+            $this->db->bind(5, $service['detail']);
 
             $this->db->execute();
 
@@ -460,14 +477,14 @@
             if(!is_null($varMsgError['@variableMsgError'])){
                 $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
             }else{
-                $this->ajaxRequestResult(true, "Cambios guardados correctamente");
+                $this->ajaxRequestResult(true, "Servicio editado correctamente");
             }
         }
 
         // ELIMINAR SERVICIO
         private function deleteService($service){
             $this->db->query("CALL sp_delete_servicio(?, @variableMsgError)");
-            $this->db->bind(1, $service['idTipoEvento']);
+            $this->db->bind(1, $service['idService']);
 
             $this->db->execute();
 

@@ -3,7 +3,7 @@
 <div class="settings-list-container">
     <h2>Crear un tipo de evento</h2>
 
-    <form id="event-type-form" method="post" enctype="multipart/form-data">
+    <form id="event-type-form" method="post" enctype="multipart/form-data" action="create" id-event="">
         <div class="col_2">
             <div class="col-form">
                 <div class="field">
@@ -16,7 +16,7 @@
 
             <div class="col-form">
                 <div class="field">
-                    <input type="text" name="tipo de evento" id="eventType-icon" placeholder="Precio de evento" data-mask="00000000">
+                    <input type="text" name="tipo de evento" id="eventType-price" placeholder="Precio de evento" data-mask="00000000">
                 </div>
                 <div class="field">
                     <textarea name="description" id="eventType-detail" cols="30" rows="3" require placeholder="Descripción de tipo de evento"></textarea>
@@ -24,22 +24,23 @@
             </div>
         </div><!-- col_2 -->
         <div class="submit">
-            <input type="submit" class="btn btn_red" value="Crear tipo de evento">
+            <input type="submit" class="btn btn_green" value="Crear tipo de evento">
+            <button class="btn btn_red" cancel-form-type-event="">Cancelar</button>
         </div>
     </form>
 
     <h2>Tipos de eventos</h2>
     <div class="settings-list" id="setting-list-event-type">
 
-        <div class="setting-item">
+        <!-- <div class="setting-item">
             <div class="setting-content">
                 <p>Tipo de evento</p>
             </div>
             <div class="setting-actions">
-                <button class="btn btn_green"><i class="fa-solid fa-eye"></i></button>
+                <button class="btn btn_green"><i class="fa-solid fa-pencil"></i></button>
                 <button class="btn btn_red"><i class="fa-solid fa-trash"></i></button>
             </div>
-        </div>
+        </div> -->
         
     </div><!-- settings-list -->
 
@@ -48,7 +49,7 @@
 <div class="settings-list-container">
     <h2>Crear un servicio</h2>
 
-    <form id="service-form" method="post" enctype="multipart/form-data">
+    <form id="service-form" method="post" enctype="multipart/form-data" action="create" id-service="">
         <div class="col_2">
             <div class="col-form">
                 <div class="field">
@@ -69,14 +70,15 @@
             </div>
         </div><!-- col_2 -->
         <div class="submit">
-            <input type="submit" class="btn btn_red" value="Crear servicio">
+            <input type="submit" class="btn btn_green" value="Crear servicio">
+            <button class="btn btn_red" cancel-form-service="" >Cancelar</button>
         </div>
     </form>
 
     <h2>Servicios</h2>
     <div class="settings-list" id="setting-list-service">
 
-        <div class="setting-item">
+        <!-- <div class="setting-item">
             <div class="setting-content">
                 <p>Servicio</p>
             </div>
@@ -84,7 +86,7 @@
                 <button class="btn btn_green"><i class="fa-solid fa-eye"></i></button>
                 <button class="btn btn_red"><i class="fa-solid fa-trash"></i></button>
             </div>
-        </div>
+        </div> -->
         
     </div><!-- settings-list -->
 

@@ -35,6 +35,28 @@ const AJAX_URL = URL_PATH + 'app/controllers/Ajax.php';
         loadAdminClients();
       }
 
+      // SETTIGS / CONFIGURACIONES
+      if($('body').attr('id') === 'settings'){
+        // ------------------ TIPOS DE EVENTOS -------------------
+        // FORM TIPO DE EVENTO
+        $("body").on("submit", "form#event-type-form", eventTypeForm);
+        $("body").on("click", "[cancel-form-type-event]", cancelEditEventType);
+        loadSettingsEventType();
+        // eliminar un tipo de evento
+        $("body").on("click", "[delete-type-event]", deleteSettingEventType);
+        // editar un evento
+        $("body").on("click", "[edit-type-event]", loadEditEventType);
+
+        // ------------------- SERVICIOS ---------------------
+        $("body").on("submit", "form#service-form", serviceForm);
+        $("body").on("click", "[cancel-form-service]", cancelEditService);
+        loadSettingsServices();
+         // eliminar un servicio
+         $("body").on("click", "[delete-service]", deleteSettingService);
+         // editar un servicio
+         $("body").on("click", "[edit-service]", loadEditService);
+      }
+
 
 
       // carrusel de imagenes del producto
@@ -194,7 +216,6 @@ function validFiles(fileInput){
 // FUNCION PARA INICIAR SESION DE ADMINSITRADOR
 async function loginAdmin(e){
   e.preventDefault();
-  console.log('shit');
   // campos
   const input_email = $('input#email');
   const input_pass = $('input#pass');
@@ -290,10 +311,225 @@ async function loadAdminClients(){
 
   const loadClientsFormData = new FormData();
 
-  loadClientsFormData.append('id', $('div#event-detail-container').attr('id-event'));
   loadClientsFormData.append('ajaxMethod', "loadClients");
   
   ajaxHTMLRequest(loadClientsFormData, "div#admin-clients-container");
+}
+
+// ///////////////// **********************  SETTINGS  ********************* /////////////////////
+
+// ------------------ CONFIGURACIONES PARA TIPO DE EVENTO ---------------------------
+// VALIDACION DE FORMULARIO PARA CREAR UN EVENTO
+async function eventTypeForm(e){
+  e.preventDefault();
+  const form_action = $(this).attr('action');
+  // campos
+  const input_eventType = $('input#eventType');
+  const input_icon = $('input#eventType-icon');
+  const input_price = $('input#eventType-price');
+  const textarea_detail = $('textarea#eventType-detail');
+  
+  // validacion
+  if(!validInput(input_eventType.val(), false, "Ingrese un tipo de evento")) return false
+  if(!validInput(input_icon.val(), false, "Ingrese un icono")) return false
+  if(!validInput(input_price.val(), false, "Ingrese un precio de evento")) return false
+  if(!validInput(textarea_detail.val(), false, "Ingrese un detalle de tipo de evento")) return false
+
+  // form data
+  const settingFormData = new FormData();
+  settingFormData.append('typeEvent', input_eventType.val());
+  settingFormData.append('icon', input_icon.val());
+  settingFormData.append('price', input_price.val());
+  settingFormData.append('detail', textarea_detail.val());
+
+  if(form_action === 'edit'){
+    settingFormData.append('idEventType', $(this).attr('id-event'));
+    settingFormData.append('ajaxMethod', "editEventType");
+  }else{
+    settingFormData.append('ajaxMethod', "createEventType");
+  }
+
+  result = await ajaxRequest(settingFormData);
+  showNotification(result.Message, result.Success);
+
+  if(result.Success){
+    setTimeout(()=>{
+      loadSettingsEventType();
+      if(form_action === 'edit') cancelEditEventType();
+      if(form_action === 'create') $(this)[0].reset();
+      
+    }, 1500)
+  }
+
+}
+
+// FUNCION PARA CARGAR LOS TIPOS DE EVENTOS EN CONFIGURACIONES
+async function loadSettingsEventType(){
+
+  const loadSettingsFormData = new FormData();
+
+  loadSettingsFormData.append('ajaxMethod', "loadSettingsEventType");
+  
+  ajaxHTMLRequest(loadSettingsFormData, "div#setting-list-event-type");
+}
+
+async function deleteSettingEventType(e){
+  e.preventDefault();
+
+  if(!confirm('La eliminación del tipo de evento es permanente ¿desea continuar?')) return false;
+
+  const settingFormData = new FormData();
+  settingFormData.append('idEventType', $(this).attr('delete-type-event'));
+
+  settingFormData.append('ajaxMethod', "deleteEventType");  
+
+  result = await ajaxRequest(settingFormData);
+  showNotification(result.Message, result.Success);
+
+  if(result.Success){
+    setTimeout(()=>{
+      loadSettingsEventType();
+    }, 1500)
+  }
+
+}
+
+// carga en el formulario el type de evento para editar
+async function loadEditEventType(e){
+  e.preventDefault();
+
+  var eventType = JSON.parse($(this).attr('edit-type-event'));
+
+  // carga en el form de crear evento
+  $('input#eventType').val(eventType.tipo_evento);
+  $('input#eventType-icon').val(eventType.icono);
+  $('input#eventType-price').val(eventType.precio);
+  $('textarea#eventType-detail').val(eventType.descripcion);
+
+  // configuraciones para el formulario
+  $('form#event-type-form').attr('action', "edit");
+  $('form#event-type-form').attr('id-event', eventType.id);
+
+  $('form#event-type-form div.submit input').val('Editar tipo de evento');
+  
+}
+
+function cancelEditEventType(e = false){
+  if(e) e.preventDefault();
+
+  $('form#event-type-form')[0].reset();
+  
+  // configuraciones para el formulario
+  $('form#event-type-form').attr('action', "create");
+  $('form#event-type-form').attr('id-event', "");
+  $('form#event-type-form div.submit input').val('Crear tipo de evento');
+}
+
+// ------------------ CONFIGURACIONES PARA SERVICIOS ---------------------------
+// VALIDACION DE FORMULARIO PARA CREAR UN SERVICIO
+async function serviceForm(e){
+  e.preventDefault();
+  const form_action = $(this).attr('action');
+  // campos
+  const input_service = $('input#service');
+  const input_icon = $('input#service-icon');
+  const input_price = $('input#service-price');
+  const textarea_detail = $('textarea#service-detail');
+  
+  // validacion
+  if(!validInput(input_service.val(), false, "Ingrese un tipo de evento")) return false
+  if(!validInput(input_icon.val(), false, "Ingrese un icono")) return false
+  if(!validInput(input_price.val(), false, "Ingrese un precio de evento")) return false
+  if(!validInput(textarea_detail.val(), false, "Ingrese un detalle de tipo de evento")) return false
+
+  // form data
+  const settingFormData = new FormData();
+  settingFormData.append('service', input_service.val());
+  settingFormData.append('icon', input_icon.val());
+  settingFormData.append('price', input_price.val());
+  settingFormData.append('detail', textarea_detail.val());
+
+  if(form_action === 'edit'){
+    settingFormData.append('idService', $(this).attr('id-service'));
+    settingFormData.append('ajaxMethod', "editService");
+  }else{
+    settingFormData.append('ajaxMethod', "createService");
+  }
+
+  result = await ajaxRequest(settingFormData);
+  showNotification(result.Message, result.Success);
+
+  if(result.Success){
+    setTimeout(()=>{
+      loadSettingsServices();
+      if(form_action === 'edit') cancelEditService();
+      if(form_action === 'create') $(this)[0].reset();
+      
+    }, 1500)
+  }
+
+}
+
+// FUNCION PARA CARGAR LOS SERVICIOS EN CONFIGURACIONES
+async function loadSettingsServices(){
+
+  const loadSettingsFormData = new FormData();
+
+  loadSettingsFormData.append('ajaxMethod', "loadSettingsServices");
+  
+  ajaxHTMLRequest(loadSettingsFormData, "div#setting-list-service");
+}
+
+async function deleteSettingService(e){
+  e.preventDefault();
+
+  if(!confirm('La eliminación del servicio es permanente ¿desea continuar?')) return false;
+
+  const settingFormData = new FormData();
+  settingFormData.append('idService', $(this).attr('delete-service'));
+
+  settingFormData.append('ajaxMethod', "deleteService");  
+
+  result = await ajaxRequest(settingFormData);
+  showNotification(result.Message, result.Success);
+
+  if(result.Success){
+    setTimeout(()=>{
+      loadSettingsServices();
+    }, 1500)
+  }
+
+}
+
+// carga en el formulario el servicio para editar
+async function loadEditService(e){
+  e.preventDefault();
+
+  var service = JSON.parse($(this).attr('edit-service'));
+
+  // carga en el form de crear servicio
+  $('input#service').val(service.servicio);
+  $('input#service-icon').val(service.icono);
+  $('input#service-price').val(service.precio);
+  $('textarea#service-detail').val(service.descripcion);
+
+  // configuraciones para el formulario
+  $('form#service-form').attr('action', "edit");
+  $('form#service-form').attr('id-service', service.id);
+
+  $('form#service-form div.submit input').val('Editar servicio');
+  
+}
+
+function cancelEditService(e = false){
+  if(e) e.preventDefault();
+
+  $('form#service-form')[0].reset();
+  
+  // configuraciones para el formulario
+  $('form#service-form').attr('action', "create");
+  $('form#service-form').attr('id-service', "");
+  $('form#service-form div.submit input').val('Crear servicio');
 }
 
 // FUNCION PARA LA INICIALIZACION DE LAS DATATABLES
