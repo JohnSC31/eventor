@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <title><?php  echo WEB_NAME . " | " .$data['TITLE'];?></title>
 
-    <meta name="description" content="CLICKSHIP el mejor en e-commerce y logistica">
+    <meta name="description" content="Eventor organizador de eventos empresariales">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="site.webmanifest">
 
@@ -33,7 +33,7 @@
         <div class="container">
             <a href="<?php echo URL_PATH; ?>home">
                 <div class="logo">
-                    <img src="<?php echo URL_PATH; ?>public/img/blackLogo.png" alt="">
+                    <img src="<?php echo URL_PATH; ?>public/img/blackLogo.png" alt="Página principal">
                 </div>
             </a>
             <nav class="navigation">
@@ -46,7 +46,7 @@
                         <!-- SESION INICIADA -->
                         <li><a href="<?php echo URL_PATH; ?>request" class="btn btn_red"><i class="fa-solid fa-calendar-days"></i></i> <span class="hide_medium"> Solicitar </span></a></li>
                         <li><a href="<?php echo URL_PATH; ?>profile" class="btn btn_green"><i class="fa-solid fa-user"></i> <span class="hide_medium"> Perfil </span></a></li>
-                        <li><a href="javascript:void(0);" class="btn btn_black" log-out="true"><i class="fa-solid fa-right-from-bracket"></i></a></li>
+                        <li><a href="javascript:void(0);" class="btn btn_black" log-out="true"><i class="fa-solid fa-right-from-bracket" aria-label="Cerrar Sesión"></i></a></li>
 
                     <?php } ?>
                 </ul>
@@ -58,7 +58,7 @@
 
 </header>
 
-<div class="notification_container" id="notification_container"></div>
+<div class="notification_container" id="notification_container" role="alert"></div>
 
 <div class="modal_container" id="modal_container"></div>
 

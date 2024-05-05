@@ -354,7 +354,7 @@
             <ul class="event-icon-container">
                 <?php foreach($eventList as $key => $event){ 
                     $event = get_object_vars($event); ?>
-                    <li change-event="<?php echo $event['id']; ?>" class="<?php echo get_object_vars($eventList[0]) == $event ? "active" : "";?>"><i class="<?php echo $event['icono']; ?>"></i></li>
+                    <li change-event="<?php echo $event['id']; ?>" class="<?php echo get_object_vars($eventList[0]) == $event ? "active" : "";?>"><i class="<?php echo $event['icono']; ?>" role="button" aria-label="<?php echo $event['tipo_evento']; ?>"></i></li>
                 <?php } ?>
 
             </ul>
@@ -439,7 +439,7 @@
             <ul class="service-icon-container">
                 <?php foreach($serviceList as $key => $service){ 
                     $service = get_object_vars($service); ?>
-                    <li change-service="<?php echo $service['id']; ?>" class="<?php echo get_object_vars($serviceList[0]) == $service ? "active" : "";?>"><i class="<?php echo $service['icono']; ?>"></i></li>
+                    <li change-service="<?php echo $service['id']; ?>" class="<?php echo get_object_vars($serviceList[0]) == $service ? "active" : "";?>"><i class="<?php echo $service['icono']; ?>" role="button" aria-label="<?php echo $service['servicio']; ?>"></i></li>
                 <?php } ?>
 
             </ul>
@@ -526,7 +526,7 @@
             foreach($serviceList as $key => $service){
                 ?>
                 <div class="field">
-                    <input type="checkbox" id-service="<?php echo $service->id; ?>" name="<?php echo $service->servicio; ?>" />
+                    <input type="checkbox" id-service="<?php echo $service->id; ?>" name="<?php echo $service->servicio; ?>" aria-label="Seleccionar el servicio de <?php echo $service->servicio; ?>"/>
                     <label for="<?php echo $service->servicio; ?>"><i class="<?php echo $service->icono; ?>"></i> <?php echo $service->servicio; ?></label>
                 </div>
                 <?php

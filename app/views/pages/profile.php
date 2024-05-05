@@ -3,7 +3,7 @@
 
     <div class="client-profile">
         <div class="client-profile-header">
-            <button class="btn btn_white" data-modal="edit-client"><i class="fa-solid fa-pencil"></i></button>
+            <button class="btn btn_white" data-modal="edit-client"><i class="fa-solid fa-pencil" aria-label="Editar información del perfil"></i></button>
         </div>
         <div class="client-profile-content">
             <div class="client-pic">
@@ -27,9 +27,9 @@
 
         <nav class="client-events-nav">
             <ul>
-                <li events-nav="requested" status="1">Solicitados</li>
-                <li events-nav="active" class="active" status="2">Activos</li>
-                <li events-nav="ended" status="3">Finalizados</li>
+                <li events-nav="requested" status="1" role="button">Solicitados</li>
+                <li events-nav="active" class="active" status="2" role="button">Activos</li>
+                <li events-nav="ended" status="3" role="button">Finalizados</li>
             </ul>
         </nav>
 

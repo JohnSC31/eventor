@@ -1,7 +1,7 @@
 DROP PROCEDURE IF EXISTS sp_edit_cliente;
 DELIMITER $$
 CREATE PROCEDURE sp_edit_cliente(pClienteID INT, pCantonID TINYINT, pBusinessName VARCHAR(30), pDetail VARCHAR(255), 
-                                 pPhone VARCHAR(8), pEmail VARCHAR(40), pPassword VARCHAR(30), OUT errorMessage VARCHAR(255))
+                                 pPhone VARCHAR(8), pEmail VARCHAR(40), OUT errorMessage VARCHAR(255))
 BEGIN
     DECLARE NON_EXISTENT_CLIENT INT DEFAULT(53000);
     DECLARE NON_EXISTENT_CANTON INT DEFAULT(53001);
@@ -12,9 +12,6 @@ BEGIN
     DECLARE INVALID_EMAIL INT DEFAULT(53006);
     DECLARE LARGE_EMAIL INT DEFAULT(53007);
     DECLARE DUPLICATE_EMAIL INT DEFAULT(53008);
-    DECLARE SHORT_PASSWORD INT DEFAULT(53009);
-    DECLARE LARGE_PASSWORD INT DEFAULT(53010);
-    DECLARE INVALID_PASSWORD INT DEFAULT(53011);
     DECLARE clientExists TINYINT DEFAULT 0;
     DECLARE cantonExists TINYINT DEFAULT 0;
     DECLARE emailExistsAdmin TINYINT DEFAULT 0;
@@ -47,12 +44,6 @@ BEGIN
                     SET errorMessage = CONCAT('Error: El correo es muy largo');
                 WHEN @err_no = 53008 THEN
                     SET errorMessage = CONCAT('Error: El correo ya existe');
-                WHEN @err_no = 53009 THEN
-                    SET errorMessage = CONCAT('Error: La contraseña es muy corta');
-                WHEN @err_no = 53010 THEN
-                    SET errorMessage = CONCAT('Error: La contraseña es muy larga');
-                WHEN @err_no = 53011 THEN
-                    SET errorMessage = CONCAT('Error: La contraseña tiene que tener al menos una miníscula, una mayúscula y un número');
             END CASE;
         END IF;
         
@@ -100,23 +91,11 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = DUPLICATE_EMAIL;
     END IF;
 
-    IF LENGTH(pPassword) < 8 THEN
-        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = SHORT_PASSWORD;
-    END IF;
-
-    IF LENGTH(pPassword) > 30 THEN
-        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = LARGE_PASSWORD;
-    END IF;
-    
-    IF NOT (pPassword REGEXP '[a-z]' AND pPassword REGEXP '[A-Z]' AND pPassword REGEXP '[0-9]') THEN
-        SIGNAL SQLSTATE '45000' SET MYSQL_ERRNO = INVALID_PASSWORD;
-    END IF;
-
 	SET autocommit = 0;
 
 	START TRANSACTION;
 		UPDATE cliente SET id_canton = pCantonID, nombreEmpresa = pBusinessName, detalleEmpresa = pDetail, 
-        telefono = pPhone, correo = pEmail, clave = SHA2(pPassword, 256) WHERE id = pClienteID;
+        telefono = pPhone, correo = pEmail WHERE id = pClienteID;
     COMMIT;
 END$$
 DELIMITER ;
