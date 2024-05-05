@@ -1,9 +1,10 @@
-<div class="admin_login_container">
+<section class="admin_login_container">
 
 
-    <h1>Inicia Sesión</h1>
+    <h1>Iniciar Sesión</h1>
+    <p>Ingresa a la plataforma como administrador</p>
 
-    <form id="admin_login" method="post" enctype="multipart/form-data">
+    <form id="login-admin-form" method="post" enctype="multipart/form-data">
         <div class="field">
             <label for="email">Tu email</label>
             <input type="email" name="email" id="email">
@@ -13,8 +14,8 @@
             <input type="password" name="pass" id="pass">
         </div>
         <div class="submit">
-            <input type="submit" class="btn btn_black" value="Iniciar Sesión">
+            <input type="submit" class="btn btn_white" value="Iniciar Sesión">
         </div>
     </form>
 
-</div>
+</section>

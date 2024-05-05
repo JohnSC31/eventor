@@ -51,54 +51,6 @@
         private function foo($data){
             $this->ajaxRequestResult(true, $data['message']);
         }
-        
-        // --------------------------- SESSION DEL ADMINISTRADOR -------------------------------------------
-        private function adminLogin($admin){
-
-            // se validan las credenciales
-            $this->db->query("{ CALL Clickship_loginEmployee(?, ?) }");
-
-            $this->db->bind(1, $admin['email']);
-            $this->db->bind(2, $admin['pass']);
-
-            $loggedEmployee = $this->db->result();
-
-            if($this->isErrorInResult($loggedEmployee)){
-                $this->ajaxRequestResult(false, $loggedEmployee['Error']);
-
-            }else{
-
-                // se inicia sesion de administrador
-                $adminSession = array(
-                    'SESSION' => TRUE,
-                    'ID' => $loggedEmployee['empleadoID'],
-                    'EMIAL' => $loggedEmployee['correo'],
-                    'NAME' => $loggedEmployee['apellidos'],
-                    'ROLE' => $loggedEmployee['rol'],
-                    // 'ROLE' => 'Gerente General'
-                );
-
-                $_SESSION['ADMIN'] = $adminSession;
-
-                if(isset($_SESSION['ADMIN'])){
-                    $this->ajaxRequestResult(true, "Se ha iniciados sesion");
-                }else{
-                    $this->ajaxRequestResult(false, "Error al iniciar sesion");
-                }
-            }
-
-        }
-
-        private function adminLogout($admin){
-            unset($_SESSION['ADMIN']); 
-
-            if(!isset($_SESSION['ADMIN'])){
-              
-                $this->ajaxRequestResult(true, "Se ha cerrado sesion");
-            }else{ 
-                $this->ajaxRequestResult(false, "Error al cerrar sesion");
-            }
-        }
 
         private function loadSelectOptions($select){
 
@@ -174,10 +126,10 @@
 
         // ------------------- METODOS DE ADMIN ----------------------------
 
-        // SIGNUP 
+        // REGISTRO DE UN ADMINISTRADOR 
         private function adminSignup($admin){
 
-            $this->db->query("CALL sp_new_admin(?, ?, ?, ?, ?, ?, @variableMsgError)");
+            $this->db->query("CALL sp_new_admin(?, ?, ?, ?, @variableMsgError)");
             $this->db->bind(1, $admin['idRol']);
             $this->db->bind(2, $admin['name']);
             $this->db->bind(3, $admin['email']);
@@ -198,6 +150,7 @@
 
         // LOGIN 
         private function adminLogin($admin){
+
             $this->db->query("CALL sp_login_admin(?, ?, @variableMsgError)");
             $this->db->bind(1, $admin['email']);
             $this->db->bind(2, $admin['pass']);
@@ -205,9 +158,11 @@
             $adminData = $this->db->result();
             
             if(!$adminData){
+
                 $this->db->query("SELECT @variableMsgError");
                 $varMsgError = $this->db->result();
                 $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+
             }else{
                 // se inicia sesion con los datos
                 $adminSession = array(
@@ -231,6 +186,7 @@
 
         // LOGOUT DEL ADMIN
         private function adminLogout(){
+
             unset($_SESSION['ADMIN']); 
 
             if(!isset($_SESSION['ADMIN'])){
@@ -267,8 +223,8 @@
 
         private function changeEventState($event){
             $this->db->query("CALL sp_set_estado_evento(?, ?, @variableMsgError)");
-            $this->db->bind(1, $event['idEvento']);
-            $this->db->bind(2, $event['idEstado']);
+            $this->db->bind(1, $event['idEvent']);
+            $this->db->bind(2, $event['idStatus']);
 
             $this->db->execute();
 
@@ -279,6 +235,129 @@
                 $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
             }else{
                 $this->ajaxRequestResult(true, "Se ha cambiado el estado del evento");
+            }
+        }
+
+        private function loadDetailEvent($event){
+
+            $this->db->query("CALL sp_get_info_evento(?, @variableMsgError)");
+            $this->db->bind(1, $event['id']);
+
+            $eventData = $this->db->result();
+            
+            if(!$eventData){
+                $this->db->query("SELECT @variableMsgError");
+                $varMsgError = $this->db->result();
+                ?>
+                <p class="error"> Error al cargar el evento </p>
+                <?php
+            }else{
+                // HTML
+                $eventServices = $this->getEventServices($event['id']);
+                ?>
+                <div class="event-detail-header">
+
+                    <?php if($eventData['idEstado'] == 1) { ?>
+                        <button class="btn btn_green" update-status="2">Activar</button>
+                        <button class="btn btn_red" update-status="3">Finalizar</button>
+                    <?php }elseif($eventData['idEstado'] == 2) {?>
+                        <button class="btn btn_red" update-status="3">Finalizar</button>
+                    <?php }elseif($eventData['idEstado'] == 3) {?>
+                        <button class="btn btn_green" update-status="2">Activar</button>
+                    <?php }?>
+
+                </div>
+
+                <div class="event-sumary-container">
+                    <div class="event-icon">
+                        <i class="<?php echo $eventData['icono']?>"></i>
+                    </div>
+                    <div class="event-summary">
+                        <div class="event-summary-header">
+                            <p><?php echo $eventData['tipo de evento']; ?></p>
+                            <p class="status"><?php echo $eventData['estado del evento']; ?></p>
+                        </div>
+                        <p><?php echo $eventData['nombre del evento']; ?></p>
+                        <p><i class="fa-solid fa-calendar-days"></i> <?php echo $eventData['fecha y hora']; ?></p>
+                        <p><i class="fa-solid fa-location-dot"></i> <?php echo $eventData['provincia'] . ", " . $eventData['canton'] .", ".$eventData['direccion'] ; ?></p>
+                    </div>
+                </div>
+                <div class="event-details-container">
+                    <div class="left-details">
+                        <p>Modalidad: <?php echo $eventData['modalidad']; ?></p>
+                        <p>Cupos: <?php echo $eventData['cupos']; ?></p>
+                        <p>Duracion: <?php echo $eventData['duracion']; ?></p>
+                        <p>Precio: ₡<?php echo $eventData['precio total']; ?></p>
+                    </div>
+                    <div class="">
+                        <p><b>Detalle</b></p>
+                        <p><?php echo $eventData['detalles']; ?></p>
+                    </div>
+                    <div>
+                        <p><b>Servicios</b></p>
+                        <?php
+                        if($eventServices && count($eventServices) > 0){
+                            foreach($eventServices as $key => $eventService){
+                                $eventService = get_object_vars($eventService);
+                                ?>
+                                <p><i class="<?php echo $eventService['icono']?>"></i> <?php echo $eventService['servicio']?></p>
+                                <?php
+                            }
+                        }else{
+                            ?>
+                            <p>No hay servicios</p>
+                            <?php
+                        }
+                        ?> 
+                    </div>
+                </div>
+
+                <?php
+                
+            }
+        }
+
+        // OBTENER LA LISTA DE SERVICIOS DE UN EVENTO
+        // retorna un arreglo con toda la informacion de los servicios
+        private function getEventServices($idEvent){
+            $this->db->query("CALL sp_get_servicios_evento(?, @variableMsgError)");
+            $this->db->bind(1, $idEvent);
+
+            return $this->db->results();
+        }
+
+        // obtener todos los clientes
+        private function loadClients(){
+            $this->db->query("CALL sp_get_clientes()");
+
+            $clients = $this->db->results();
+
+            
+            if(!$clients){
+                // no hay eventos
+                ?>
+                <div class="no-clients">
+                    <p>No hay clientes</p>
+                </div>
+                <?php
+            }else{
+                // se cargan los eventos
+                foreach($clients as $key => $client){
+                    $client = get_object_vars($client);
+                    ?>
+                    <div class="client-item">
+                        <div class="client-pic">
+                            <i class="fa-solid fa-user"></i> 
+                        </div>
+                        <div class="client-info">
+                            <p><?php echo $client['empresa']; ?></p>
+                            <p><?php echo $client['correo']; ?></p>
+                            <p><i class="fa-solid fa-phone"></i> <?php echo $client['telefono'] ?></p>
+                            <p><i class="fa-solid fa-location-dot"></i> <?php echo $client['provincia'] ?>, <?php echo $client['canton'] ?></p>
+                        </div>
+                    </div>
+                    <?php
+                }
             }
         }
 
@@ -423,24 +502,26 @@
                 foreach($events as $key => $event){
                     $event = get_object_vars($event);
                     ?>
-                    <div class="event-item">
-                        <div class="event-item-content">
-                            <div class="event-icon-container">
-                                <i class="<?php echo $event['icono']; ?>"></i>
-                            </div>
-                            <div class="event-summary">
-                                <div class="event-item-header">
-                                    <p><?php echo $event['tipo de evento']; ?></p>
-                                    <p class="status"><?php echo $event['estado del evento']; ?></p>
+                    <a href="<?php echo URL_ADMIN_PATH . "event/". $event['id']; ?>">
+                        <div class="event-item">
+                            <div class="event-item-content">
+                                <div class="event-icon-container">
+                                    <i class="<?php echo $event['icono']; ?>"></i>
                                 </div>
-                                
-                                <p><i class="fa-solid fa-calendar-days"></i> <?php echo $event['fecha y hora']; ?></p>
-                                <p> <i class="fa-solid fa-location-dot"></i> <?php echo $event['provincia'] + "," + $event['canton'] + ", " + $event['direccion']; ?></p>
-                                <p> Precio: <?php echo $event['precio total']; ?></p>
+                                <div class="event-summary">
+                                    <div class="event-item-header">
+                                        <p><?php echo $event['tipo de evento']; ?></p>
+                                        <p class="status"><?php echo $event['estado del evento']; ?></p>
+                                    </div>
+                                    <p><?php echo $event['nombre del evento']; ?></p>
+                                    <p><i class="fa-solid fa-calendar-days"></i> <?php echo $event['fecha y hora']; ?></p>
+                                    <p> <i class="fa-solid fa-location-dot"></i> <?php echo $event['provincia'] . "," . $event['canton'] . ", " . $event['direccion']; ?></p>
+                                    <p> Precio: ₡<?php echo $event['precio total']; ?></p>
+                                </div>
                             </div>
-                        </div>
 
-                    </div><!-- .event-item -->
+                        </div><!-- .event-item -->
+                    </a>
                     <?php
                 }
             }

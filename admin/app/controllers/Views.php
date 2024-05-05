@@ -33,22 +33,72 @@
             ); 
             return $data;
         }
+        
+        // VALIDAR LA SESION DEL USUARIO PARA EL ACCESO A LA PAGINA
+        // params: bool, string
+        private function validUserSession($userSession, $destiny){
+
+            if($userSession){
+                // valida que el usuario tenga sesion para entrar
+                if(!isset($_SESSION['ADMIN']['SESSION'])) header('Location:'.URL_ADMIN_PATH.$destiny);
+            }else{
+                // valida que el usuario no tenga sesion para entrar
+                if(isset($_SESSION['ADMIN']['SESSION'])) header('Location:'.URL_ADMIN_PATH.$destiny);
+            }
+
+            
+        }
+
 
 
         // METODOS PARA CARGAR LAS VISTAS
 
         // CARGA DEL HOME
         public function home(){
-            // if(!isset($_SESSION['ADMIN']['SESSION'])) header('Location:'.URL_ADMIN_PATH."login");
+            $this->validUserSession(true, 'login');
+            
             $data = $this->getPageData('home','Administracion');
             $this->loadView('pages/home', $data); // se carga la vista necesaria
         }
-        // CARGA DEL HOME
+        // CARGA DEL LOGIN
         public function login(){
+            $this->validUserSession(false, 'home');
             $data = $this->getPageData('login','Inicio de sesión');
             $this->loadView('pages/login', $data); // se carga la vista necesaria
         }
+
+        // CARGA DEL clientes
+        public function clients(){
+            $this->validUserSession(true, 'login');
+            
+            $data = $this->getPageData('clients','Administracion');
+            $this->loadView('pages/clients', $data); // se carga la vista necesaria
+        }
+
+        // CARGA DEL configuraciones
+        public function admins(){
+            $this->validUserSession(true, 'login');
+            
+            $data = $this->getPageData('admins','Administracion');
+            $this->loadView('pages/admins', $data); // se carga la vista necesaria
+        }
+
+        // CARGA DEL HOME
+        public function settings(){
+            $this->validUserSession(true, 'login');
+            
+            $data = $this->getPageData('settings','Administracion');
+            $this->loadView('pages/settings', $data); // se carga la vista necesaria
+        }
     
+        // CARGA DE DETALLE DE EVENTO
+        public function event($idEvent){
+            $this->validUserSession(true, 'login');
+            $data = $this->getPageData('event','Detalle de evento');
+            $data['idEvent'] = $idEvent; 
+            $this->loadView('pages/event', $data); // se carga la vista necesaria
+        }
+
     }
 
 

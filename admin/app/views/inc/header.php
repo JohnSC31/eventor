@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <title><?php  echo WEB_NAME . " | " .$data['TITLE'];?></title>
 
-    <meta name="description" content="CLICKSHIP el mejor en e-commerce y logistica">
+    <meta name="description" content="Eventor: Tu organizador de eventos">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="manifest" href="site.webmanifest">
 
@@ -38,4 +38,47 @@
     <div class="notification_container" id="notification_container"></div>
 
     <div class="modal_container" id="modal_container"></div>
+
+    <?php if($data['ID'] !== 'login') : ?>
+    
+        <div class="dashboard-container">
+
+            <div class="side-nav">
+                <div class="navigation-container">
+                    <a class="header-logo" href="<?php echo URL_PATH; ?>home">
+                        <img src="<?php echo URL_PATH; ?>public/img/whiteLogo.png" alt="Eventor Logo">
+                    </a>
+
+                    <nav class="admin-navigation">
+                        <ul id="admin_nav">
+                            <li><a href="<?php echo URL_ADMIN_PATH . "home"?>" class="<?php echo $data['ID'] == 'home' ? "active" : ""; ?>">
+                            <i class="fa-solid fa-calendar-day"></i> <span class="hide_medium"> Eventos</span></a></li>
+
+                            <li><a href="<?php echo URL_ADMIN_PATH . "clients"?>" class="<?php echo $data['ID'] == 'clients' ? "active" : ""; ?>">
+                            <i class="fa-solid fa-user"></i> <span class="hide_medium"> Clientes</span></a></li>
+
+                            <!-- <li><a href="<?php echo URL_ADMIN_PATH . "admins"?>" class="<?php echo $data['ID'] == 'admins' ? "active" : ""; ?>">
+                            <i class="fa-solid fa-user-shield"></i> <span class="hide_medium"> Administradores</span></a></li> -->
+
+                            <li><a href="<?php echo URL_ADMIN_PATH . "settings"?>" class="<?php echo $data['ID'] == 'settings' ? "active" : ""; ?>">
+                            <i class="fa-solid fa-gears"></i> <span class="hide_medium"> Configuraciones</span></a></li>
+
+                        </ul>
+                    </nav>
+                </div>
+
+                <div class="side-nav-footer">
+                    <button class="btn btn_white" data-admin-logout="true">Cerrar Sesión</button>
+                    <p class="header_rights hide_medium">Todos los derechos resevados 2023</p>
+                </div>
+
+            </div>
+            <main id="main-container">
+
+        <?php endif;?>
+    
  
+    
+
+        
+        

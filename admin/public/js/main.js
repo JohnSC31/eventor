@@ -9,20 +9,33 @@ const AJAX_URL = URL_PATH + 'app/controllers/Ajax.php';
       // Despues de cargar todo el DOM se ejecuta el codigo
 
       //LOGIN
-      $("body").on("submit", "form#admin_login", loginAdmin);
+      $("body").on("submit", "form#login-admin-form", loginAdmin);
+      //LOGOUT
+      $("body").on("click", "[data-admin-logout]", logoutAdmin);
 
       // APERTURA DE LOS MODALS
       $("body").on("click", "[data-modal]", openModal);
       $("body").on("click", "[close-modal]", closeModal);
 
-      // NAVEGACION DE ADMINISTRACION
-      $("body").on("click", "[data-admin-nav]", function(e){
-        e.stopPropagation();
-        adminNavigation(e.currentTarget);
-      });
+      // HOME
+      if($('body').attr('id') === 'home'){
+        loadEventsByState(2);
+        $("body").on("click", "[events-nav]", adminEventsNavigation);
+        
+      }
 
-      //LOGOUT
-      $("body").on("click", "[data-admin-logout]", logoutAdmin);
+      // DETALLE DE EVENTO
+      if($('body').attr('id') === 'event'){
+        loadDetailEvent();
+        $("body").on("click", "[update-status]", updateEventStatus);
+      }
+
+      // CLIENTS
+      if($('body').attr('id') === 'clients'){
+        loadAdminClients();
+      }
+
+
 
       // carrusel de imagenes del producto
       $("body").on("click", "[data-carrousel-pass]", function(e){
@@ -181,6 +194,7 @@ function validFiles(fileInput){
 // FUNCION PARA INICIAR SESION DE ADMINSITRADOR
 async function loginAdmin(e){
   e.preventDefault();
+  console.log('shit');
   // campos
   const input_email = $('input#email');
   const input_pass = $('input#pass');
@@ -195,7 +209,7 @@ async function loginAdmin(e){
   loginFormData.append('ajaxMethod', "adminLogin");  
 
   result = await ajaxRequest(loginFormData);
-  showNotification(result.Message, result.Success, false);
+  showNotification(result.Message, result.Success);
 
   if(result.Success){
     setTimeout(()=>{
@@ -219,6 +233,67 @@ async function logoutAdmin(e){
       window.location.href = URL_PATH + 'login';
     }, 1500)
   }
+}
+
+// ///////////////// **********************  HOME  ********************* /////////////////////
+function adminEventsNavigation(e){
+  e.preventDefault();
+  
+  $('nav.admin-events-nav li').removeClass('active');
+
+  $(this).addClass('active');
+
+  loadEventsByState($(this).attr('status'));
+}
+// carga los eventos con el estado dado
+function loadEventsByState(status){
+
+  const loadEventsFormData = new FormData();
+  loadEventsFormData.append("idStatus", status);
+  loadEventsFormData.append('ajaxMethod', "loadEventsByState");
+  
+  ajaxHTMLRequest(loadEventsFormData, "div#admin-events-list");
+}
+
+
+// ///////////////// **********************  EVENT  ********************* /////////////////////
+function loadDetailEvent(){
+  const loadDetailEventFormData = new FormData();
+
+  loadDetailEventFormData.append('id', $('div#event-detail-container').attr('id-event'));
+  loadDetailEventFormData.append('ajaxMethod', "loadDetailEvent");
+  
+  ajaxHTMLRequest(loadDetailEventFormData, "div#event-detail-container");
+}
+
+async function updateEventStatus(e){
+  e.preventDefault();
+
+  const statusEventFormData = new FormData();
+
+  statusEventFormData.append('idEvent', $('div#event-detail-container').attr('id-event'));
+  statusEventFormData.append('idStatus', $(this).attr('update-status'));
+  statusEventFormData.append('ajaxMethod', "changeEventState");
+
+  result = await ajaxRequest(statusEventFormData);
+  showNotification(result.Message, result.Success);
+
+  if(result.Success){
+    setTimeout(()=>{
+      loadDetailEvent();
+    }, 1500)
+  }
+}
+
+// ///////////////// **********************  CLIENTS  ********************* /////////////////////
+async function loadAdminClients(){
+
+  const loadClientsFormData = new FormData();
+
+  loadClientsFormData.append('id', $('div#event-detail-container').attr('id-event'));
+  loadClientsFormData.append('ajaxMethod', "loadClients");
+  
+  ajaxHTMLRequest(loadClientsFormData, "div#admin-clients-container");
 }
 
 // FUNCION PARA LA INICIALIZACION DE LAS DATATABLES

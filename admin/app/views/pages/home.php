@@ -1,28 +1,18 @@
 
-<div class="admin_container">
-    <div class="header_container">
-        <nav class="admin_navigation">
-            <div class="admin_logo">
-                <img src="<?php echo URL_PATH; ?>public/img/LogoWhite.png" alt="Logo">
-            </div>
+<h1>Eventos</h1>
 
-            <ul id="admin_nav">
-        
-                    <li data-admin-nav="users"><i class="fa-solid fa-cart-shopping"></i> <span class="hide_medium"> Usuarios</span></li>
-            </ul>
+<div class="admin-events-container">
 
-            <div class="logout_btn_container">
-                <button class="btn btn_white" data-admin-logout="true">Cerrar Sesión</button>
-            </div>
+    <nav class="admin-events-nav">
+        <ul>
+            <li events-nav="requested" status="1">Solicitados</li>
+            <li events-nav="active" class="active" status="2">Activos</li>
+            <li events-nav="ended" status="3">Finalizados</li>
+        </ul>
+    </nav>
 
-        </nav>
-        <p class="header_rights hide_medium">Todos los derechos resevados 2023</p>
+    <div class="admin-events-list" id="admin-events-list">
+
     </div>
-    <div class="dashboard_container" id="dashboard_container">
-        
-        <!-- SECCION DE USUARIOS -->
-        <?php require_once '../app/views/inc/admin-users.php'; ?>
-        
-    </div>
+    
 </div>
-
