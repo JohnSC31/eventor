@@ -364,7 +364,7 @@
             <ul class="event-icon-container">
                 <?php foreach($eventList as $key => $event){ 
                     $event = get_object_vars($event); ?>
-                    <li change-event="<?php echo $event['id']; ?>" class="<?php echo get_object_vars($eventList[0]) == $event ? "active" : "";?>"><i class="<?php echo $event['icono']; ?>" role="button" aria-label="<?php echo $event['tipo_evento']; ?>"></i></li>
+                    <li change-event="<?php echo $event['id']; ?>" class="<?php echo get_object_vars($eventList[0]) == $event ? "active" : "";?>"><button class="<?php echo $event['icono']; ?> "aria-label="Información del tipo de evento <?php echo $event['tipo_evento']; ?>"></button></li>
                 <?php } ?>
 
             </ul>
@@ -449,7 +449,7 @@
             <ul class="service-icon-container">
                 <?php foreach($serviceList as $key => $service){ 
                     $service = get_object_vars($service); ?>
-                    <li change-service="<?php echo $service['id']; ?>" class="<?php echo get_object_vars($serviceList[0]) == $service ? "active" : "";?>"><i class="<?php echo $service['icono']; ?>" role="button" aria-label="<?php echo $service['servicio']; ?>"></i></li>
+                    <li change-service="<?php echo $service['id']; ?>" class="<?php echo get_object_vars($serviceList[0]) == $service ? "active" : "";?>"><button class="<?php echo $service['icono']; ?>" aria-label="Información del servicio <?php echo $service['servicio']; ?>"></button></li>
                 <?php } ?>
 
             </ul>

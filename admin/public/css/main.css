@@ -118,6 +118,15 @@ body#home nav.admin-events-nav li{
 
 }
 
+body#home nav.admin-events-nav button{
+    color: var(--white);
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.8rem;
+    background-color: inherit;
+    border: none;
+}
+
 body#home nav.admin-events-nav li.active,
 body#home nav.admin-events-nav li:hover{
     background-color: var(--darkGreen);

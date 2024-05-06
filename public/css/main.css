@@ -599,6 +599,18 @@ section.home-services ul.service-icon-container li{
     cursor: pointer;
 }
 
+section.home-services ul.service-icon-container button{
+    background-color: inherit;
+    border: none;
+    color: inherit;
+}
+
+section.home-events ul.event-icon-container button{
+    border: none;
+    background-color: inherit;
+    color: inherit;
+}
+
 section.home-services ul.service-icon-container li{
     flex: 0 0 calc(100% - 3rem);
     background-color: var(--green);
@@ -816,6 +828,15 @@ body#profile nav.client-events-nav ul{
     background-color: var(--green);
     border-radius: var(--radius);
     overflow: hidden;
+}
+
+body#profile nav.client-events-nav button{
+    color: var(--white);
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.8rem;
+    background-color: inherit;
+    border: none;
 }
 
 body#profile nav.client-events-nav li{

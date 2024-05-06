@@ -206,12 +206,11 @@
                 <div class="event-detail-header">
 
                     <?php if($eventData['idEstado'] == 1) { ?>
-                        <button class="btn btn_green" update-status="2">Activar</button>
-                        <button class="btn btn_red" update-status="3">Finalizar</button>
+                        <button class="btn btn_green" update-status="2" aria-label="Activar evento">Activar</button>
+                        <button class="btn btn_red" update-status="3" aria-label="Finalizar evento">Finalizar</button>
                     <?php }elseif($eventData['idEstado'] == 2) {?>
-                        <button class="btn btn_red" update-status="3">Finalizar</button>
+                        <button class="btn btn_red" update-status="3" aria-label="Finalizar evento">Finalizar</button>
                     <?php }elseif($eventData['idEstado'] == 3) {?>
-                        <button class="btn btn_green" update-status="2">Activar</button>
                     <?php }?>
 
                 </div>
