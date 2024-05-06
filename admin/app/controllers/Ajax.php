@@ -25,7 +25,7 @@
             if(method_exists($this->controller, $this->ajaxMethod)){
                 call_user_func_array([$this->controller, $this->ajaxMethod], $this->data);
             }else{
-                $this->ajaxRequestResult(false, "Metodo inexistente");
+                $this->ajaxRequestResult(false, "Método inexistente");
             }
         }
 
@@ -125,9 +125,9 @@
     
                 if(isset($_SESSION['ADMIN'])){
                     // retorna sin errores
-                    $this->ajaxRequestResult(true, "Se ha iniciado sesion correctamente");
+                    $this->ajaxRequestResult(true, "Se ha iniciado sesión correctamente");
                 }else{
-                    $this->ajaxRequestResult(false, "Error al iniciar sesion");
+                    $this->ajaxRequestResult(false, "Error al iniciar sesión");
                 }
             } 
         }
@@ -139,9 +139,9 @@
 
             if(!isset($_SESSION['ADMIN'])){
               
-                $this->ajaxRequestResult(true, "Se ha cerrado sesion");
+                $this->ajaxRequestResult(true, "Se ha cerrado sesión");
             }else{ 
-                $this->ajaxRequestResult(false, "Error al cerrar sesion");
+                $this->ajaxRequestResult(false, "Error al cerrar sesión");
             }
         }
 
@@ -335,11 +335,11 @@
                             <p><?php echo $eventType['tipo_evento'];?></p>
                         </div>
                         <div class="setting-actions">
-                            <button class="btn btn_green" 
+                            <button class="btn btn_green" aria-label='Editar tipo de evento <?php echo $eventType["tipo_evento"]; ?>'
                                 edit-type-event='<?php echo json_encode($eventType); ?>'>
                                 <i class="fa-solid fa-pencil"></i>
                             </button>
-                            <button class="btn btn_red" delete-type-event="<?php echo $eventType['id']; ?>"><i class="fa-solid fa-trash"></i></button>
+                            <button class="btn btn_red" aria-label='Eliminar tipo de evento <?php echo $eventType["tipo_evento"]; ?>' delete-type-event="<?php echo $eventType['id']; ?>"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
                     <?php
@@ -384,7 +384,7 @@
             if(!is_null($varMsgError['@variableMsgError'])){
                 $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
             }else{
-                $this->ajaxRequestResult(true, "Se edito el tipo evento correctamente");
+                $this->ajaxRequestResult(true, "Se editó el tipo evento correctamente");
             }
         }
 
@@ -429,11 +429,11 @@
                             <p><?php echo $service['servicio'];?></p>
                         </div>
                         <div class="setting-actions">
-                            <button class="btn btn_green" 
+                            <button class="btn btn_green" aria-label='Editar servicio <?php echo $service["servicio"]; ?>' 
                                 edit-service='<?php echo json_encode($service); ?>'>
                                 <i class="fa-solid fa-pencil"></i>
                             </button>
-                            <button class="btn btn_red" delete-service="<?php echo $service['id']; ?>"><i class="fa-solid fa-trash"></i></button>
+                            <button class="btn btn_red" aria-label='Eliminar servicio <?php echo $service["servicio"]; ?>' delete-service="<?php echo $service['id']; ?>"><i class="fa-solid fa-trash"></i></button>
                         </div>
                     </div>
                     <?php
