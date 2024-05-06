@@ -57,17 +57,6 @@ const AJAX_URL = URL_PATH + 'app/controllers/Ajax.php';
          $("body").on("click", "[edit-service]", loadEditService);
       }
 
-
-
-      // carrusel de imagenes del producto
-      $("body").on("click", "[data-carrousel-pass]", function(e){
-        e.stopPropagation();
-        changeCarrouselImage(e.currentTarget);
-      });
-
-      
-      
-  
     }); // end DOMContentLoaded
   
   
@@ -353,12 +342,11 @@ async function eventTypeForm(e){
   showNotification(result.Message, result.Success);
 
   if(result.Success){
-    setTimeout(()=>{
-      loadSettingsEventType();
-      if(form_action === 'edit') cancelEditEventType();
-      if(form_action === 'create') $(this)[0].reset();
-      
-    }, 1500)
+
+    loadSettingsEventType();
+    if(form_action === 'edit') cancelEditEventType();
+    if(form_action === 'create') $(this)[0].reset();
+
   }
 
 }
@@ -387,9 +375,7 @@ async function deleteSettingEventType(e){
   showNotification(result.Message, result.Success);
 
   if(result.Success){
-    setTimeout(()=>{
-      loadSettingsEventType();
-    }, 1500)
+    loadSettingsEventType();
   }
 
 }
@@ -460,12 +446,9 @@ async function serviceForm(e){
   showNotification(result.Message, result.Success);
 
   if(result.Success){
-    setTimeout(()=>{
       loadSettingsServices();
       if(form_action === 'edit') cancelEditService();
       if(form_action === 'create') $(this)[0].reset();
-      
-    }, 1500)
   }
 
 }
@@ -494,9 +477,7 @@ async function deleteSettingService(e){
   showNotification(result.Message, result.Success);
 
   if(result.Success){
-    setTimeout(()=>{
-      loadSettingsServices();
-    }, 1500)
+    loadSettingsServices();
   }
 
 }
@@ -531,78 +512,6 @@ function cancelEditService(e = false){
   $('form#service-form').attr('id-service', "");
   $('form#service-form div.submit input').val('Crear servicio');
 }
-
-// FUNCION PARA LA INICIALIZACION DE LAS DATATABLES
-// ///////////////////////----------------------AJAX TABLE LOADES/ CARGADOR PARA LAS TABLAS AJAX ---------------------////////////////////////////
-function initDataTable(table, ajaxMethod){
-  const columns = getDataTableColumns(table);
-  $("#"+table+"-table").DataTable({
-    "responsive": true,
-    "autoWidth": false,
-    "processing": true,
-    "serverSide": true,
-    "ajax":{
-      url: AJAX_URL,
-      type:"POST",
-      data: {ajaxMethod: ajaxMethod, table:table}
-    },
-    "columns": columns
-  });
-}
-
-// FUNCION PARA OBTENER LAS COLUMNAS DE LAS DATATABLES
-function getDataTableColumns(table){
-  var columns = new Array();
-  //COLS PARA VENTAS
-  if(table === 'sells') columns = [{data: 'idSell'}, {data: 'clientName'}, {data: 'status'}, {data: 'date'}];
-
-  // COLS PARA INVENTARIO
-  if(table === 'inventory') columns = [{data: 'id'}, {data: 'name'}, {data: 'categorie'}, {data: 'price'}, {data: 'amount'}];
-
-  // COLS PARA RECURSOS HUMANOS
-  if(table === 'rrhh') columns = [{data: 'name'}, {data: 'email'}, {data: 'country'}, {data: 'rol'}, {data: 'department'}];
-
-  // COLS PARA SERVICIO AL CLIENTE
-  if(table === 'service') columns = [{data: 'client'}, {data: 'type'}, {data: 'employee'}, {data: 'date'}, {data: 'idOrder'}];
-
-  //PARA LAS ACCIONES
-  columns.push({data: 'actions', "orderable": false });
-
-  return columns;
-}
-
-//RECARGAR LAS DATA TABLES
-function refreshDataTables(table){
-  $("#"+table+"-table").DataTable().ajax.reload();
-}
-
-// Funcionalidad de navegacion para el area de administracion
-function adminNavigation(option){
-  // style para el hover del menu
-  if(!$(option).hasClass("active")){
-    // se quita el active de todos y se coloca al actual
-    $("ul#admin_nav li").removeClass("active");
-    $(option).addClass("active")
-  }
-  // se ocultan todos los div
-  $('div#dashboard_container > div').css('display', 'none');
-  // se muestra el div correspondiente
-  $('div#dashboard_container div.'+ $(option).attr("data-admin-nav") + '_container').css('display', 'block');
-
-  // ACCIONES PARA LAS SECCIONES
-  if($(option).attr("data-admin-nav") === 'users'){
-
-    if ( ! $.fn.DataTable.isDataTable('#users-table') ) {
-      initDataTable('users', 'loadDataTableSells');
-    }else{
-      refreshDataTables('users'); // recarga la tabla
-    }
-    
-  }
-
-}
-
-
 
 ///////////// ************************ CARGAR LOS SELECT ************************ ///////////////
 async function loadSelectOptions(idSelect){
