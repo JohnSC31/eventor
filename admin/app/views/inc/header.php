@@ -35,9 +35,9 @@
 </head>
 <body id="<?php echo $data['ID'];?>" data-url="<?php echo URL_ADMIN_PATH; ?>">
 
-    <div class="notification_container" id="notification_container"></div>
+    <div class="notification_container" id="notification_container" role="alert"></div>
 
-    <div class="modal_container" id="modal_container"></div>
+    <div class="modal_container" id="modal_container" role="alert" aria-modal="true"></div>
 
     <?php if($data['ID'] !== 'login') : ?>
     

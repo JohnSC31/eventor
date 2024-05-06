@@ -33,6 +33,8 @@ const AJAX_URL = URL_PATH + 'app/controllers/Ajax.php';
       // CLIENTS
       if($('body').attr('id') === 'clients'){
         loadAdminClients();
+        // eliminar cliente
+        $("body").on("click", "[delete-client]", deleteClient);
       }
 
       // SETTIGS / CONFIGURACIONES
@@ -303,6 +305,24 @@ async function loadAdminClients(){
   loadClientsFormData.append('ajaxMethod', "loadClients");
   
   ajaxHTMLRequest(loadClientsFormData, "div#admin-clients-container");
+}
+
+async function deleteClient(e){
+  e.preventDefault();
+
+  if(!confirm('La eliminación del cliente es permanente ¿desea continuar?')) return false;
+
+  const settingFormData = new FormData();
+  settingFormData.append('idClient', $(this).attr('delete-client'));
+
+  settingFormData.append('ajaxMethod', "deleteClient");  
+
+  result = await ajaxRequest(settingFormData);
+  showNotification(result.Message, result.Success);
+
+  if(result.Success){
+    loadAdminClients();
+  }
 }
 
 // ///////////////// **********************  SETTINGS  ********************* /////////////////////

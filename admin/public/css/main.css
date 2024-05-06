@@ -195,15 +195,20 @@ div.admin-clients-container div.client-item{
     padding: 1rem;
     background-color: var(--green);
     border-radius: var(--radius);
-    display: flex;
-    align-items: center;
     color: var(--white);
     margin-top: 2rem;
 }
 div.admin-clients-container div.client-item:first-of-type{
     margin-top: 0;
 }
-
+div.client-item div.client-item-header{
+    display: flex;
+    justify-content: end;
+}
+div.client-item div.client-item-content{
+    display: flex;
+    align-items: center;
+}
 div.admin-clients-container div.client-item div.client-pic{
     font-size: 5rem;
     padding: 0 4rem;

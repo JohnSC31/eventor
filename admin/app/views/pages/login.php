@@ -6,7 +6,7 @@
 
     <form id="login-admin-form" method="post" enctype="multipart/form-data">
         <div class="field">
-            <label for="email">Tu email</label>
+            <label for="email">Tu correo</label>
             <input type="email" name="email" id="email">
         </div>
         <div class="field">

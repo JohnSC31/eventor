@@ -294,18 +294,40 @@
                     $client = get_object_vars($client);
                     ?>
                     <div class="client-item">
-                        <div class="client-pic">
-                            <i class="fa-solid fa-user"></i> 
+                        <div class="client-item-header">
+                            <button class="btn btn_red" arial-label="Eliminar cliente <?php echo $client['empresa']; ?>" delete-client="<?php echo $client['id']; ?>"><i class="fa-solid fa-trash"></i></button>
                         </div>
-                        <div class="client-info">
-                            <p><?php echo $client['empresa']; ?></p>
-                            <p><?php echo $client['correo']; ?></p>
-                            <p><i class="fa-solid fa-phone"></i> <?php echo $client['telefono'] ?></p>
-                            <p><i class="fa-solid fa-location-dot"></i> <?php echo $client['provincia'] ?>, <?php echo $client['canton'] ?></p>
+                        <div class="client-item-content">
+                            <div class="client-pic">
+                                <i class="fa-solid fa-user"></i> 
+                            </div>
+                            <div class="client-info">
+                                <p><?php echo $client['empresa']; ?></p>
+                                <p><?php echo $client['correo']; ?></p>
+                                <p><i class="fa-solid fa-phone"></i> <?php echo $client['telefono'] ?></p>
+                                <p><i class="fa-solid fa-location-dot"></i> <?php echo $client['provincia'] ?>, <?php echo $client['canton'] ?></p>
+                            </div>
                         </div>
+
                     </div>
                     <?php
                 }
+            }
+        }
+
+        private function deleteClient($client){
+            $this->db->query("CALL sp_delete_cliente(?, @variableMsgError)");
+            $this->db->bind(1, $client['idClient']);
+
+            $this->db->execute();
+
+            $this->db->query("SELECT @variableMsgError");
+            $varMsgError = $this->db->result();
+            
+            if(!is_null($varMsgError['@variableMsgError'])){
+                $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
+            }else{
+                $this->ajaxRequestResult(true, "Se ha eliminado el cliente correctamente");
             }
         }
 
