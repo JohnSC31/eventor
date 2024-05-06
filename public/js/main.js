@@ -17,6 +17,9 @@ const AJAX_URL = URL_PATH + 'app/controllers/Ajax.php';
       // boton de cerrar sesion
       $("body").on("click", "[log-out]", clientLogout);
 
+      // CARGA LOS CANTONES DE LA PROVINCIA SELECCIONADA
+      $("select#select-province").on("change", loadCantonsProvince);
+
       // HOME
       if($("body").attr('id') === 'home'){
         loadHomeEventsList();
@@ -33,7 +36,7 @@ const AJAX_URL = URL_PATH + 'app/controllers/Ajax.php';
         $("body").on("submit", "form#signup-form", clientSignupForm);
 
         loadSelectOptions('select-province');
-        $("select#select-province").on("change", loadCantonsProvince);
+        
       }
       
       //LOGIN FORM
@@ -56,7 +59,6 @@ const AJAX_URL = URL_PATH + 'app/controllers/Ajax.php';
         loadSelectOptions("select-event-type");
 
         loadSelectOptions('select-province');
-        $("select#select-province").on("change", loadCantonsProvince);
 
         // carga los servicios
         loadCheckBoxServicesForm();
@@ -206,16 +208,6 @@ function validEmail(input_value){
   return true;
 }
 
-///////////// ************************ CARGA SE SELECTS DINAMICOS ************************ ///////////////
-async function loadSelectOptions(idSelect){
-
-  const selectFormData = new FormData();
-  selectFormData.append("idSelect", idSelect);
-  selectFormData.append('ajaxMethod', "loadSelectOptions");
-
-  ajaxHTMLRequest(selectFormData, "select#" + idSelect);
-}
-
 // ///////////////// **********************  HOME  ********************* /////////////////////
 
 // funcion para cargar la lista de eventos en la pagina principal
@@ -362,8 +354,10 @@ async function clientLogout(e){
    }
 }
 
-async function loadCantonsProvince(e){
-  e.preventDefault();
+async function loadCantonsProvince(e = false){
+  if(e) e.preventDefault();
+
+  console.log($(this));
 
   if($(this).val() == ""){
     $( "select#select-canton").html('<option value="">Cantón</option>');
@@ -409,6 +403,7 @@ async function editClientForm(e){
   const input_company_name = $('input#company-name');
   const input_company_detail = $('input#company-detail');
   const select_canton = $('select#select-canton');
+  const select_province = $('select#select-province');
   
   const input_phone = $('input#phone');
   const input_email = $('input#email');
@@ -422,31 +417,29 @@ async function editClientForm(e){
 
   if(!validInput(input_phone.val(), false, "Ingrese un telefono")) return false;
   if(!validEmail(input_email.val())) return false;
-  // if(!validPassword(input_password.val())) return false;
 
-  // // se validan las contrasena
-  // if(input_password.val() !== input_confirmPassword.val()){
-  //   showNotification("Las contraseñas no coinciden", false);
-  //   return false;
-  // }
+  const editFormData = new FormData();
+  editFormData.append('companyName', input_company_name.val());
+  editFormData.append('companyDetail', input_company_detail.val());
 
-  const signupFormData = new FormData();
-  signupFormData.append('companyName', input_company_name.val());
-  signupFormData.append('companDetail', input_company_detail.val());
-  signupFormData.append('idCanton', select_canton.val());
+  editFormData.append('idProvince', select_province.val());
+  editFormData.append('province', $.trim(select_province.find(":selected").text()));
 
-  signupFormData.append('phone', input_phone.val().replace(/[^\d]/g, ''));
-  signupFormData.append('email', input_email.val());
-  // signupFormData.append('pass', input_password.val());
+  editFormData.append('idCanton', select_canton.val());
+  editFormData.append('canton', $.trim(select_canton.find(":selected").text()));
 
-  signupFormData.append('ajaxMethod', "clientEdit");  
+  editFormData.append('phone', input_phone.val().replace(/[^\d]/g, ''));
+  editFormData.append('email', input_email.val());
 
-  result = await ajaxRequest(signupFormData);
+  editFormData.append('ajaxMethod', "clientEdit");  
+
+  result = await ajaxRequest(editFormData);
   showNotification(result.Message, result.Success, false);
 
   if(result.Success){
     setTimeout(()=>{
       closeModal();
+      location.reload();
     }, 1500)
   }
 }

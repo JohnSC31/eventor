@@ -77,3 +77,6 @@
 </div>
 
 <script src="<?php echo URL_PATH; ?>public/js/jquery.mask.js"></script>
+<script>
+    $("select#select-province").on("change", loadCantonsProvince);
+</script>

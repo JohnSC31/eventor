@@ -134,14 +134,13 @@
         // EDITAR CLIENTE 
         private function clientEdit($client){
 
-            $this->db->query("CALL sp_edit_cliente(?, ?, ?, ?, ?, ?, ?, @variableMsgError)");
-            $this->db->bind(1, $client['idCliente']);
-            $this->db->bind(1, $client['idCanton']);
-            $this->db->bind(2, $client['companyName']);
-            $this->db->bind(3, $client['companDetail']);
-            $this->db->bind(4, $client['phone']);
-            $this->db->bind(5, $client['email']);
-            $this->db->bind(6, $client['pass']);
+            $this->db->query("CALL sp_edit_cliente(?, ?, ?, ?, ?, ?, @variableMsgError)");
+            $this->db->bind(1, $_SESSION['CLIENT']['CID']);
+            $this->db->bind(2, $client['idCanton']);
+            $this->db->bind(3, $client['companyName']);
+            $this->db->bind(4, $client['companyDetail']);
+            $this->db->bind(5, $client['phone']);
+            $this->db->bind(6, $client['email']);
 
             $this->db->execute();
 
@@ -151,7 +150,18 @@
             if(!is_null($varMsgError['@variableMsgError'])){
                 $this->ajaxRequestResult(false, $varMsgError['@variableMsgError']);
             }else{
-                $this->ajaxRequestResult(true, "Cambios guardados correctamente");
+
+                // SE ACTUALIZA LA SESSION
+                $_SESSION['CLIENT']['EMAIL'] = $client['email'];
+                $_SESSION['CLIENT']['COMPANY'] = $client['companyName'];
+                $_SESSION['CLIENT']['DETAIL'] = $client['companyDetail'];
+                $_SESSION['CLIENT']['PROVINCE'] = $client['province'];
+                $_SESSION['CLIENT']['PROVINCEID'] = $client['idProvince'];
+                $_SESSION['CLIENT']['CANTON'] = $client['canton'];
+                $_SESSION['CLIENT']['CANTONID'] = $client['idCanton'];
+                $_SESSION['CLIENT']['PHONE'] = $client['phone'];
+
+                $this->ajaxRequestResult(true, "Se ha editado el perfil correctamente");
             }
         }
 
