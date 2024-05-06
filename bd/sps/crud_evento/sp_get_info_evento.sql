@@ -27,7 +27,7 @@ BEGIN
     END IF;
 
 	SELECT ev.id, c.nombreEmpresa AS empresa, ev.nombre AS 'nombre del evento', m.modalidad, te.tipo_evento AS 'tipo de evento', te.icono as 'icono',
-	ee.estado AS 'estado del evento', ev.fecha_hora AS 'fecha y hora', ev.detalles, ev.duracion, ev.cupos, 
+	ee.estado AS 'estado del evento', ee.id AS idEstado, ev.fecha_hora AS 'fecha y hora', ev.detalles, ev.duracion, ev.cupos, 
 	p.id as idProvincia, p.nombre AS provincia, cant.id as idCanton, cant.nombre AS canton, ev.direccion, ev.precio_total AS 'precio total'
 	FROM evento AS ev
 	JOIN cliente AS c ON c.id = ev.id_cliente

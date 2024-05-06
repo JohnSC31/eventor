@@ -60,6 +60,6 @@
 
 <div class="notification_container" id="notification_container" role="alert"></div>
 
-<div class="modal_container" id="modal_container"></div>
+<div class="modal_container" id="modal_container" role="alert" aria-modal="true"></div>
 
 <main id="main-container">

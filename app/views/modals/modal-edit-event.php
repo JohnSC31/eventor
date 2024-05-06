@@ -40,7 +40,7 @@
 
 <div class="myModal modal-edit-client">
     <div class="modal_header">
-        <a close-modal="" class="close_modal"><i class="fas fa-times"></i></a>
+        <button close-modal="" class="btn btn_red" aria-label="Cerrar cuadro de edición"><i class="fas fa-times"></i></button>
     </div>
     <div class="modal-content">
 
@@ -142,7 +142,7 @@
                 } ?>
             </div>
             <div class="submit col_2">
-                <input type="submit" class="btn btn_red" value="Editar">
+                <input type="submit" class="btn btn_green" value="Editar">
             </div>
         </form>
 
