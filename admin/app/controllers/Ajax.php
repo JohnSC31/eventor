@@ -295,7 +295,7 @@
                     ?>
                     <div class="client-item">
                         <div class="client-item-header">
-                            <button class="btn btn_red" arial-label="Eliminar cliente <?php echo $client['empresa']; ?>" delete-client="<?php echo $client['id']; ?>"><i class="fa-solid fa-trash"></i></button>
+                            <button class="btn btn_red" aria-label="Eliminar cliente <?php echo $client['empresa']; ?>" delete-client="<?php echo $client['id']; ?>"><i class="fa-solid fa-trash"></i></button>
                         </div>
                         <div class="client-item-content">
                             <div class="client-pic">
