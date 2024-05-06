@@ -304,7 +304,7 @@ async function clientSignupForm(e){
 
   if(result.Success){
     setTimeout(()=>{
-      window.location.href = URL_PATH + 'home';
+      window.location.href = URL_PATH + 'profile';
     }, 1500)
   }
 
