@@ -326,6 +326,11 @@ form .field textarea{
     color: var(--green);
 }
 
+form .field select{
+    color: var(--green)
+}
+
+
 form .field input[type=checkbox]{
     width: auto;
 }

@@ -237,22 +237,20 @@ body#login{
     justify-content: center;
 }
 
-section.admin_login_container{
-    background-color: var(--green);
-    padding: 1rem;
-    border-radius: var(--radius);
-    color: var(--white);
-}
-section.admin_login_container h1{
+body#login div.main-login-container{
     text-align: center;
 }
-
+section.login-admin-container{
+    background-color: var(--green);
+    padding: 2rem;
+    border-radius: var(--radius);
+    color: var(--white);
+    margin-top: 2rem;
+}
 form#login-admin-form .field input,
 form#login-admin-form select,
 form#login-admin-form textarea{
     background-color: var(--white);
-    font-size: 1.8rem;
-    font-weight: bold;
 }
 
 /* ------------------------------- CONFIGURACIONES ------------------------------------ */

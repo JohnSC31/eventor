@@ -51,7 +51,7 @@
 
                     <nav class="admin-navigation">
                         <ul id="admin_nav">
-                            <li><a href="<?php echo URL_ADMIN_PATH . "home"?>" class="<?php echo $data['ID'] == 'home' ? "active" : ""; ?>">
+                            <li><a href="<?php echo URL_ADMIN_PATH . "home"?>" class="<?php echo $data['ID'] == 'home' | $data['ID'] == 'event' ? "active" : ""; ?>">
                             <i class="fa-solid fa-calendar-day"></i> <span class="hide_medium"> Eventos</span></a></li>
 
                             <li><a href="<?php echo URL_ADMIN_PATH . "clients"?>" class="<?php echo $data['ID'] == 'clients' ? "active" : ""; ?>">

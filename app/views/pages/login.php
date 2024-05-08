@@ -13,7 +13,7 @@
             </div>
             <div class="submit col_2">
                 <a href="<?php echo URL_PATH; ?>recovery" class="btn btn_black">Recuperar contraseña</a>
-                <input type="submit" class="btn btn_red" value="Ingresar">
+                <input type="submit" class="btn btn_green" value="Ingresar">
             </div>
         </form>
     </div>

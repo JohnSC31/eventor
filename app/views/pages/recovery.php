@@ -9,7 +9,7 @@
                 <input type="email" name="correo electronico" id="email" placeholder="Correo">
             </div>
             <div class="submit col_2">
-                <input type="submit" class="btn btn_red" value="Enviar">
+                <input type="submit" class="btn btn_white" value="Enviar">
             </div>
         </form>
     </div>

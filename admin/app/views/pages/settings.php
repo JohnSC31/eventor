@@ -1,6 +1,6 @@
 <h1>Configuraciones</h1>
 
-<div class="settings-list-container">
+<div class="settings-list-container" id="event-type-form-container">
     <h2>Crear un tipo de evento</h2>
 
     <form id="event-type-form" method="post" enctype="multipart/form-data" action="create" id-event="">

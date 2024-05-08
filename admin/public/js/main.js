@@ -417,6 +417,15 @@ async function loadEditEventType(e){
   $('form#event-type-form').attr('id-event', eventType.id);
 
   $('form#event-type-form div.submit input').val('Editar tipo de evento');
+
+  // FOCUS AL FORMULARIO
+  $('html').animate({
+      scrollTop: $("div#event-type-form-container").offset().top
+    },
+    800 //speed
+  );
+
+  $("input#eventType").focus();
   
 }
 
@@ -443,10 +452,10 @@ async function serviceForm(e){
   const textarea_detail = $('textarea#service-detail');
   
   // validacion
-  if(!validInput(input_service.val(), false, "Ingrese un tipo de evento")) return false
+  if(!validInput(input_service.val(), false, "Ingrese un servicio")) return false
   if(!validInput(input_icon.val(), false, "Ingrese un icono")) return false
-  if(!validInput(input_price.val(), false, "Ingrese un precio de evento")) return false
-  if(!validInput(textarea_detail.val(), false, "Ingrese un detalle de tipo de evento")) return false
+  if(!validInput(input_price.val(), false, "Ingrese un precio de servicio")) return false
+  if(!validInput(textarea_detail.val(), false, "Ingrese un detalle de servicio")) return false
 
   // form data
   const settingFormData = new FormData();
@@ -519,6 +528,8 @@ async function loadEditService(e){
   $('form#service-form').attr('id-service', service.id);
 
   $('form#service-form div.submit input').val('Editar servicio');
+
+  $("input#service").focus(); // focus al formulario
   
 }
 
