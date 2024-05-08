@@ -779,6 +779,7 @@ body#recovery div.recovery-container div.form-container{
 
 body#recovery div.form-container form input[type]:not([type=submit]){
     color: var(--white);
+    border-color: var(--white);
  }
 
 
