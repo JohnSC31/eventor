@@ -1,7 +1,7 @@
 DROP PROCEDURE IF EXISTS sp_edit_evento;
 DELIMITER $$
 CREATE PROCEDURE sp_edit_evento(pEventoID INT, pClienteID INT, pModalidadID TINYINT, pCantonID TINYINT, pTypeID TINYINT, 
-                                pEstadoID TINYINT, pName VARCHAR(40), pDateTime DATETIME, pDetails VARCHAR(255), pDuration TINYINT, 
+                                pName VARCHAR(40), pDateTime DATETIME, pDetails VARCHAR(255), pDuration TINYINT, 
                                 pCapacity INT, pLocation VARCHAR(255), OUT errorMessage VARCHAR(255))
 BEGIN
 	DECLARE NON_EXISTENT_CLIENT INT DEFAULT(53000);
@@ -109,7 +109,7 @@ BEGIN
 	SET autocommit = 0;
 
 	START TRANSACTION;
-		UPDATE evento SET id_cliente = pClienteID, id_modalidad = pModalidadID, id_canton = pCantonID, id_tipo_evento = pTypeID, id_estado = pEstadoID,
+		UPDATE evento SET id_cliente = pClienteID, id_modalidad = pModalidadID, id_canton = pCantonID, id_tipo_evento = pTypeID,
         nombre = pName, fecha_hora = pDateTime, detalles = pDetails, duracion = pDuration, cupos = pCapacity, direccion = pLocation, precio_total = precioTotal
         WHERE id = pEventoID;
 
