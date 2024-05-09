@@ -33,7 +33,7 @@
         <div class="container">
             <a href="<?php echo URL_PATH; ?>home">
                 <div class="logo">
-                    <img src="<?php echo URL_PATH; ?>public/img/blackLogo.png" alt="Página principal">
+                    <img src="<?php echo URL_PATH; ?>public/img/whiteLogo.png" alt="Página principal">
                 </div>
             </a>
             <nav class="navigation">
