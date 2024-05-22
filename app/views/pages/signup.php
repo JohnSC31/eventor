@@ -45,7 +45,7 @@
             </div><!-- .form-input-container -->
             <div class="submit col_2">
                 <a href="<?php echo URL_PATH; ?>login" class="btn btn_black">Iniciar Sesión</a>
-                <input type="submit" class="btn btn_red" value="Registrarme">
+                <input type="submit" class="btn btn_green" value="Registrarme">
             </div>
         </form>
     </div>

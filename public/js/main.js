@@ -593,6 +593,8 @@ async function editEventForm(e){
 async function deleteEvent(e){
   e.preventDefault();
 
+  if(!confirm('La eliminación del evento es permanente ¿desea continuar?')) return false;
+
   const deleteEventFormData = new FormData();
   deleteEventFormData.append('idEvent', $(this).attr('delete-event'));
   deleteEventFormData.append('ajaxMethod', "deleteEvent");
