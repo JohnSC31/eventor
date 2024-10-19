@@ -1,0 +1,7 @@
+parameters:
+    level: 3
+    paths:
+        - app
+        - admin/app
+    autoload_files:
+        - app/lib/vendor/autoload.php
